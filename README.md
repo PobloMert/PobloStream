@@ -77,19 +77,30 @@ Depo adresi: **https://github.com/PobloMert/PobloStream**
 
 Bundan sonra her `git push` tüm eklentileri yeniden derler; domain robotu da kendi PR'larını açar.
 
-## 🔑 Kısa kod (shortcode) için başvuru
+## 🔑 Kısa kod: `!poblostream`
 
-CloudStream'de `kekikakademi`, `!wiospor` gibi kısa kodlar **uygulamanın kendi kaynak koduna** gömülüdür; bir depo sahibi kendi başına yeni kısa kod tanımlayamaz. Kodun eklenmesi için resmi depoya PR gönderilmesi gerekir:
+CloudStream kısa kodları uygulamaya gömülü **değildir** — uygulama yazılan kodu bir URL kısaltma servisine gönderip yönlendirmeyi takip eder (kaynak: `RepositoryManager.parseRepoUrl`):
+- `!poblostream` → `https://py.md/poblostream` → 302 → repo.json  ✅ **aktif**
+- işaretsiz kodlar → `https://cutt.ly/{kod}` → repo.json
 
-1. **recloudstream/cloudstream** deposunda `app/src/main/java/.../providers/` altındaki shortcode listesini bul (veya `"shortcode"` için kaynakta arama yap)
-2. Listeye şu satırı ekle:
-   ```
-   "poblostream" to "https://raw.githubusercontent.com/PobloMert/PobloStream/master/repo.json"
-   ```
-3. PR aç ve açıklamada deponun amacını belirt (Türkçe film/dizi eklentileri, güncel domainler, otomatik domain robotu)
-4. PR birleşirse kullanıcılar CloudStream → Eklentiler → Depo ekle → `poblostream` yazabilir
+### Kurulum (kullanıcılar için)
+CloudStream → Eklentiler → Depo ekle → şunu yaz:
+```
+!poblostream
+```
 
-> PR onaylanana kadar kullanıcılar **repo.json URL'sini** kullanarak depoyu ekleyebilir. Alternatif olarak keyiflerolsun'un `http-protocol-redirector` yöntemiyle "Logoya tıkla, depo otomatik kurulsun" linki de hazırlanabilir.
+### Bakım (senin için)
+Kısa kod [py.md](https://py.md/) üzerinde oluşturulmuş bir custom alias'tır:
+- **Custom URL:** `py.md/poblostream`
+- **Hedef:** `https://raw.githubusercontent.com/PobloMert/PobloStream/master/repo.json`
+- ⚠️ **Şifre kesinlikle boş olmalı** — şifre konursa CloudStream yönlendirmeyi göremez ve depoyu ekleyemez
+- Depo adresi değişirse py.md'de linki düzenleyip hedefi güncelle
+
+Doğrulama komutu:
+```powershell
+curl.exe -sI https://py.md/poblostream
+# HTTP/1.1 302 Found + location: https://raw.githubusercontent.com/PobloMert/PobloStream/master/repo.json
+```
 
 ## 📜 Lisans ve teşekkür
 
