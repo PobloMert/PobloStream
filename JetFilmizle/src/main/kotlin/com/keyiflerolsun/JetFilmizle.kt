@@ -51,7 +51,7 @@ class JetFilmizle : MainAPI() {
         title = title.replace(Regex("""\s+[İi]zle.*$"""), "").trim()
 
         val href = fixUrlNull(link.attr("href")) ?: return null
-        val posterUrl = selectFirst(".film-poster img")?.let { fixUrlNull(it.attr("data-src") ?: it.attr("src")) }
+        val posterUrl = selectFirst(".film-poster img, img.card-img-top")?.let { fixUrlNull(it.attr("data-src") ?: it.attr("src")) }
             ?: selectFirst("img")?.let { fixUrlNull(it.attr("data-src") ?: it.attr("src")) }
 
         return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
@@ -69,7 +69,8 @@ class JetFilmizle : MainAPI() {
         val document = app.get(url).document
 
         val title       = document.selectFirst("h1.film-title")?.text()?.replace(Regex("""\s+[İi]zle.*$"""), "")?.trim() ?: return null
-        val poster      = fixUrlNull(document.selectFirst("img.film-poster")?.attr("data-src") ?: document.selectFirst("img.film-poster")?.attr("src"))
+        val poster      = fixUrlNull(document.selectFirst("img.film-poster, img.card-img-top")?.attr("data-src")
+            ?: document.selectFirst("img.film-poster, img.card-img-top")?.attr("src"))
         val description = document.selectFirst("div.film-description")?.text()?.trim()
         val year        = Regex("""\b(19|20)\d{2}\b""").find(document.selectFirst("section.film-detay.film-bilgileri-section")?.text() ?: "")?.groupValues?.get(0)?.toIntOrNull()
         val tags        = document.select("section.film-detay.film-bilgileri-section a").map { it.text() }.distinct()
