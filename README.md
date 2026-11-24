@@ -20,23 +20,7 @@ PobloStream/
 └── .github/workflows/
     ├── Derleyici.yml         ← push atınca .cs3'leri otomatik derler (builds dalına)
     └── Kontrol.yml           ← 9 saatte bir domain kontrolü yapar, değişince PR açar
-```
-
-## 🛠 Bilgisayarında derleme (local build)
-
-Gereksinimler (bu makinede hazır): JDK 21, Android SDK (platform-35).
-
-```powershell
-cd "C:\Users\ahmet\OneDrive\Masaüstü\Youtube Direktörü\cloudstream\PobloStream"
-$env:JAVA_HOME    = "C:\Program Files\Eclipse Adoptium\jdk-21.0.13.9-hotspot"
-$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
-.\gradlew.bat make makePluginsJson
-```
-
-Çıktılar: her eklentinin `build/*.cs3` dosyası + kökte `build/plugins.json`.
-
-> Not: `JAVA_HOME` sistemde JDK 25'i gösteriyor; Gradle 8.12 onu desteklemediği
-> için yukarıdaki gibi JDK 21'i açıkça göstermek gerekiyor.
+``
 
 ## 📲 Telefona kurulum (derlemeden sonra)
 
