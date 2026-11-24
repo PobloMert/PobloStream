@@ -1,0 +1,8 @@
+{
+  "name": "Ahmet'in CloudStream Eklentileri",
+  "description": "Güncel adreslerle çalışan Türkçe içerik eklentileri",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/KULLANICI_ADIN/cs-ahmet/builds/plugins.json"
+  ]
+}
