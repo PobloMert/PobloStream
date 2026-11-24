@@ -127,7 +127,7 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizilla.la&sz=%size%",
-        "fileHash": "sha256-1d88c23886c29f220607215db2594a6657e25fcbb80bee989c01b167a08505d2",
+        "fileHash": "sha256-73287dd4502818bc76ee439923e226da56e5ae493c38591e99391d719f648fb6",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
         "fileSize": 29990,
@@ -140,7 +140,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 40,
+        "version": 41,
         "internalName": "Dizilla",
         "description": "Dizilla t\u00fcm yabanc\u0131 dizileri \u00fccretsiz olarak T\u00fcrk\u00e7e Dublaj ve altyaz\u0131l\u0131 se\u00e7enekleri ile 1080P kalite izleyebilece\u011finiz yeni nesil yabanc\u0131 dizi izleme siteniz.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/Dizilla.cs3",
@@ -277,10 +277,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.app&sz=%size%",
-        "fileHash": "sha256-5435222fe259410a6a8ffa8d9f6d1395eed1ccc436c2eba4818b143850c58ff2",
+        "fileHash": "sha256-439c8f84021ce539fb27637322ed0c6d76214a409aeaf5a2efcde1a53667663a",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 18192,
+        "fileSize": 18211,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -290,7 +290,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 43,
+        "version": 44,
         "internalName": "JetFilmizle",
         "description": "Binlerce Film \u0130zleme Se\u00e7ene\u011fiyle En \u0130yi Film \u0130zleme Sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/JetFilmizle.cs3",
@@ -360,7 +360,7 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.turkanime.co&sz=%size%",
-        "fileHash": "sha256-0be6e77218dad762f71cf573e32be21f530fc988613e8ce23add38d9fbe0ef4c",
+        "fileHash": "sha256-c1080393f3366541cbad08a02bd93b664ca59ae798d5b112c7d22866205b60c0",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
         "fileSize": 19975,
@@ -373,7 +373,7 @@
         "tvTypes": [
             "Anime"
         ],
-        "version": 15,
+        "version": 16,
         "internalName": "TurkAnime",
         "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/TurkAnime.cs3",
