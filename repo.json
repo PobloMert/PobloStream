@@ -1,8 +1,12 @@
 {
-  "name": "Ahmet'in CloudStream Eklentileri",
-  "description": "Güncel adreslerle çalışan Türkçe içerik eklentileri",
-  "manifestVersion": 1,
+  "name": "PobloStream",
+  "description": "Türkçe film, dizi ve anime eklentileri - güncel adreslerle",
+  "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+  "manifestVersion": 2,
   "pluginLists": [
-    "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/plugins.json"
-  ]
+    "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/plugins.json?t=1795539000"
+  ],
+  "lastUpdated": 1795539000,
+  "timestamp": 1795539000,
+  "version": 2
 }
