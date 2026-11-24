@@ -48,10 +48,9 @@ class JetFilmizle : MainAPI() {
     private fun Element.toSearchResult(): SearchResponse? {
         val link = selectFirst("a[title]") ?: selectFirst("a") ?: return null
         var title = link.attr("title").takeIf { it.isNotBlank() } ?: link.text().takeIf { it.isNotBlank() } ?: return null
-        title = title.substringBefore(" izle")
+        title = title.replace(Regex("""\s+[İi]zle.*$"""), "").trim()
 
         val href = fixUrlNull(link.attr("href")) ?: return null
-
         val posterUrl = selectFirst(".film-poster img")?.let { fixUrlNull(it.attr("data-src") ?: it.attr("src")) }
             ?: selectFirst("img")?.let { fixUrlNull(it.attr("data-src") ?: it.attr("src")) }
 
@@ -59,14 +58,9 @@ class JetFilmizle : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.post(
-            "${mainUrl}/filmara.php",
-            referer = "${mainUrl}/",
-            data    = mapOf("s" to query)
-        ).document
-
-        // Arama sonucu da aynı kart yapısını kullanıyorsa:
-        return document.select("div.film-card-wrapper, article.movie").mapNotNull { it.toSearchResult() }
+        // Yeni arama: GET /arama?q= (POST /filmara.php artık 404)
+        val document = app.get("${mainUrl}/arama?q=$query", referer = "${mainUrl}/").document
+        return document.select("div.film-card-wrapper").mapNotNull { it.toSearchResult() }
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
@@ -74,26 +68,17 @@ class JetFilmizle : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
 
-        val title       = document.selectFirst("section.movie-exp div.movie-exp-title")?.text()?.substringBefore(" izle")?.trim() ?: return null
-        val poster      = fixUrlNull(document.selectFirst("section.movie-exp img")?.attr("data-src")) ?: fixUrlNull(document.selectFirst("section.movie-exp img")?.attr("src"))
-        val yearDiv     = document.selectXpath("//div[@class='yap' and contains(strong, 'Vizyon') or contains(strong, 'Yapım')]").text().trim()
-        val year        = Regex("""(\d{4})""").find(yearDiv)?.groupValues?.get(1)?.toIntOrNull()
-        val description = document.selectFirst("section.movie-exp p.aciklama")?.text()?.trim()
-        val tags        = document.select("section.movie-exp div.catss a").map { it.text() }
-        val actors      = document.select("section.movie-exp div.oyuncu").mapNotNull {
-            val name = it.selectFirst("div.name")?.text()
-            val img  = fixUrlNull(it.selectFirst("img")?.attr("data-src"))
-            if (name != null) Actor(name, img) else null
+        val title       = document.selectFirst("h1.film-title")?.text()?.replace(Regex("""\s+[İi]zle.*$"""), "")?.trim() ?: return null
+        val poster      = fixUrlNull(document.selectFirst("img.film-poster")?.attr("data-src") ?: document.selectFirst("img.film-poster")?.attr("src"))
+        val description = document.selectFirst("div.film-description")?.text()?.trim()
+        val year        = Regex("""\b(19|20)\d{2}\b""").find(document.selectFirst("section.film-detay.film-bilgileri-section")?.text() ?: "")?.groupValues?.get(0)?.toIntOrNull()
+        val tags        = document.select("section.film-detay.film-bilgileri-section a").map { it.text() }.distinct()
+        val actors      = document.select("section.film-detay.film-bilgileri-section a[href*='oyuncu']").mapNotNull {
+            val name = it.text().trim(); if (name.isNotBlank()) Actor(name) else null
         }
 
-        val recommendations = document.select("div#benzers article").mapNotNull {
-            var recName      = it.selectFirst("h2 a")?.text() ?: it.selectFirst("h3 a")?.text() ?: it.selectFirst("h4 a")?.text() ?: it.selectFirst("h5 a")?.text() ?: it.selectFirst("h6 a")?.text() ?: return@mapNotNull null
-            recName          = recName.substringBefore(" izle")
-
-            val recHref      = fixUrlNull(it.selectFirst("a")?.attr("href")) ?: return@mapNotNull null
-            val recPosterUrl = fixUrlNull(it.selectFirst("img")?.attr("data-src"))
-
-            newMovieSearchResponse(recName, recHref, TvType.Movie) { this.posterUrl = recPosterUrl }
+        val recommendations = document.select("section.film-detay.benzer-filmler-section div.film-card-wrapper").mapNotNull {
+            it.toSearchResult()
         }
 
         return newMovieLoadResponse(title, url, TvType.Movie, url) {

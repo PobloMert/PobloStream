@@ -136,7 +136,7 @@ class Dizilla : MainAPI() {
         val title = selectFirst(".mvk-t")?.text()?.trim() ?: return null
         val href = fixUrlNull(attr("href")) ?: return null
         val posterUrl = selectFirst(".pimg img")?.let { fixUrlNull(it.attr("src") ?: it.attr("data-src")) }
-        val yil = selectFirst(".mvk-m")?.text()?.trim()?.toIntOrNull()
+        val yil = selectFirst(".mvk-m")?.text()?.trim()?.let { Regex("""\b(19|20)\d{2}\b""").find(it)?.groupValues?.get(0)?.toIntOrNull() }
 
         return newTvSeriesSearchResponse(title, href, TvType.TvSeries) {
             this.posterUrl = posterUrl
@@ -154,37 +154,33 @@ class Dizilla : MainAPI() {
 
     // --- Dizi detay (load) ---
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url, interceptor = interceptor).document
+        val html = app.get(url, interceptor = interceptor).text
+        val document = Jsoup.parse(html)
 
         val title = document.selectFirst("h1")?.text()?.trim() ?: return null
         val poster = document.selectFirst(".pimg img, .v4-epgrid img")?.let { fixUrlNull(it.attr("src") ?: it.attr("data-src")) }
         val description = document.selectFirst("meta[name=description]")?.attr("content")?.trim()
-        val year = description?.let { it.takeIf { it.length == 4 && it.all { it.isDigit() } }?.toIntOrNull() }
+        val year = description?.let { Regex("""\b(19|20)\d{2}\b""").find(it)?.groupValues?.get(0)?.toIntOrNull() }
 
         val tags = document.select(".v4-rich a, .tags a").map { it.text() }.distinct()
 
-        // Sezon/Bölüm linklerini topla
+        // Bölüm linkleri DOM'da değil, flight JSON / JSON-LD içinde:
+        // "url":"https://dizilla.la/slug-1-sezon-2-bolum" veya \"url\":\"...\"
         val slug = url.substringAfterLast("/")
         val episodeLinks = mutableMapOf<Int, MutableList<Pair<Int, String>>>()
+        val epRegex = Regex("""${Regex.escape(slug)}-(\d+)-sezon-(\d+)-bolum""")
 
-        document.select("a[href^=/$slug-][href$=-bolum]").forEach { link ->
-            val href = fixUrl(link.attr("href"))
-            val bolumText = link.attr("aria-label") ?: link.text()
-            val sezBol = bolumText.split(", ").lastOrNull() ?: bolumText
-            val sezBolClean = sezBol.replace(". Sezon ", "x").replace(". Bölüm", "")
-            val parca = sezBolClean.split("x")
-            if (parca.size == 2) {
-                val s = parca[0].toIntOrNull() ?: 1
-                val e = parca[1].toIntOrNull() ?: 1
-                episodeLinks.getOrPut(s) { mutableListOf() }.add(e to href)
-            }
+        epRegex.findAll(html).forEach { m ->
+            val s = m.groupValues[1].toIntOrNull() ?: return@forEach
+            val e = m.groupValues[2].toIntOrNull() ?: return@forEach
+            val epUrl = fixUrl("/${slug}-${s}-sezon-${e}-bolum")
+            val list = episodeLinks.getOrPut(s) { mutableListOf() }
+            if (list.none { it.first == e }) list.add(e to epUrl)
         }
 
         val episodes = mutableListOf<Episode>()
-        val sortedSeasons = episodeLinks.keys.sorted()
-        for (s in sortedSeasons) {
-            val bolumler = episodeLinks[s]!!.sortedBy { it.first }
-            for ((ep, epUrl) in bolumler) {
+        for (s in episodeLinks.keys.sorted()) {
+            for ((ep, epUrl) in episodeLinks[s]!!.sortedBy { it.first }) {
                 episodes.add(newEpisode(epUrl) {
                     this.season = s
                     this.episode = ep
@@ -207,29 +203,25 @@ class Dizilla : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        val document = app.get(data, interceptor = interceptor).document
+        val body = app.get(data, interceptor = interceptor).text
 
-        // 1) NP_CONFIG JSON'ini script icinden cikar
-        val scripts = document.select("script")
-        var npConfigJson: String? = null
-        for (s in scripts) {
-            val txt = s.data()
-            if (txt.contains("window.NP_CONFIG")) {
-                npConfigJson = extractJsonBlock(txt, "window.NP_CONFIG")
-                break
+        // 1) Bölüm sayfasındaki kaçışlı JSON'dan gerçek Pichive iframe URL'sini bul
+        //    (Next.js flight verisi: \"src\":\"https://four.pichive.online/iframe.php?v=...\")
+        val iframeUrl = Regex("""(https://[a-z0-9.]*pichive[a-z0-9.]*/iframe\.php\?v=[a-zA-Z0-9_-]+)""")
+            .find(body)?.groupValues?.get(1)
+            ?: Regex("""https://[^"\s]+/iframe\.php\?v=[a-zA-Z0-9_-]+""").find(body)?.value
+            ?: run {
+                // Eski yapi: DOM'da gerçek iframe varsa
+                val doc = Jsoup.parse(body)
+                doc.selectFirst("iframe")?.attr("src")?.let { fixUrlNull(it) }
             }
-        }
+            ?: return false
 
-        if (npConfigJson == null) {
-            // Eski yapi: ContentX iframe -> loadExtractor
-            val iframe = document.selectFirst("iframe")?.attr("src")?.let { fixUrlNull(it) }
-            if (iframe != null) {
-                return loadExtractor(iframe, "${mainUrl}/", subtitleCallback, callback)
-            }
-            return false
-        }
+        // 2) NP_CONFIG'i iframe sayfasından çıkar
+        val iframeBody = app.get(iframeUrl, headers = mapOf("Referer" to data)).text
+        val npConfigJson = extractJsonBlock(iframeBody, "window.NP_CONFIG") ?: return false
 
-        // 2) NP_CONFIG'i parse et
+        // 3) NP_CONFIG'i parse et
         val objectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
         val config = objectMapper.readTree(npConfigJson)
         val gate = config.get("gate")
@@ -237,11 +229,12 @@ class Dizilla : MainAPI() {
         val bitWork = gate?.get("b")?.asInt() ?: 12
 
         // PoW coz (sadece bir kez, tum kaynaklar icin ayni)
-        val powToken = if (nonce != null && nonce.isNotBlank()) {
-            solvePow(nonce, bitWork)
-        } else null
+        val powToken = if (nonce != null && nonce.isNotBlank()) solvePow(nonce, bitWork) else null
 
-        // 3) Her kaynak icin master playlist cek
+        // Referer: Pichive kendi origin'i (dizilla.la Referer'i 404 veriyor)
+        val referer = "https://four.pichive.online/"
+
+        // 4) Her kaynak icin master playlist cek
         val sources = config.get("sources") ?: return false
         var bulundu = false
 
@@ -255,7 +248,7 @@ class Dizilla : MainAPI() {
 
             try {
                 val response = app.get(finalUrl, headers = mapOf(
-                    "Referer" to data,
+                    "Referer" to referer,
                     "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
                 )).text
 
@@ -267,7 +260,7 @@ class Dizilla : MainAPI() {
                             url = finalUrl,
                             type = ExtractorLinkType.M3U8
                         ) {
-                            headers = mapOf("Referer" to data)
+                            headers = mapOf("Referer" to referer)
                             quality = Qualities.Unknown.value
                         }
                     )
@@ -278,7 +271,7 @@ class Dizilla : MainAPI() {
             }
         }
 
-        // 4) Altyazilar
+        // 5) Altyazilar (PoW token'i onlara da eklenmeli)
         val subtitles = config.get("subtitles")
         if (subtitles != null) {
             for (i in 0 until subtitles.size()) {
@@ -286,7 +279,8 @@ class Dizilla : MainAPI() {
                 val lang = sub.get("lang")?.asText() ?: "tr"
                 val url = sub.get("url")?.asText() ?: continue
                 val label = sub.get("langLabel")?.asText() ?: lang
-                subtitleCallback.invoke(SubtitleFile(lang = label, url = fixUrl(url)))
+                val subUrl = if (powToken != null) "$url&p=$powToken" else url
+                subtitleCallback.invoke(SubtitleFile(lang = label, url = fixUrl(subUrl)))
             }
         }
 
