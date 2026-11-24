@@ -1,4 +1,4 @@
-# 📺 cs-ahmet — CloudStream Eklenti Deposu
+# 📺 PobloStream — CloudStream Eklenti Deposu
 
 CloudStream (Android) için Türkçe film/dizi/anime sitesi eklentileri.
 Bu depo, [@keyiflerolsun](https://github.com/keyiflerolsun)'un [Kekik-cloudstream](https://github.com/keyiflerolsun/Kekik-cloudstream) projesinden (GPL-3.0) türetilmiştir; **güncel adreslerle çalışan** eklentileri içerir.
@@ -6,7 +6,7 @@ Bu depo, [@keyiflerolsun](https://github.com/keyiflerolsun)'un [Kekik-cloudstrea
 ## 📁 Depo yapısı
 
 ```
-cs-ahmet/
+PobloStream/
 ├── DiziBox/                  ← her klasör = bir eklenti
 │   ├── build.gradle.kts      ← eklenti kimliği (sürüm, dil, ikon, açıklama)
 │   └── src/main/kotlin/com/keyiflerolsun/
@@ -27,7 +27,7 @@ cs-ahmet/
 Gereksinimler (bu makinede hazır): JDK 21, Android SDK (platform-35).
 
 ```powershell
-cd "C:\Users\ahmet\OneDrive\Masaüstü\Youtube Direktörü\cloudstream\cs-ahmet"
+cd "C:\Users\ahmet\OneDrive\Masaüstü\Youtube Direktörü\cloudstream\PobloStream"
 $env:JAVA_HOME    = "C:\Program Files\Eclipse Adoptium\jdk-21.0.13.9-hotspot"
 $env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
 .\gradlew.bat make makePluginsJson
@@ -79,17 +79,35 @@ listelerin/kartların ortak class'larını bul → `document.select("article.car
 
 ## 🌐 GitHub'a yayınlama
 
-1. GitHub'da `cs-ahmet` adında depo aç (private bile olur ama CloudStream'in çekebilmesi için **public** olmalı)
-2. Bu klasördeki `KULLANICI_ADIN` geçen 2 yeri kendi kullanıcı adınla değiştir:
-   - `build.gradle.kts` → `setRepo(...)`
-   - `repo.json` → `pluginLists` adresi
-3. `git init && git add . && git commit -m "ilk sürüm" && git remote add origin https://github.com/KULLANICI_ADIN/cs-ahmet.git && git push -u origin master`
-4. GitHub'da **Actions** sekmesinden "CloudStream Derleyici" işini kontrol et — bitince `builds` dalı oluşur
-5. CloudStream'de Depo ekle → `https://raw.githubusercontent.com/KULLANICI_ADIN/cs-ahmet/master/repo.json`
+Depo adresi: **https://github.com/PobloMert/PobloStream**
+
+1. GitHub'da `PobloStream` adında **public** depo aç
+2. Bu klasördeki git deposunu bağla ve push et:
+   ```
+   git remote add origin https://github.com/PobloMert/PobloStream.git
+   git push -u origin master
+   ```
+   (`build.gradle.kts` ve `repo.json` içindeki adresler zaten PobloMert/PobloStream olarak ayarlı)
+3. GitHub'da **Actions** sekmesinden "CloudStream Derleyici" işini kontrol et — bitince `builds` dalı oluşur
+4. CloudStream'de Depo ekle → `https://raw.githubusercontent.com/PobloMert/PobloStream/master/repo.json`
 
 Bundan sonra her `git push` tüm eklentileri yeniden derler; domain robotu da kendi PR'larını açar.
+
+## 🔑 Kısa kod (shortcode) için başvuru
+
+CloudStream'de `kekikakademi`, `!wiospor` gibi kısa kodlar **uygulamanın kendi kaynak koduna** gömülüdür; bir depo sahibi kendi başına yeni kısa kod tanımlayamaz. Kodun eklenmesi için resmi depoya PR gönderilmesi gerekir:
+
+1. **recloudstream/cloudstream** deposunda `app/src/main/java/.../providers/` altındaki shortcode listesini bul (veya `"shortcode"` için kaynakta arama yap)
+2. Listeye şu satırı ekle:
+   ```
+   "poblostream" to "https://raw.githubusercontent.com/PobloMert/PobloStream/master/repo.json"
+   ```
+3. PR aç ve açıklamada deponun amacını belirt (Türkçe film/dizi eklentileri, güncel domainler, otomatik domain robotu)
+4. PR birleşirse kullanıcılar CloudStream → Eklentiler → Depo ekle → `poblostream` yazabilir
+
+> PR onaylanana kadar kullanıcılar **repo.json URL'sini** kullanarak depoyu ekleyebilir. Alternatif olarak keyiflerolsun'un `http-protocol-redirector` yöntemiyle "Logoya tıkla, depo otomatik kurulsun" linki de hazırlanabilir.
 
 ## 📜 Lisans ve teşekkür
 
 GPL-3.0. Eklentilerin asıl yazarı [@keyiflerolsun](https://github.com/keyiflerolsun) ve katkıda bulunanlar;
-bakım ve güncel domainler: Ahmet.
+bakım ve güncel domainler: Ahmet (PobloMert).

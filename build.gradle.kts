@@ -40,9 +40,8 @@ subprojects {
 
     cloudstream {
         // GitHub Actions içinde derlenirken GITHUB_REPOSITORY otomatik gelir.
-        // Local derlemede (bilgisayarında) bu yedek değer kullanılır.
-        // TODO: Yayınlarken kendi GitHub adresinle değiştir: "https://github.com/KULLANICI_ADIN/cs-ahmet"
-        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/KULLANICI_ADIN/cs-ahmet")
+        // Local derlemede (bilgisayarında) bu adres kullanılır.
+        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/PobloMert/PobloStream")
 
         authors = listOf("Ahmet")
     }
