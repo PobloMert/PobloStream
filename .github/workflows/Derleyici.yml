@@ -81,6 +81,8 @@ jobs:
           ./gradlew make makePluginsJson
           cp */build/*.cs3 $GITHUB_WORKSPACE/builds
           cp build/plugins.json $GITHUB_WORKSPACE/builds
+          # repo.json'u da builds'e kopyala — kisa kod (!poblostream) buraya yonleniyor
+          cp $GITHUB_WORKSPACE/src/repo.json $GITHUB_WORKSPACE/builds/repo.json
 
       - name: Derlemeleri Yükle
         run: |
