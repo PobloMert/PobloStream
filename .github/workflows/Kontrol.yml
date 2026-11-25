@@ -13,7 +13,8 @@ on:
 
 jobs:
   DomainKontrol:
-    runs-on: ubuntu-latest
+    # ubuntu-26.04'te setup-python 3.11.8 bulunamıyor; 24.04'te mevcut
+    runs-on: ubuntu-24.04
     #runs-on: self-hosted
 
     env:
