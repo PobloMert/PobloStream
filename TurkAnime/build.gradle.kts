@@ -1,4 +1,4 @@
-version = 16
+version = 17
 
 cloudstream {
     authors     = listOf("keyiflerolsun", "Ahmet")
@@ -14,5 +14,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Anime")
-    iconUrl = "https://www.google.com/s2/favicons?domain=www.turkanime.co&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=turkanime.to&sz=%size%"
 }

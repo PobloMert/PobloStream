@@ -59,16 +59,28 @@ class HDFilmCehennemi : MainAPI() {
     private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
 
     class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
+        private fun isChallenge(response: Response, body: String): Boolean {
+            if (response.code == 403 || response.code == 503) return true
+            return body.contains("Just a moment") ||
+                   body.contains("Attention Required") ||
+                   body.contains("challenges.cloudflare.com") ||
+                   body.contains("cf-chl")
+        }
+
         override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
+            val response = chain.proceed(chain.request())
+            val body     = response.peekBody(1024L * 1024L).string()
 
-            if (doc.html().contains("Just a moment")) {
-                return cloudflareKiller.intercept(chain)
-            }
+            if (!isChallenge(response, body)) return response
 
-            return response
+            response.close()
+
+            var solved = cloudflareKiller.intercept(chain)
+            if (!isChallenge(solved, solved.peekBody(1024L * 1024L).string())) return solved
+
+            solved.close()
+            solved = cloudflareKiller.intercept(chain)
+            return solved
         }
     }
 
