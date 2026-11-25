@@ -107,10 +107,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=%size%",
-        "fileHash": "sha256-4832efdba0ca23461093e0872df37fde9ae6137ccd63d7dd4020ea4aebba7201",
+        "fileHash": "sha256-cffbe37916e04f8c9d67f713d162c8313ece30bf2a8113189962d28855bf5ba5",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 22953,
+        "fileSize": 23053,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -119,7 +119,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 23,
+        "version": 24,
         "internalName": "DiziBox",
         "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziBox.cs3",
@@ -277,10 +277,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.app&sz=%size%",
-        "fileHash": "sha256-439c8f84021ce539fb27637322ed0c6d76214a409aeaf5a2efcde1a53667663a",
+        "fileHash": "sha256-1d4dbc8d86ffc67e3181e70795d46aca3ddc3e1b38d38720a56c5c397bb06ec2",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 18211,
+        "fileSize": 19503,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -290,7 +290,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 44,
+        "version": 45,
         "internalName": "JetFilmizle",
         "description": "Binlerce Film \u0130zleme Se\u00e7ene\u011fiyle En \u0130yi Film \u0130zleme Sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/JetFilmizle.cs3",
