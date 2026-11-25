@@ -148,10 +148,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizidad.com&sz=%size%",
-        "fileHash": "sha256-8f98b46c441063febef4639574dff9d0a09ef3b854faf30f28f98a0608d16edc",
+        "fileHash": "sha256-9aa845790f5ff6247268fb14dc39a1023251fcbfaadd14f600cfe1230885acc2",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 36079,
+        "fileSize": 36742,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -161,7 +161,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 39,
+        "version": 40,
         "internalName": "DiziMom",
         "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziMom.cs3",
@@ -254,10 +254,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-679fb7285431cee07d3aaf540627cbd8eb5e1c1b506a421fc6865c6482814384",
+        "fileHash": "sha256-5aafbbdd2a5b5992953e4bdef801b8c30c7fab12a84b207edcf0a3dfd93b48a6",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 150005,
+        "fileSize": 150043,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -269,7 +269,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 61,
+        "version": 62,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00c3\u00bcrkiye'nin en h\u00c4\u00b1zl\u00c4\u00b1 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/HDFilmCehennemi.cs3",
