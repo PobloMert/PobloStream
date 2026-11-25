@@ -1,7 +1,7 @@
 [
     {
-        "iconUrl": "https://anm.cx/favicon.ico",
-        "fileHash": "sha256-f09482bca428fcb5cb92633755f71f30d68960c841b16d31a9893e6f7fea2809",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=animecix.tv&sz=%size%",
+        "fileHash": "sha256-de27d5d6def80d21067c0defdbec93741feb5cfc33745654cc5a50f0150ba8a4",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
         "fileSize": 26278,
@@ -15,7 +15,7 @@
         "tvTypes": [
             "Anime"
         ],
-        "version": 21,
+        "version": 22,
         "internalName": "AnimeciX",
         "description": "AnimeciX, animeleri ke\u015ffedebilece\u011finiz ve animeler hakk\u0131nda her \u015feyi \u00f6\u011frenebilece\u011finiz bir payla\u015f\u0131m platformudur.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/AnimeciX.cs3",
@@ -127,10 +127,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizilla.la&sz=%size%",
-        "fileHash": "sha256-36d06f74cd07f288aca3e32c1d5dc9d95bb8db9d0710b5b4eaf3f2d069b2c540",
+        "fileHash": "sha256-3dc096c1e41b6ac791888a1f07fdc145fc53a17c4f72d4ca45fffece1036177a",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 29990,
+        "fileSize": 29989,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -140,18 +140,18 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 42,
+        "version": 43,
         "internalName": "Dizilla",
         "description": "Dizilla t\u00fcm yabanc\u0131 dizileri \u00fccretsiz olarak T\u00fcrk\u00e7e Dublaj ve altyaz\u0131l\u0131 se\u00e7enekleri ile 1080P kalite izleyebilece\u011finiz yeni nesil yabanc\u0131 dizi izleme siteniz.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/Dizilla.cs3",
         "name": "Dizilla"
     },
     {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizimom.plus&sz=%size%",
-        "fileHash": "sha256-97e1764965c29bcba843d4d43f846b168001d9d8e98d85d3974447c1ff370197",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizidad.com&sz=%size%",
+        "fileHash": "sha256-4861f72741db2043dd0a12883671b0de726e80bfb77e6c4e30595195b3fbb2c9",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 34522,
+        "fileSize": 35907,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -161,7 +161,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 37,
+        "version": 38,
         "internalName": "DiziMom",
         "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziMom.cs3",
@@ -212,12 +212,12 @@
         "name": "DMax"
     },
     {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=fullhdfilm.us&sz=%size%",
-        "fileHash": "sha256-411282aa08692fa3fa11ffa5dacf5ebf3f8dfa833f3d619861bfbfa64295f0e0",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.now&sz=%size%",
+        "fileHash": "sha256-cbb0127f52cc82b737b1197d6cbf038f096b7c08ce88ea5b2724c988ec30beac",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
         "fileSize": 19402,
-        "status": 1,
+        "status": 0,
         "language": "tr",
         "authors": [
             "keyiflerolsun"
@@ -226,7 +226,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 35,
+        "version": 36,
         "internalName": "FullHDFilm",
         "description": "Fullhdfilm ile en yeni vizyon filmler Full HD ve kesintisiz film sizlerle. \u00d6zg\u00fcn film ar\u015fivimizle en \u00fcst\u00fcn kaliteli film izle keyfini sunuyoruz.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/FullHDFilm.cs3",
