@@ -54,6 +54,20 @@ open class PeaceMakerst : ExtractorApi() {
         // ! twitter.com Refereri ile 200 (Ddizi'de de ayni sorun vardi).
         val linkReferer = if (sonAdres.contains("video.twimg.com", ignoreCase = true)) "https://twitter.com/" else extRef
 
+        // ! HlsProxy master+variant playlist'leri aliyor ama segment isteklerinde
+        // ! ozellestirilmis Referer kayboluyor.twimg icin varyantlari acikca uret.
+        if (sonAdres.contains(".m3u8", ignoreCase = true)) {
+            val basliklar = mapOf(
+                "Referer" to linkReferer,
+                "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            )
+            val hlsBaglantilari = M3u8Helper.generateM3u8(this.name, sonAdres, linkReferer, headers = basliklar)
+            if (hlsBaglantilari.isNotEmpty()) {
+                hlsBaglantilari.forEach(callback)
+                return
+            }
+        }
+
         callback.invoke(
             newExtractorLink(
                 source = this.name,
