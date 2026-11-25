@@ -649,7 +649,11 @@ class HDFilmCehennemi : MainAPI() {
     )
     data class HDFC(
         @JsonProperty("html") val html: String,
-        @JsonProperty("meta") val meta: Meta
+        // ! 26.11.2026: site meta.canonical'i metin, meta.keywords'u boolean
+        // ! donduruyor; Jackson Kotlin modulu alanlari sirayla baglayip canonical'a
+        // ! boolean deger vermeye calisiyordu (TV log: InvalidFormatException).
+        // ! meta kullanilmiyor - gevsem tip ile deserialize ediyoruz.
+        @JsonProperty("meta") val meta: Any? = null
     )
 
     data class Meta(
