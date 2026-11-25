@@ -11,3 +11,5 @@
 local.properties
 .vscode
 build-cs3/
+
+*.dosya_yedek_*
