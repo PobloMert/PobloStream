@@ -36,9 +36,13 @@ class DiziBox : MainAPI() {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request  = chain.request()
             val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(10 * 1024).string())
+            val html     = response.peekBody(512 * 1024).string()
 
-            if (response.code == 503 || doc.selectFirst("meta[name='cloudflare']") != null) {
+            val isChallenge = response.code == 403 || response.code == 503 ||
+                html.contains("Just a moment") || html.contains("challenges.cloudflare") ||
+                html.contains("cf-chl") || html.contains("Attention Required")
+
+            if (isChallenge) {
                 return cloudflareKiller.intercept(chain)
             }
 
