@@ -93,15 +93,14 @@ jobs:
           git commit -m "$GITHUB_SHA derlemesi" || echo "Yeni değişiklik yok"
           git push origin builds
 
-      # jsdelivr builds dali icin ~12 saat onbellek tutuyor; TV'ler eski eklentileri gormesin.
-      - name: CDN onbellegini tazele
+      # jsdelivr 'builds' dali icin ~12 saat onbellek tutuyor; dal yerine sabit commit
+      # adresi kullanarak TV'lerin daima yeni plugins.json'u gormesini sagliyoruz.
+      - name: Sabit manifest yayinla
         if: success()
         run: |
-          # GitHub push'unun jsdelivr origin'ine yayilmasi icin bekle;
-          # yoksa purge eski icerigi geri cekip tekrar onbellege alir.
-          sleep 45
-          for dosya in plugins.json repo.json; do
-            curl -sf -H "Accept: application/json" \
-              "https://purge.jsdelivr.net/gh/${{ github.repository }}@builds/${dosya}" \
-              || echo "${dosya} onbellegi temizlenemedi"
-          done
+          cd $GITHUB_WORKSPACE/builds
+          SHA=$(git rev-parse HEAD)
+          python3 -c 'import json,sys,time; sha=sys.argv[1]; repo="PobloMert/PobloStream"; f="repo.json"; j=json.load(open(f,encoding="utf-8-sig")); j["pluginLists"]=["https://cdn.jsdelivr.net/gh/"+repo+"@"+sha+"/plugins.json?t="+sha[:12]]; j["timestamp"]=int(time.time()); j["lastUpdated"]=j["timestamp"]; json.dump(j,open(f,"w",encoding="utf-8"),ensure_ascii=False,indent=2)' "$SHA"
+          git add repo.json
+          git commit -m "sabit manifest ${SHA}" || echo "yeni degisiklik yok"
+          git push origin builds
