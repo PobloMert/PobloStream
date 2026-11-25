@@ -97,6 +97,9 @@ jobs:
       - name: CDN onbellegini tazele
         if: success()
         run: |
+          # GitHub push'unun jsdelivr origin'ine yayilmasi icin bekle;
+          # yoksa purge eski icerigi geri cekip tekrar onbellege alir.
+          sleep 45
           for dosya in plugins.json repo.json; do
             curl -sf -H "Accept: application/json" \
               "https://purge.jsdelivr.net/gh/${{ github.repository }}@builds/${dosya}" \
