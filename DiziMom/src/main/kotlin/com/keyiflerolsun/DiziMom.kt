@@ -146,15 +146,28 @@ class DiziMom : MainAPI() {
 
         val document = app.get(data, headers=ua, interceptor = interceptor).document
 
-        val iframes     = mutableListOf<String>()
-        val mainIframe = document.selectFirst("div.video p iframe")?.attr("src") ?: return false
-        iframes.add(mainIframe)
+        val iframes = mutableListOf<String>()
+
+        // ! 26.11.2026: oynatici iframe'i lazy-load ile geliyor; src="about:blank",
+        // ! gercek adres data-src icinde. Tum iframe'lari tara (tek oynatici yetmiyor).
+        document.select("div.video iframe").forEach { frame ->
+            val kaynak = sequenceOf("data-src", "data-lazy-src", "src")
+                .map { frame.attr(it) }
+                .firstOrNull { it.isNotBlank() && !it.equals("about:blank", true) && !it.startsWith("data:") }
+                ?: return@forEach
+            val url = fixUrlNull(kaynak) ?: return@forEach
+            if (url !in iframes) iframes.add(url)
+        }
 
         document.select("div.sources a").forEach {
             val subDocument = app.get(it.attr("href"), headers=ua, interceptor = interceptor).document
-            val subIframe   = subDocument.selectFirst("div.video p iframe")?.attr("src") ?: return@forEach
+            val subIframe   = subDocument.select("div.video iframe").firstNotNullOfOrNull { frame ->
+                sequenceOf("data-src", "data-lazy-src", "src")
+                    .map { attrName -> frame.attr(attrName) }
+                    .firstOrNull { value -> value.isNotBlank() && !value.equals("about:blank", true) && !value.startsWith("data:") }
+            } ?: return@forEach
 
-            iframes.add(subIframe)
+            fixUrlNull(subIframe)?.let { url -> if (url !in iframes) iframes.add(url) }
         }
 
         for (iframe in iframes) {

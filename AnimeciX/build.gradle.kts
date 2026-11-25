@@ -1,4 +1,4 @@
-version = 21
+version = 22
 
 cloudstream {
     authors     = listOf("keyiflerolsun", "inatchii", "JustRelaxable")
@@ -14,5 +14,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Anime")
-    iconUrl = "https://anm.cx/favicon.ico"
+    iconUrl = "https://www.google.com/s2/favicons?domain=animecix.tv&sz=%size%"
 }

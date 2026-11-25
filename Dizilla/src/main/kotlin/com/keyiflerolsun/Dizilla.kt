@@ -308,26 +308,21 @@ class Dizilla : MainAPI() {
         return null
     }
 
-    // PoW: SHA-256(nonce + ":Ho_68CkexS:" + counter) 3. kelime (byte 8-11) >>> 20 == 0
+    // ! 26.11.2026: pichive gate degisti.
+    // ! Yeni: SHA256("X7zRkiNmvG" + nonce + "." + counter)[5] & ((1<<bits)-1) == 0
+    // ! (iframe sayfasindaki window.NP_GATE ve /assets/np/np.js kaynak kodundan dogrulandi;
+    // !  dogru token ile /nm.php?...&p=... #EXTM3U donuyor.)
     private fun solvePow(nonce: String, bits: Int): Int {
-        val tuz = "Ho_68CkexS"
-        val shift = 32 - bits
+        val prefix = "X7zRkiNmvG"
+        val maske = (1L shl bits.coerceIn(1, 31)) - 1L
         val md = MessageDigest.getInstance("SHA-256")
-        val buffer = StringBuilder()
-        val maxIter = 2_000_000
-
-        for (counter in 0..maxIter) {
-            buffer.setLength(0)
-            buffer.append(nonce).append(':').append(tuz).append(':').append(counter)
-            val digest = md.digest(buffer.toString().toByteArray())
-            // 3. kelime (byte 8-11) big-endian
-            val word3 = ((digest[8].toInt() and 0xFF) shl 24) or
-                        ((digest[9].toInt() and 0xFF) shl 16) or
-                        ((digest[10].toInt() and 0xFF) shl 8) or
-                        (digest[11].toInt() and 0xFF)
-            if ((word3 shr shift) == 0) {
-                return counter
-            }
+        for (counter in 0 until 2_000_000) {
+            val digest = md.digest((prefix + nonce + "." + counter).toByteArray())
+            val kelime6 = ((digest[20].toInt() and 0xFF) shl 24) or
+                          ((digest[21].toInt() and 0xFF) shl 16) or
+                          ((digest[22].toInt() and 0xFF) shl 8) or
+                          (digest[23].toInt() and 0xFF)
+            if ((kelime6.toLong() and maske) == 0L) return counter
         }
         return 0 // bulunamadi (cok nadir)
     }
