@@ -81,10 +81,7 @@ jobs:
           # CI koşuları aralıklı olarak (ağ/daemon kaynaklı) patlıyor: 3 deneme
           for deneme in 1 2 3; do
             echo "derleme denemesi ${deneme}/3"
-            ./gradlew make makePluginsJson --stacktrace 2>&1 | tee -a "$GITHUB_WORKSPACE/derleme.log"
-            durum=${PIPESTATUS[0]}
-            echo "deneme ${deneme} cikis kodu: ${durum}" | tee -a "$GITHUB_WORKSPACE/derleme.log"
-            [ "$durum" -eq 0 ] && break
+            ./gradlew make makePluginsJson && break
             if [ "$deneme" -eq 3 ]; then
               echo "derleme 3 denemede de başarısız"
               exit 1
@@ -116,12 +113,3 @@ jobs:
           git add repo.json
           git commit -m "sabit manifest ${SHA}" || echo "yeni degisiklik yok"
           git push origin builds
-
-      - name: Hata gunlugunu yayinla
-        if: failure()
-        run: |
-          cd $GITHUB_WORKSPACE/builds
-          tail -c 150000 "$GITHUB_WORKSPACE/derleme.log" > hata.log 2>/dev/null || echo "derleme.log olusmadi" > hata.log
-          git add hata.log
-          git commit -m "hata gunlugu ${GITHUB_SHA}" || echo "hata gunlugunde degisiklik yok"
-          git push origin builds || echo "hata gunlugu push edilemedi"
