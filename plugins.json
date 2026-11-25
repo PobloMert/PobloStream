@@ -254,10 +254,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-cc0ae455f9b7ae11f000a2b7aef9f512a2452228b3435c0eb8e17fb60e1173e1",
+        "fileHash": "sha256-2ce3228753821b90ea0ba75445ca4ae3593509f720c2a8354273b29d7f45860e",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 28663,
+        "fileSize": 28915,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -269,7 +269,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 24,
+        "version": 25,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00fcrkiye'nin en h\u0131zl\u0131 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/HDFilmCehennemi.cs3",
@@ -338,32 +338,11 @@
         "name": "RareFilmm"
     },
     {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=www.superfilmgeldi.info&sz=%size%",
-        "fileHash": "sha256-191119f5439187585e1dbd2b6ffbf00badb35bbc71a21e48528b72a572f6daad",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.to&sz=%size%",
+        "fileHash": "sha256-8d4be38a6cc3c96731aa2cba1319972215790adccbddb82c6c1e1b482275e0e6",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 20110,
-        "status": 1,
-        "language": "tr",
-        "authors": [
-            "keyiflerolsun",
-            "Ahmet"
-        ],
-        "tvTypes": [
-            "Movie"
-        ],
-        "version": 23,
-        "internalName": "SuperFilmGeldi",
-        "description": "Hd film izliyerek arkada\u015flar\u0131n\u0131zla ve sevdiklerinizle iyi bir vakit ge\u00e7irmek istiyorsan\u0131z a\u00e7\u0131n bir film e\u011flenmeye bak\u0131n. Bilim kurgu filmleri, a\u015fk drama vah\u015fet a\u015fk romantik s\u0131rad\u0131\u015f\u0131 korku filmlerini izle.",
-        "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/SuperFilmGeldi.cs3",
-        "name": "SuperFilmGeldi"
-    },
-    {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=www.turkanime.co&sz=%size%",
-        "fileHash": "sha256-c1080393f3366541cbad08a02bd93b664ca59ae798d5b112c7d22866205b60c0",
-        "apiVersion": 1,
-        "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 19975,
+        "fileSize": 13405,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -373,7 +352,7 @@
         "tvTypes": [
             "Anime"
         ],
-        "version": 16,
+        "version": 17,
         "internalName": "TurkAnime",
         "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/TurkAnime.cs3",
@@ -399,26 +378,5 @@
         "description": "\u00dccretsiz yerli dizi izleme sitesi en pop\u00fcler dizileri tek par\u00e7a hd kalitesiyle ve reklams\u0131z bedava olarak buradan tv dizileri izleyin.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/TvDiziler.cs3",
         "name": "TvDiziler"
-    },
-    {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=ugurfilm7.com&sz=%size%",
-        "fileHash": "sha256-e80b00ea29f6f4239b14b5761aa3b0c7afa66234ceaa6029cfdc1b83dc7e95a2",
-        "apiVersion": 1,
-        "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 25383,
-        "status": 1,
-        "language": "tr",
-        "authors": [
-            "keyiflerolsun",
-            "Ahmet"
-        ],
-        "tvTypes": [
-            "Movie"
-        ],
-        "version": 14,
-        "internalName": "UgurFilm",
-        "description": "Yabanc\u0131 film izle, T\u00fcrk\u00e7e dublaj ve T\u00fcrk\u00e7e altyaz\u0131l\u0131 film se\u00e7enekleriyle 720p ve 1080p HD kalitesinde film izle - U\u011fur Film full hd film izle.",
-        "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/UgurFilm.cs3",
-        "name": "UgurFilm"
     }
 ]
