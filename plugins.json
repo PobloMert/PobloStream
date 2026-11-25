@@ -66,10 +66,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=cizgimax.online&sz=%size%",
-        "fileHash": "sha256-35a9de8930b6fb027aedf5e63f1fb2176d367c64c208f2c934e524487d6d4e98",
+        "fileHash": "sha256-eebbcd9df7fe0355171381a5217fa1c179a6ad5ad1c93dad8f551fef214f3884",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 20726,
+        "fileSize": 20038,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -78,7 +78,7 @@
         "tvTypes": [
             "Cartoon"
         ],
-        "version": 8,
+        "version": 9,
         "internalName": "CizgiMax",
         "description": "\u00c7izgiMax ile \u00c7izgi Film izlemek art\u0131k daha kolay, donmadan full hd ve reklams\u0131z bir sitedir, i\u00e7erisinde 700 den fazla \u00e7izgi film olan, Bu site bu i\u015fi profesyonelce yap\u0131yor.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/CizgiMax.cs3",
@@ -127,7 +127,7 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizilla.la&sz=%size%",
-        "fileHash": "sha256-73287dd4502818bc76ee439923e226da56e5ae493c38591e99391d719f648fb6",
+        "fileHash": "sha256-36d06f74cd07f288aca3e32c1d5dc9d95bb8db9d0710b5b4eaf3f2d069b2c540",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
         "fileSize": 29990,
@@ -140,7 +140,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 41,
+        "version": 42,
         "internalName": "Dizilla",
         "description": "Dizilla t\u00fcm yabanc\u0131 dizileri \u00fccretsiz olarak T\u00fcrk\u00e7e Dublaj ve altyaz\u0131l\u0131 se\u00e7enekleri ile 1080P kalite izleyebilece\u011finiz yeni nesil yabanc\u0131 dizi izleme siteniz.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/Dizilla.cs3",
@@ -148,10 +148,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizimom.plus&sz=%size%",
-        "fileHash": "sha256-f94dedbee03465ac485bc95bb27a0cfe314ec977c514d1fb126821595f01fa0f",
+        "fileHash": "sha256-97e1764965c29bcba843d4d43f846b168001d9d8e98d85d3974447c1ff370197",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 34135,
+        "fileSize": 34522,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -161,7 +161,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 36,
+        "version": 37,
         "internalName": "DiziMom",
         "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziMom.cs3",
@@ -169,10 +169,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizipal1224.com&sz=%size%",
-        "fileHash": "sha256-c8ca0a5b987a5c929c7bd08c558bbb96b47ed9b8d7990ab3d17c7bb21a1e759d",
+        "fileHash": "sha256-f172dc705fe43de1e5a4e4be525e18b7d5dff66cb145734dd393301ca35ae160",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 20576,
+        "fileSize": 45024,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -184,7 +184,7 @@
             "TvSeries",
             "Movie"
         ],
-        "version": 34,
+        "version": 35,
         "internalName": "DiziPal",
         "description": "en yeni dizileri g\u00fcvenli ve h\u0131zl\u0131 \u015fekilde sunar.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziPal.cs3",
@@ -234,10 +234,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.de&sz=%size%",
-        "fileHash": "sha256-bbc1b6e68bb3de81a582c09416bca837754c4fdeb9897396d318fa2ce1357f70",
+        "fileHash": "sha256-675060ddf2f860af0b18762092899e5f4511e10b6b3956bbeb8ccdd75d05062e",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 39159,
+        "fileSize": 39160,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -246,7 +246,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 27,
+        "version": 28,
         "internalName": "FullHDFilmizlesene",
         "description": "Sinema zevkini evinize kadar getirdik. T\u00fcrkiye'nin lider Film sitesinde, en yeni filmleri Full HD izleyin.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/FullHDFilmizlesene.cs3",
