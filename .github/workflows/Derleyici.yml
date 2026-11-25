@@ -78,11 +78,31 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          ./gradlew make makePluginsJson
+          {
+            echo "### ortam bilgisi"
+            java -version
+            echo "ANDROID_HOME=${ANDROID_HOME:-bulunamadi}"
+            free -h
+            df -h "$GITHUB_WORKSPACE"
+            echo "### gradle ciktimi"
+          } > "$GITHUB_WORKSPACE/derleme.log" 2>&1
+          ./gradlew make makePluginsJson --stacktrace 2>&1 | tee -a "$GITHUB_WORKSPACE/derleme.log"
+          durum=${PIPESTATUS[0]}
+          echo "### gradle cikis kodu: $durum" >> "$GITHUB_WORKSPACE/derleme.log"
+          if [ "$durum" -ne 0 ]; then exit "$durum"; fi
           cp */build/*.cs3 $GITHUB_WORKSPACE/builds
           cp build/plugins.json $GITHUB_WORKSPACE/builds
-          # repo.json'u da builds'e kopyala — kisa kod (!poblostream) buraya yonleniyor
+          # repo.json'u da builds'e kopyala - kisa kod (!poblostream) buraya yonleniyor
           cp $GITHUB_WORKSPACE/src/repo.json $GITHUB_WORKSPACE/builds/repo.json
+
+      - name: Hata gunlugunu builds daline bas
+        if: failure()
+        run: |
+          cd $GITHUB_WORKSPACE/builds
+          tail -c 120000 "$GITHUB_WORKSPACE/derleme.log" > hata.log 2>/dev/null || echo "derleme.log olusmadi" > hata.log
+          git add hata.log
+          git commit -m "hata gunlugu ${GITHUB_SHA}" || echo "hata gunlugunde degisiklik yok"
+          git push origin builds || echo "hata gunlugu push edilemedi"
 
       - name: Derlemeleri Yükle
         run: |
