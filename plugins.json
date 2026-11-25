@@ -148,10 +148,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizidad.com&sz=%size%",
-        "fileHash": "sha256-4861f72741db2043dd0a12883671b0de726e80bfb77e6c4e30595195b3fbb2c9",
+        "fileHash": "sha256-8f98b46c441063febef4639574dff9d0a09ef3b854faf30f28f98a0608d16edc",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 35907,
+        "fileSize": 36079,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -161,7 +161,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 38,
+        "version": 39,
         "internalName": "DiziMom",
         "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziMom.cs3",
