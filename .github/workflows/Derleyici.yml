@@ -78,7 +78,16 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          ./gradlew make makePluginsJson
+          # CI koşuları aralıklı olarak (ağ/daemon kaynaklı) patlıyor: 3 deneme
+          for deneme in 1 2 3; do
+            echo "derleme denemesi ${deneme}/3"
+            ./gradlew make makePluginsJson && break
+            if [ "$deneme" -eq 3 ]; then
+              echo "derleme 3 denemede de başarısız"
+              exit 1
+            fi
+            sleep 20
+          done
           cp */build/*.cs3 $GITHUB_WORKSPACE/builds
           cp build/plugins.json $GITHUB_WORKSPACE/builds
           # repo.json'u da builds'e kopyala — kisa kod (!poblostream) buraya yonleniyor
