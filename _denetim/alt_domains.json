@@ -1,0 +1,324 @@
+{
+ "DiziMom": {
+  "dizimom.plus": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizimom1.com": {
+   "dns": "212.7.209.207",
+   "status": 200,
+   "final": "http://xml-v4.deepoceandrop.biz/click?i=*1OwP*i01bo_0",
+   "len": 0,
+   "markers": [],
+   "title": "-",
+   "n_a": 1
+  },
+  "dizimom2.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizimom1.plus": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizimom.net": {
+   "dns": "209.141.38.71",
+   "err": "ConnectTimeout:HTTPSConnectionPool(host='dizimom.net', port=443): Max retries exceede"
+  },
+  "dizimom.org": {
+   "dns": "198.251.81.30",
+   "err": "ConnectTimeout:HTTPSConnectionPool(host='dizimom.org', port=443): Max retries exceede"
+  },
+  "dizimomizle.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizimom.tv": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizimom.eu": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "www.dizimom1.com": {
+   "dns": "212.7.209.207",
+   "status": 200,
+   "final": "https://www.dizimom1.com/",
+   "len": 478,
+   "markers": [],
+   "title": "Loading...",
+   "n_a": 1
+  }
+ },
+ "DiziPal": {
+  "dizipal1224.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal2080.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal2076.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal2081.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal1951.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal1586.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal1600.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipalizle.org": {
+   "dns": "172.67.222.252",
+   "status": 200,
+   "final": "https://dizipalizle.org/",
+   "len": 172404,
+   "markers": [
+    "dizi-",
+    "bolum",
+    "poster"
+   ],
+   "title": "Dizipal izle | Dizipal Yabancı Dizi izle | Dizipal Filmler",
+   "n_a": 235
+  },
+  "dizipalcix.com": {
+   "dns": "104.21.91.152",
+   "status": 200,
+   "final": "https://dizipalcix.com/",
+   "len": 102891,
+   "markers": [
+    "dizi-"
+   ],
+   "title": "Dizipal: Yabancı dizi izle, Dizipal güncel giriş adresi",
+   "n_a": 69
+  },
+  "dizipal.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "dizipal.tv": {
+   "dns": "NXDOMAIN/FAIL"
+  }
+ },
+ "TurkAnime": {
+  "turkanime.co": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "turkanime.tv": {
+   "dns": "76.223.54.146",
+   "status": 200,
+   "final": "https://turkanime.tv/",
+   "len": 114,
+   "markers": [],
+   "title": "-",
+   "n_a": 1
+  },
+  "turkanime.net": {
+   "dns": "76.223.54.146",
+   "status": 200,
+   "final": "https://turkanime.net/",
+   "len": 114,
+   "markers": [],
+   "title": "-",
+   "n_a": 1
+  },
+  "turkanime.eu": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "turkanime1.tv": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "turkanime.com": {
+   "dns": "103.224.182.246",
+   "status": 502,
+   "final": "https://ww38.turkanime.com/",
+   "len": 552,
+   "markers": [],
+   "title": "502 Bad Gateway",
+   "n_a": 1
+  },
+  "www.turkanime.co": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "turkanime.org": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "turkanimate.net": {
+   "dns": "NXDOMAIN/FAIL"
+  }
+ },
+ "UgurFilm": {
+  "ugurfilm7.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "ugurfilm.com": {
+   "dns": "37.48.77.83",
+   "status": 200,
+   "final": "http://xml-v4.deepoceandrop.biz/click?i=Nd2j0y9I-wA_0",
+   "len": 0,
+   "markers": [],
+   "title": "-",
+   "n_a": 1
+  },
+  "ugurfilm6.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "ugurfilm8.com": {
+   "dns": "162.4.84.247",
+   "status": 200,
+   "final": "https://ugurfilm8.com/",
+   "len": 5580,
+   "markers": [],
+   "title": "Redirecting...",
+   "n_a": 2
+  },
+  "ugurfilm9.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "ugurfilm1.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "ugurfilmizle.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "ugur-film.com": {
+   "dns": "NXDOMAIN/FAIL"
+  }
+ },
+ "SuperFilmGeldi": {
+  "superfilmgeldi.info": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldi.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldi.net": {
+   "dns": "172.67.207.215",
+   "status": 200,
+   "final": "https://superfilmgeldi.net/",
+   "len": 12055,
+   "markers": [],
+   "title": "Website superfilmgeldi.net is ready. The content is to be ad",
+   "n_a": 2
+  },
+  "superfilmgeldi.org": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldi1.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldiizle.com": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldi.vip": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "superfilmgeldi.xyz": {
+   "dns": "NXDOMAIN/FAIL"
+  }
+ },
+ "FullHDFilm": {
+  "hdfilm.us": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilm.tv": {
+   "dns": "192.157.56.140",
+   "status": 200,
+   "final": "http://xml-v4.deepoceandrop.biz/click?i=hoQYxu9sq3U_0",
+   "len": 0,
+   "markers": [],
+   "title": "-",
+   "n_a": 1
+  },
+  "hdfilm.net": {
+   "dns": "15.197.225.128",
+   "status": 200,
+   "final": "https://hdfilm.com/",
+   "len": 28774,
+   "markers": [],
+   "title": "Creative Studio | Big ideas. Beautifully executed. | HDFILM",
+   "n_a": 19
+  },
+  "hdfilmizle.us": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilmizle.net": {
+   "dns": "172.67.200.237",
+   "err": "ConnectionError:HTTPSConnectionPool(host='www.hdfilmizle.to', port=443): Max retries e"
+  },
+  "fullhdfilm.us": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilm.co": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilmizle.org": {
+   "dns": "NXDOMAIN/FAIL"
+  }
+ },
+ "HDFilmCehennemi": {
+  "hdfilmcehennemi.nl": {
+   "dns": "104.26.12.105",
+   "status": 403,
+   "final": "https://hdfilmcehennemi.nl/",
+   "len": 5705,
+   "markers": [],
+   "title": "Just a moment...",
+   "n_a": 1
+  },
+  "hdfilmcehennemi.eu": {
+   "dns": "104.21.27.86",
+   "status": 200,
+   "final": "https://www.domeinmakelaar.org",
+   "len": 5853,
+   "markers": [],
+   "title": "Domeinmakelaar.org",
+   "n_a": 12
+  },
+  "hdfilmcehennemi.me": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilmcehennemi.best": {
+   "dns": "172.67.172.34",
+   "err": "SSLError:HTTPSConnectionPool(host='hdfilmcehennemi.best', port=443): Max retrie"
+  },
+  "hdfilmcehennemi.vip": {
+   "dns": "172.67.215.8",
+   "status": 200,
+   "final": "https://hdfilmcehennemi.vip/",
+   "len": 311791,
+   "markers": [
+    "dizi-",
+    "bolum",
+    "poster"
+   ],
+   "title": "HDfilmcehennemi | film izle | hd film izle",
+   "n_a": 152
+  },
+  "hdfilmcehennemi2.nl": {
+   "dns": "NXDOMAIN/FAIL"
+  },
+  "hdfilmcehennemi.biz": {
+   "dns": "172.67.207.29",
+   "status": 200,
+   "final": "https://hdfilmcehennemi.biz/",
+   "len": 318192,
+   "markers": [
+    "poster"
+   ],
+   "title": "HDFilmCehennemi – Full HD Film ve Dizi İzle",
+   "n_a": 97
+  },
+  "hdfilmcehennemi.cyou": {
+   "dns": "103.224.182.211",
+   "err": "SSLError:HTTPSConnectionPool(host='ww38.hdfilmcehennemi.cyou', port=443): Max r"
+  },
+  "www.hdfilmcehennemi.nl": {
+   "dns": "172.67.71.170",
+   "status": 403,
+   "final": "https://www.hdfilmcehennemi.nl/",
+   "len": 5730,
+   "markers": [],
+   "title": "Just a moment...",
+   "n_a": 1
+  }
+ }
+}

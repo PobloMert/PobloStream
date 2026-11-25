@@ -1,0 +1,166 @@
+{
+ "DiziMom": {
+  "home": [
+   {
+    "req": "https://www.dizimom.plus/tum-bolumler/page/1/",
+    "status": null,
+    "final": "https://www.dizimom.plus/tum-bolumler/page/1/",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='www.dizimom.plus', port=443): Max retries exceeded with url: /tu"
+   }
+  ],
+  "search": {
+   "req": "https://www.dizimom.plus/?s=kara",
+   "status": null,
+   "final": "https://www.dizimom.plus/?s=kara",
+   "len": 0,
+   "err": "ConnectionError:HTTPSConnectionPool(host='www.dizimom.plus', port=443): Max retries exceeded with url: /?s"
+  },
+  "sel": {
+   "main:div.episode-box || div.episode-box": null,
+   "main:div.single-item || div.single-item": null
+  },
+  "cand": {}
+ },
+ "DiziPal": {
+  "home": [
+   {
+    "req": "https://dizipal1224.com/diziler/son-bolumler",
+    "status": null,
+    "final": "https://dizipal1224.com/diziler/son-bolumler",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='dizipal1224.com', port=443): Max retries exceeded with url: /diz"
+   }
+  ],
+  "search": {
+   "req": "POST https://dizipal1224.com/api/search-autocomplete",
+   "note": "POST/GET disi - faz1 atlandi"
+  },
+  "sel": {
+   "main:div.episode-item || div.episode-item": null,
+   "main:article.type2 ul li || article.type2 ul li": null
+  },
+  "cand": {}
+ },
+ "FullHDFilm": {
+  "home": [
+   {
+    "req": "https://hdfilm.us/tur/turkce-altyazili-film-izle",
+    "status": null,
+    "final": "https://hdfilm.us/tur/turkce-altyazili-film-izle",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='hdfilm.us', port=443): Max retries exceeded with url: /tur/turkc"
+   }
+  ],
+  "search": {
+   "req": "https://hdfilm.us/?s=kara",
+   "status": null,
+   "final": "https://hdfilm.us/?s=kara",
+   "len": 0,
+   "err": "ConnectionError:HTTPSConnectionPool(host='hdfilm.us', port=443): Max retries exceeded with url: /?s=kara ("
+  },
+  "sel": {
+   "main:div.movie-poster || div.movie-poster": null
+  },
+  "cand": {}
+ },
+ "SuperFilmGeldi": {
+  "home": [
+   {
+    "req": "https://superfilmgeldi.info/page/1/",
+    "status": null,
+    "final": "https://superfilmgeldi.info/page/1/",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='superfilmgeldi.info', port=443): Max retries exceeded with url: "
+   }
+  ],
+  "search": {
+   "req": "https://superfilmgeldi.info/?s=kara",
+   "status": null,
+   "final": "https://superfilmgeldi.info/?s=kara",
+   "len": 0,
+   "err": "ConnectionError:HTTPSConnectionPool(host='superfilmgeldi.info', port=443): Max retries exceeded with url: "
+  },
+  "sel": {
+   "main:div.movie-preview-content || div.movie-preview-content": null,
+   "title:span.movie-title a || span.movie-title a": null
+  },
+  "cand": {}
+ },
+ "TurkAnime": {
+  "home": [
+   {
+    "req": "https://www.turkanime.co/anime-turu/1/Aksiyon",
+    "status": null,
+    "final": "https://www.turkanime.co/anime-turu/1/Aksiyon",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='www.turkanime.co', port=443): Max retries exceeded with url: /an"
+   }
+  ],
+  "search": {
+   "req": "https://www.turkanime.co/arama?q=kara",
+   "status": null,
+   "final": "https://www.turkanime.co/arama?q=kara",
+   "len": 0,
+   "err": "ConnectionError:HTTPSConnectionPool(host='www.turkanime.co', port=443): Max retries exceeded with url: /ar"
+  },
+  "sel": {
+   "main:div#orta-icerik div.panel || div#orta-icerik div.panel": null,
+   "main:div.panel || div.panel": null,
+   "title:div.panel-title a || div.panel-title a": null,
+   "poster:div#detayPaylas div.imaj img || div#detayPaylas div.imaj img": null
+  },
+  "cand": {}
+ },
+ "UgurFilm": {
+  "home": [
+   {
+    "req": "https://ugurfilm7.com/turkce-altyazili-filmler/page/1",
+    "status": null,
+    "final": "https://ugurfilm7.com/turkce-altyazili-filmler/page/1",
+    "len": 0,
+    "err": "ConnectionError:HTTPSConnectionPool(host='ugurfilm7.com', port=443): Max retries exceeded with url: /turkc"
+   }
+  ],
+  "search": {
+   "req": "https://ugurfilm7.com/?s=kara",
+   "status": null,
+   "final": "https://ugurfilm7.com/?s=kara",
+   "len": 0,
+   "err": "ConnectionError:HTTPSConnectionPool(host='ugurfilm7.com', port=443): Max retries exceeded with url: /?s=ka"
+  },
+  "sel": {
+   "main:div.icerik div || div.icerik div": null,
+   "poster:div.resim img || div.resim img": null
+  },
+  "cand": {}
+ },
+ "HDFilmCehennemi": {
+  "home": [
+   {
+    "req": "https://www.hdfilmcehennemi.nl/",
+    "status": 403,
+    "final": "https://www.hdfilmcehennemi.nl/",
+    "len": 5751,
+    "err": null
+   }
+  ],
+  "search": {
+   "req": "https://www.hdfilmcehennemi.nl/arama/kara",
+   "status": 403,
+   "final": "https://www.hdfilmcehennemi.nl/arama/kara",
+   "len": 5803,
+   "err": null
+  },
+  "sel": {
+   "main:a(with img) || a": 0,
+   "poster:img[data-src] || img[data-src]": 0,
+   "load:h4.title || h4.title": 0,
+   "load:h1.section-title || h1.section-title": 0,
+   "load:aside.post-info-poster img.lazyload || aside.post-info-poster img.lazyload": 0,
+   "load:div.seasons-tab-content a || div.seasons-tab-content a": 0,
+   "load:div.alternative-links || div.alternative-links": 0
+  },
+  "cand": {}
+ }
+}

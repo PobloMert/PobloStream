@@ -13,7 +13,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 
 class DiziMom : MainAPI() {
-    override var mainUrl              = "https://www.dizimom.plus"
+    override var mainUrl              = "https://www.dizidad.com"
     override var name                 = "DiziMom"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -72,7 +72,7 @@ class DiziMom : MainAPI() {
         val epDoc    = app.get(epHref).document
         val href     = epDoc.selectFirst("div#benzerli a")?.attr("href") ?: return null
 
-        val posterUrl = fixUrlNull(this.selectFirst("a img")?.attr("src"))
+        val posterUrl = fixUrlNull(this.selectFirst("a img")?.tembelGorsel())
 
         return newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
     }
@@ -80,7 +80,7 @@ class DiziMom : MainAPI() {
     private fun Element.diziler(): SearchResponse? {
         val title     = this.selectFirst("div.categorytitle a")?.text()?.substringBefore(" izle") ?: return null
         val href      = fixUrlNull(this.selectFirst("div.cat-img a")?.attr("href")) ?: return null
-        val posterUrl = fixUrlNull(this.selectFirst("div.cat-img img")?.attr("src"))
+        val posterUrl = fixUrlNull(this.selectFirst("div.cat-img img")?.tembelGorsel())
 
         return newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
     }
@@ -97,7 +97,7 @@ class DiziMom : MainAPI() {
         val document = app.get(url, interceptor = interceptor).document
 
         val title       = document.selectFirst("div.title h1")?.text()?.substringBefore(" izle") ?: return null
-        val poster      = fixUrlNull(document.selectFirst("div.category_image img")?.attr("src")) ?: return null
+        val poster      = fixUrlNull(document.selectFirst("div.category_image img")?.tembelGorsel()) ?: return null
         val year        = document.selectXpath("//div[span[contains(text(), 'Yapım Yılı')]]").text().substringAfter("Yapım Yılı : ").trim().toIntOrNull()
         val description = document.selectFirst("div.category_desc")?.text()?.trim()
         val tags        = document.select("div.genres a").mapNotNull { it.text().trim() }
@@ -164,4 +164,10 @@ class DiziMom : MainAPI() {
 
         return true
     }
+}
+
+// ! Tembel yuklenen (lazy-load) gorsellerde src base64 placeholder olur; data-src esas kaynaktir.
+private fun Element.tembelGorsel(): String? {
+    val aday = attr("data-src").ifBlank { attr("data-lazy-src") }.ifBlank { attr("src") }
+    return aday.takeIf { it.isNotBlank() && !it.startsWith("data:") && it != "about:blank" }
 }

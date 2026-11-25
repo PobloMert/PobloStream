@@ -16,46 +16,37 @@ class CizgiMax : MainAPI() {
     override val supportedTypes       = setOf(TvType.Cartoon)
 
     override val mainPage = mainPageOf(
-        "?orderby=date&order=DESC"                                   to "Son Eklenenler",
-        "?s_type&tur[0]=aile&orderby=date&order=DESC"                to "Aile",
-        "?s_type&tur[0]=aksiyon-macera&orderby=date&order=DESC"      to "Aksyion",
-        "?s_type&tur[0]=animasyon&orderby=date&order=DESC"           to "Animasyon",
-        "?s_type&tur[0]=bilim-kurgu-fantazi&orderby=date&order=DESC" to "Bilim Kurgu",
-        "?s_type&tur[0]=cocuklar&orderby=date&order=DESC"            to "Çocuklar",
-        "?s_type&tur[0]=komedi&orderby=date&order=DESC"              to "Komedi",
+        "${mainUrl}/diziler/"                                       to "Son Eklenenler",
+        "${mainUrl}/tur/aile/"                                      to "Aile",
+        "${mainUrl}/tur/aksiyon/"                                   to "Aksiyon",
+        "${mainUrl}/tur/komedi/"                                    to "Komedi",
+        "${mainUrl}/tur/bilim-kurgu/"                               to "Bilim Kurgu",
+        "${mainUrl}/tur/cocuk/"                                     to "Çocuk",
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get("${mainUrl}/diziler/page/${page}${request.data}").document
-        val home     = document.select("ul.filter-results li").mapNotNull { it.toSearchResult() }
+        val url      = if (page > 1) "${request.data}?page=$page" else request.data
+        val document = app.get(url).document
+        val kartlar  = document.select("div.film-item")
+        val home     = kartlar.mapNotNull { it.toSearchResult() }
 
-        return newHomePageResponse(request.name, home)
+        return newHomePageResponse(request.name, home, kartlar.size >= 30)
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        val title     = this.selectFirst("h2.truncate")?.text()?.trim() ?: return null
-        val href      = fixUrlNull(this.selectFirst("div.poster-subject a")?.attr("href")) ?: return null
-        val posterUrl = fixUrlNull(this.selectFirst("div.poster-media img")?.attr("data-src"))
+        val linkEl    = this.selectFirst("a.film-name") ?: return null
+        val title     = linkEl.text().trim().ifBlank { attr("data-anime-name") }.trim()
+        if (title.isBlank()) return null
+        val href      = fixUrlNull(linkEl.attr("href")) ?: return null
+        val posterUrl = fixUrlNull(this.selectFirst("a.poster img")?.let { it.attr("src").ifBlank { it.attr("data-src") } })
 
         return newTvSeriesSearchResponse(title, href, TvType.Cartoon) { this.posterUrl = posterUrl }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val response = app.get("${mainUrl}/ajaxservice/index.php?qr=${query}").parsedSafe<SearchResult>()?.data?.result ?: return listOf()
+        val document = app.get("${mainUrl}/ara/?q=${query}").document
 
-        return response.mapNotNull { result ->
-            if (result.sName.contains(".Bölüm") || result.sName.contains(".Sezon") || result.sName.contains("-Sezon") || result.sName.contains("-izle")) {
-                return@mapNotNull null
-            }
-
-            newTvSeriesSearchResponse(
-                result.sName,
-                fixUrl(result.sLink),
-                TvType.Cartoon
-            ) {
-                this.posterUrl = fixUrlNull(result.sImage)
-            }
-        }
+        return document.select("div.film-item").mapNotNull { it.toSearchResult() }
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
@@ -63,23 +54,23 @@ class CizgiMax : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
 
-        val title       = document.selectFirst("h1.page-title")?.text() ?: return null
-        val poster      = fixUrlNull(document.selectFirst("img.series-profile-thumb")?.attr("src")) ?: return null
-        val description = document.selectFirst("p#tv-series-desc")?.text()?.trim()
-        val tags        = document.select("div.genre-item a").mapNotNull { it.text().trim() }
+        val title       = document.selectFirst("h1")?.text()?.trim()?.removeSuffix(" izle")?.trim() ?: return null
+        val poster      = fixUrlNull(document.selectFirst("meta[property=og:image]")?.attr("content")) ?: return null
+        val description = document.selectFirst("meta[name=description]")?.attr("content")?.trim()
+        val tags        = document.selectFirst("meta[name=keywords]")?.attr("content")?.split(",")?.mapNotNull { it.trim().takeIf { t -> t.isNotEmpty() } } ?: listOf()
 
-
-        val episodes = document.select("div.asisotope div.ajax_post").mapNotNull {
-            val epName     = it.selectFirst("span.episode-names")?.text()?.trim() ?: return@mapNotNull null
-            val epHref     = fixUrlNull(it.selectFirst("a")?.attr("href")) ?: return@mapNotNull null
-            val epEpisode  = Regex("""(\d+)\.Bölüm""").find(epName)?.groupValues?.get(1)?.toIntOrNull()
-            val seasonName = it.selectFirst("span.season-name")?.text()?.trim() ?: ""
-            val epSeason   = Regex("""(\d+)\.Sezon""").find(seasonName)?.groupValues?.get(1)?.toIntOrNull() ?: 1
+        // ! Bolum linkleri: /dizi-adi-2-sezon-7-bolum-izle/
+        val bolumRegex = Regex("""-(\d+)-sezon-(\d+)-bolum""")
+        val episodes = document.select("a.ep-num-btn").mapNotNull {
+            val epHref = fixUrlNull(it.attr("href")) ?: return@mapNotNull null
+            val epName = it.attr("title").trim().ifBlank { it.selectFirst("span.ep-num-label")?.text()?.trim() ?: "" }
+            if (epName.isBlank()) return@mapNotNull null
+            val grup = bolumRegex.find(epHref)
 
             newEpisode(epHref) {
-                this.name = epName
-                this.season = epSeason
-                this.episode = epEpisode
+                this.name    = epName
+                this.season  = grup?.groupValues?.get(1)?.toIntOrNull() ?: 1
+                this.episode = grup?.groupValues?.get(2)?.toIntOrNull()
             }
         }
 
