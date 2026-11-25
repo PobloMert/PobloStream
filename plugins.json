@@ -45,10 +45,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=belgeselx.com&sz=%size%",
-        "fileHash": "sha256-c255abaebc4bb620b9f9f713e7464ac23c406ad00538bbf15eba5027a4bb6226",
+        "fileHash": "sha256-311a2742b2498e79c964a5795e0121e8ccbd263089b0d4fdf03f92a8025033c7",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 22137,
+        "fileSize": 30829,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -58,7 +58,7 @@
         "tvTypes": [
             "Documentary"
         ],
-        "version": 12,
+        "version": 13,
         "internalName": "BelgeselX",
         "description": "En yeni belgeseller, t\u00fcrk\u00e7e altyaz\u0131l\u0131 yada dublaj olarak 1080p kalitesinde HD belgesel izle.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/BelgeselX.cs3",
@@ -66,10 +66,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=cizgimax.online&sz=%size%",
-        "fileHash": "sha256-eebbcd9df7fe0355171381a5217fa1c179a6ad5ad1c93dad8f551fef214f3884",
+        "fileHash": "sha256-c70d7600b81870d27e4626919a8738071aa9e55c31f387e49d5b4f8f302fcb45",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 20038,
+        "fileSize": 59371,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -78,7 +78,7 @@
         "tvTypes": [
             "Cartoon"
         ],
-        "version": 9,
+        "version": 10,
         "internalName": "CizgiMax",
         "description": "\u00c7izgiMax ile \u00c7izgi Film izlemek art\u0131k daha kolay, donmadan full hd ve reklams\u0131z bir sitedir, i\u00e7erisinde 700 den fazla \u00e7izgi film olan, Bu site bu i\u015fi profesyonelce yap\u0131yor.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/CizgiMax.cs3",
@@ -86,10 +86,10 @@
     },
     {
         "iconUrl": "https://www.ddizi.tel/favicon.ico",
-        "fileHash": "sha256-8d43386893d60fa8f9f5a0f1db74d7f0bc25281bc83332d4c83691f1346ae4dc",
+        "fileHash": "sha256-9619162a9d66ad1303c35e24a94cb30a9c6c4fae3cc2e74d1147d7611972b57c",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 20049,
+        "fileSize": 20406,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -99,7 +99,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 11,
+        "version": 12,
         "internalName": "Ddizi",
         "description": "DDizi.tel i\u00e7in Cloudstream eklentisi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/Ddizi.cs3",
@@ -254,10 +254,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-eeb2274d0b27f5505640e54b87b01e2a645bc0e08a06e2c9280cbcf7070add9d",
+        "fileHash": "sha256-679fb7285431cee07d3aaf540627cbd8eb5e1c1b506a421fc6865c6482814384",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 149285,
+        "fileSize": 150005,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -269,7 +269,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 60,
+        "version": 61,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00c3\u00bcrkiye'nin en h\u00c4\u00b1zl\u00c4\u00b1 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/HDFilmCehennemi.cs3",
