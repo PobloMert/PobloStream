@@ -49,15 +49,20 @@ open class PeaceMakerst : ExtractorApi() {
             }
         }
 
+        val sonAdres = m3uLink ?: throw ErrorLoadingException("m3u link not found")
+        // ! 26.11.2026: kaynak video.twimg.com oldu; site Refereri ile 403,
+        // ! twitter.com Refereri ile 200 (Ddizi'de de ayni sorun vardi).
+        val linkReferer = if (sonAdres.contains("video.twimg.com", ignoreCase = true)) "https://twitter.com/" else extRef
+
         callback.invoke(
             newExtractorLink(
                 source = this.name,
                 name = this.name,
-                url = m3uLink ?: throw ErrorLoadingException("m3u link not found"),
+                url = sonAdres,
                 type    = INFER_TYPE
             ) {
                 quality = Qualities.Unknown.value
-                headers = mapOf("Referer" to extRef)
+                headers = mapOf("Referer" to linkReferer)
             }
         )
     }
