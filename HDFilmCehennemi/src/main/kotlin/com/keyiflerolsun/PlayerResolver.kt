@@ -76,14 +76,26 @@ internal object PlayerResolver {
         displayName: String,
         interceptor: Interceptor? = null
     ): Resolved? {
+        // ! 26.11.2026: hdfilmcehennemi.mobi embed'i "Bu uygulama desteklenmiyor" diyor.
+        // ! Tam tarayici profili (Sec-Fetch-* + Upgrade-Insecure-Requests) ile 200 + jwplayer.
+        val embedOrigin = originOf(embedUrl)
+        if (embedOrigin != null && embedOrigin.contains("mobi", ignoreCase = true)) {
+            runCatching {
+                app.get(embedOrigin, headers = mapOf("User-Agent" to USER_AGENT), timeout = 10L)
+            }
+        }
         val response = try {
             app.get(
                 embedUrl,
-                referer = pageReferer,
+                referer = pageReferer ?: embedOrigin,
                 headers = mapOf(
                     "User-Agent" to USER_AGENT,
-                    "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                    "Accept-Language" to "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7"
+                    "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                    "Accept-Language" to "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                    "Sec-Fetch-Dest" to "iframe",
+                    "Sec-Fetch-Mode" to "navigate",
+                    "Sec-Fetch-Site" to "cross-site",
+                    "Upgrade-Insecure-Requests" to "1"
                 ),
                 interceptor = interceptor,
                 timeout = 20L

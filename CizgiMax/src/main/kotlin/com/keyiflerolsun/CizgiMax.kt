@@ -82,16 +82,9 @@ class CizgiMax : MainAPI() {
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
-        Log.d("CZGM", "data » $data")
-        val document = app.get(data).document
-
-        document.select("ul.linkler li").forEach {
-            val iframe = fixUrlNull(it.selectFirst("a")?.attr("data-frame")) ?: return@forEach
-            Log.d("CZGM", "iframe » $iframe")
-
-            loadExtractor(iframe, "${mainUrl}/", subtitleCallback, callback)
-        }
-
-        return true
+        // ! 26.11.2026: eski `ul.linkler li [data-frame]` yapisi kaldirildi. Yeni site
+        // ! sunuculari script icinde base64 JSON olarak veriyor (/api/stream/... proxy).
+        // ! Cozucu Kekik'in guncel CizgiMax kaynak katmaninda (CizgiMaxDonor).
+        return CizgiMaxDonor().loadLinks(data, isCasting, subtitleCallback, callback)
     }
 }

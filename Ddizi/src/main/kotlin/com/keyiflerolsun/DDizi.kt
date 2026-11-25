@@ -246,14 +246,19 @@ override suspend fun loadLinks(
 
     val isHls = fileUrl.contains(".m3u8") || fileUrl.contains("hls")
     val quality = Regex("""label:\s*["'](.*?)["']""").find(sourcesMatch.groupValues[1])?.groupValues?.get(1) ?: "Auto"
-    val videoHeaders = if (fileUrl.contains("master.txt")) {
-        mapOf(
+
+    // ! 26.11.2026: yayin video.twimg.com (Twitter CDN) oldu. ddizi player Refereri
+    // ! ile 403 donuyor; twitter.com Refereri ile 200 + #EXTM3U (PC'den dogrulandi).
+    val twimg = fileUrl.contains("video.twimg.com", ignoreCase = true)
+    val videoReferer = if (twimg) "https://twitter.com/" else ogVideo
+    val videoHeaders = when {
+        twimg -> mapOf("Referer" to videoReferer, "User-Agent" to USER_AGENT)
+        fileUrl.contains("master.txt") -> mapOf(
             "accept" to "*/*",
             "user-agent" to USER_AGENT,
             "referer" to ogVideo
         )
-    } else {
-        getHeaders(ogVideo)
+        else -> getHeaders(ogVideo)
     }
 
     callback.invoke(
@@ -264,12 +269,12 @@ override suspend fun loadLinks(
             type = if (isHls) ExtractorLinkType.M3U8 else INFER_TYPE
             ) {
             this.quality = getQualityFromName(quality)
-            headers = mapOf("Referer" to ogVideo)
+            headers = mapOf("Referer" to videoReferer)
           }
     )
 
     if (isHls) {
-        M3u8Helper.generateM3u8(name, fileUrl, ogVideo, headers = videoHeaders).forEach(callback)
+        M3u8Helper.generateM3u8(name, fileUrl, videoReferer, headers = videoHeaders).forEach(callback)
     }
 
     return true
