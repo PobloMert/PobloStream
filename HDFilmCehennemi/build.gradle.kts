@@ -1,9 +1,9 @@
-version = 25
+﻿version = 60
 
 cloudstream {
     authors     = listOf("hexated", "keyiflerolsun", "Ahmet")
     language    = "tr"
-    description = "Türkiye'nin en hızlı hd film izleme sitesi"
+    description = "TÃ¼rkiye'nin en hÄ±zlÄ± hd film izleme sitesi"
 
     /**
      * Status int as the following:
@@ -16,3 +16,4 @@ cloudstream {
     tvTypes = listOf("Movie", "TvSeries")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%"
 }
+
