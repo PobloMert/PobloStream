@@ -45,10 +45,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=belgeselx.com&sz=%size%",
-        "fileHash": "sha256-311a2742b2498e79c964a5795e0121e8ccbd263089b0d4fdf03f92a8025033c7",
+        "fileHash": "sha256-c281be136dde04c8a12d58ccce23c89f2a4a44ec9bc39416f17759f994167932",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 30829,
+        "fileSize": 31443,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -58,7 +58,7 @@
         "tvTypes": [
             "Documentary"
         ],
-        "version": 13,
+        "version": 14,
         "internalName": "BelgeselX",
         "description": "En yeni belgeseller, t\u00fcrk\u00e7e altyaz\u0131l\u0131 yada dublaj olarak 1080p kalitesinde HD belgesel izle.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/BelgeselX.cs3",
