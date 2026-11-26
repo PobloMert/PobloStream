@@ -224,7 +224,7 @@ class AsyaWatch : MainAPI() {
         val doc = Jsoup.parse(html)
         return doc.select("a.pc[href^=/dizi/]").mapNotNull { a ->
             val href = a.attr("href")
-            if (href.count('/') > 2) return@mapNotNull null
+            if (href.count { it == '/' } > 2) return@mapNotNull null
             val title = a.selectFirst("b")?.text()?.ifBlank { null }
                 ?: a.attr("aria-label").substringBefore(",").ifBlank { return@mapNotNull null }
             newTvSeriesSearchResponse(title, fixUrl(href), TvType.TvSeries) {
