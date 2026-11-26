@@ -70,8 +70,8 @@ class AsyaWatch : MainAPI() {
         val poster = jsonText(ld, "image")?.let { cleanImg(it) }
         val plot = ld.path("description").asText().ifBlank { null }
         val year = ld.path("datePublished").asText().take(4).toIntOrNull()
-        val score = ld.path("aggregateRating").path("ratingValue").asDouble(0.0)
-            .takeIf { it > 0.0 }?.let { Score.from10(it) }
+        val score = ld.path("aggregateRating").path("ratingValue").asText()
+            .takeIf { it.isNotBlank() && it != "0" && it != "0.0" }?.let { Score.from10(it) }
         val actors = ld.path("actor").mapNotNull { actor ->
             actor.path("name").asText().takeIf { it.isNotBlank() }?.let {
                 Actor(it, jsonText(actor, "image"))
@@ -216,7 +216,7 @@ class AsyaWatch : MainAPI() {
                 title = title,
                 url = fixUrl(href),
                 poster = a.selectFirst("img")?.attr("src")?.let { cleanImg(it) },
-                score = a.selectFirst(".imdb")?.text()?.toDoubleOrNull()?.let { Score.from10(it) },
+                score = a.selectFirst(".imdb")?.text()?.trim(),
                 genres = a.selectFirst("small")?.text().orEmpty()
             )
         }.distinctBy { it.url }
@@ -234,14 +234,14 @@ class AsyaWatch : MainAPI() {
         val title: String,
         val url: String,
         val poster: String?,
-        val score: Score?,
+        val score: String?,
         val genres: String
     )
 
     private fun FilmCard.toSearchResponse(): SearchResponse =
         newMovieSearchResponse(title, url, TvType.Movie) {
             this.posterUrl = poster
-            this.score = score
+            this.score = this@toSearchResponse.score?.let { Score.from10(it) }
         }
 
     private companion object {
