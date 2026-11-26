@@ -23,10 +23,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=asyawatch.com&sz=%size%",
-        "fileHash": "sha256-77079a4f1cc34162b1bc8b0dee7f1aad75847f765e0a50e38ff185e1992d2a42",
+        "fileHash": "sha256-ed4cd3f8a8c1e288e894093506f77e3f509379b073a851858caa8b80527db158",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 35619,
+        "fileSize": 35256,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -37,7 +37,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 9,
+        "version": 10,
         "internalName": "AsyaWatch",
         "description": "Asyawatch",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/AsyaWatch.cs3",
