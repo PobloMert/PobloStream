@@ -236,12 +236,13 @@ class AsyaWatch : MainAPI() {
         val poster: String?,
         val score: Score?,
         val genres: String
-    ) {
-        fun toSearchResponse(): SearchResponse = newMovieSearchResponse(title, url, TvType.Movie) {
+    )
+
+    private fun FilmCard.toSearchResponse(): SearchResponse =
+        newMovieSearchResponse(title, url, TvType.Movie) {
             this.posterUrl = poster
             this.score = score
         }
-    }
 
     private companion object {
         val mapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
