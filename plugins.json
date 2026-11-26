@@ -234,10 +234,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.de&sz=%size%",
-        "fileHash": "sha256-675060ddf2f860af0b18762092899e5f4511e10b6b3956bbeb8ccdd75d05062e",
+        "fileHash": "sha256-5158c83688c0bf63246e5979b0fbad6d6951f40a8b6f552fd287c0f801e29a55",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 39160,
+        "fileSize": 42473,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -246,7 +246,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 28,
+        "version": 29,
         "internalName": "FullHDFilmizlesene",
         "description": "Sinema zevkini evinize kadar getirdik. T\u00fcrkiye'nin lider Film sitesinde, en yeni filmleri Full HD izleyin.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/FullHDFilmizlesene.cs3",
@@ -254,10 +254,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-8a5c4026d60978216c815f5ced6b1efa4d12d0af96252848b8d13fd07f8be42a",
+        "fileHash": "sha256-7b5631c5a7b3bbf75ce36edaec517c4b1f2d5217a7ed1eb6f50bada7f3b3722d",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 156098,
+        "fileSize": 156355,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -269,7 +269,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 64,
+        "version": 65,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00c3\u00bcrkiye'nin en h\u00c4\u00b1zl\u00c4\u00b1 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/HDFilmCehennemi.cs3",
