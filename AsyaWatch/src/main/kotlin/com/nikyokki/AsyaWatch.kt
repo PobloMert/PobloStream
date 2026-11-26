@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.lagradost.cloudstream3.*
+import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.utils.*
 import org.jsoup.Jsoup
 import java.security.MessageDigest
@@ -40,17 +41,19 @@ class AsyaWatch : MainAPI() {
             val films = jsonArray(flight, "films")?.let { mapper.readTree(it) } ?: return newHomePageResponse(request.name, emptyList())
             films.filter { genre.isBlank() || it.path("g").toString().contains(genre) }
                 .map { film ->
-                    val href = fixUrl(it.path("u").asText())
-                    val title = it.path("t").asText()
+                    val href = fixUrl(film.path("u").asText())
+                    val title = film.path("t").asText()
+                    val poster = cleanImg(film.path("p").asText())
+                    val score = Score.from10(film.path("im").asDouble(0.0))
                     if (href.contains("/dizi/")) {
                         newTvSeriesSearchResponse(title, href, TvType.TvSeries) {
-                            this.posterUrl = cleanImg(it.path("p").asText())
-                            this.score = Score.from10(it.path("im").asDouble(0.0))
+                            this.posterUrl = poster
+                            this.score = score
                         }
                     } else {
                         newMovieSearchResponse(title, href, TvType.Movie) {
-                            this.posterUrl = cleanImg(it.path("p").asText())
-                            this.score = Score.from10(it.path("im").asDouble(0.0))
+                            this.posterUrl = poster
+                            this.score = score
                         }
                     }
                 }
@@ -212,7 +215,7 @@ class AsyaWatch : MainAPI() {
                     ((hash[9].toInt() and 0xff) shl 16) or
                     ((hash[10].toInt() and 0xff) shl 8) or
                     (hash[11].toInt() and 0xff)
-            if (word and 0xfff == 0) return candidate
+            if ((word and 0xFFF) == 0) return candidate
         }
         return ""
     }

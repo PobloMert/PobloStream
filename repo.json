@@ -4,9 +4,9 @@
     "iconUrl":  "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
     "manifestVersion":  2,
     "pluginLists":  [
-                        "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/plugins.json?t=1795705463"
+                        "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/plugins.json?t=1795705708"
                     ],
-    "lastUpdated":  1795705463,
-    "timestamp":  1795705463,
+    "lastUpdated":  1795705708,
+    "timestamp":  1795705708,
     "version":  2
 }
