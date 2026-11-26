@@ -1,12 +1,12 @@
-﻿{
-    "name":  "PobloStream",
-    "description":  "Turkce film, dizi ve anime eklentileri - guncel adreslerle",
-    "iconUrl":  "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
-    "manifestVersion":  2,
-    "pluginLists":  [
-                        "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/plugins.json?t=1795709586"
-                    ],
-    "lastUpdated":  1795709586,
-    "timestamp":  1795709586,
-    "version":  2
+{
+  "name": "PobloStream",
+  "description": "Turkce film, dizi ve anime eklentileri - guncel adreslerle",
+  "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+  "manifestVersion": 2,
+  "pluginLists": [
+    "https://cdn.jsdelivr.net/gh/PobloMert/PobloStream@44a4996a92748cea45c2f374b44a133cded8ef62/plugins.json?t=44a4996a9274"
+  ],
+  "lastUpdated": 1795698909,
+  "timestamp": 1795698909,
+  "version": 2
 }
