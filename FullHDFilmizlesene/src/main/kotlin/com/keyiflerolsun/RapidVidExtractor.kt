@@ -91,7 +91,7 @@ open class RapidVid : ExtractorApi() {
     }
 
     /** `_p8` JSON'undaki `ct` altyazı listesini ekler. */
-    private fun addSubtitles(json: String, subtitleCallback: (SubtitleFile) -> Unit) {
+    private suspend fun addSubtitles(json: String, subtitleCallback: (SubtitleFile) -> Unit) {
         val ct = Regex("\"ct\"\\s*:\\s*(\\[[^\\]]*\\])").find(json)?.groupValues?.get(1) ?: return
         for (item in Regex("\\{[^{}]*\\}").findAll(ct)) {
             val body = item.value
