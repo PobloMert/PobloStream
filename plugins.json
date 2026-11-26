@@ -254,10 +254,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-4a829394dd0e3afddb7eafbcf724aca0f6b6b56e1dfda1b340e8dc16a79241f4",
+        "fileHash": "sha256-8a5c4026d60978216c815f5ced6b1efa4d12d0af96252848b8d13fd07f8be42a",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 151133,
+        "fileSize": 156098,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -269,7 +269,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 63,
+        "version": 64,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00c3\u00bcrkiye'nin en h\u00c4\u00b1zl\u00c4\u00b1 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/HDFilmCehennemi.cs3",
