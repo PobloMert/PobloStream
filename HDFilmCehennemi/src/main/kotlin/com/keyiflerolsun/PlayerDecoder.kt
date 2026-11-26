@@ -1,21 +1,21 @@
-﻿package com.keyiflerolsun
+package com.keyiflerolsun
 
 /**
- * closeload / rapidrame oynatÄ±cÄ± sayfasÄ±ndan GERÃ‡EK yayÄ±n adresini Ã§Ä±karÄ±r.
+ * closeload / rapidrame oynatıcı sayfasından GERÇEK yayın adresini çıkarır.
  *
- * CanlÄ± inceleme (Ekim 2026) sonucu:
- *  - Sayfada Ä°KÄ° karartÄ±lmÄ±ÅŸ adres Ã¼retilir. Biri tuzaktÄ±r (her filmde aynÄ±
+ * Canlı inceleme (Ekim 2026) sonucu:
+ *  - Sayfada İKİ karartılmış adres üretilir. Biri tuzaktır (her filmde aynı
  *    `.../filmakinesimp4-...mp4/master.txt`, JSON-LD `contentUrl` de bunu
- *    gÃ¶sterir); gerÃ§ek adres yalnÄ±zca `jwplayer().setup({sources:[{file:X}]})`
- *    iÃ§inde baÅŸvurulan deÄŸiÅŸkendir.
- *  - GerÃ§ek Ã§Ã¶zÃ¼cÃ¼nÃ¼n anahtarÄ± `location.hostname` ile karÄ±ÅŸtÄ±rÄ±lÄ±r; bu yÃ¼zden
- *    sayfanÄ±n SON (yÃ¶nlendirme sonrasÄ±) adresi verilmelidir.
- *  - Rapid oynatÄ±cÄ±sÄ±nda Ã§Ã¶zÃ¼cÃ¼ bir p,a,c,k,e,d paketinin iÃ§indedir ve sayfada
- *    yorum satÄ±rÄ±na alÄ±nmÄ±ÅŸ sahte bir `sources:[{file:atob(file_link)}]` vardÄ±r.
+ *    gösterir); gerçek adres yalnızca `jwplayer().setup({sources:[{file:X}]})`
+ *    içinde başvurulan değişkendir.
+ *  - Gerçek çözücünün anahtarı `location.hostname` ile karıştırılır; bu yüzden
+ *    sayfanın SON (yönlendirme sonrası) adresi verilmelidir.
+ *  - Rapid oynatıcısında çözücü bir p,a,c,k,e,d paketinin içindedir ve sayfada
+ *    yorum satırına alınmış sahte bir `sources:[{file:atob(file_link)}]` vardır.
  *
- * YÃ¶ntem: satÄ±r iÃ§i script'ler (ve aÃ§Ä±lan paketler) MiniJs ile Ã§alÄ±ÅŸtÄ±rÄ±lÄ±r,
- * `sources` ifadesi deÄŸerlendirilir. Olmazsa tÃ¼m sayfa jwplayer taklidiyle
- * Ã§alÄ±ÅŸtÄ±rÄ±lÄ±p setup() yapÄ±landÄ±rmasÄ± yakalanÄ±r.
+ * Yöntem: satır içi script'ler (ve açılan paketler) MiniJs ile çalıştırılır,
+ * `sources` ifadesi değerlendirilir. Olmazsa tüm sayfa jwplayer taklidiyle
+ * çalıştırılıp setup() yapılandırması yakalanır.
  */
 internal object PlayerDecoder {
 
@@ -50,7 +50,7 @@ internal object PlayerDecoder {
         val host = uri.host ?: return false
         if (!host.contains('.')) return false
         val path = (uri.rawPath ?: "").lowercase()
-        // AltyazÄ±/gÃ¶rsel/script adresi yayÄ±n deÄŸildir.
+        // Altyazı/görsel/script adresi yayın değildir.
         return NON_STREAM_EXT.none { path.endsWith(it) }
     }
 
@@ -62,7 +62,7 @@ internal object PlayerDecoder {
             try {
                 chunks.addAll(Packer.unpackAll(s))
             } catch (e: Exception) {
-                // paket aÃ§Ä±lamadÄ±
+                // paket açılamadı
             }
         }
 
@@ -70,7 +70,7 @@ internal object PlayerDecoder {
         val trackExprs = ArrayList<Node>()
         for (c in chunks) scanConfig(c, sourceExprs, trackExprs)
 
-        // 1) Hedefli: sources ifadesinin baÄŸlÄ± olduÄŸu tanÄ±mlarÄ± Ã§alÄ±ÅŸtÄ±r.
+        // 1) Hedefli: sources ifadesinin bağlı olduğu tanımları çalıştır.
         if (targeted && sourceExprs.isNotEmpty()) {
             val js = MiniJs(pageUrl, html)
             val executed = HashSet<Int>()
@@ -98,7 +98,7 @@ internal object PlayerDecoder {
             }
         }
 
-        // 2) Genel: tÃ¼m script'leri sÄ±rayla Ã§alÄ±ÅŸtÄ±r, jwplayer setup() yakala.
+        // 2) Genel: tüm script'leri sırayla çalıştır, jwplayer setup() yakala.
         val js = MiniJs(pageUrl, html)
         for (s in scripts) {
             try {
@@ -118,7 +118,7 @@ internal object PlayerDecoder {
         return null
     }
 
-    /** `sources: [...]` ve `tracks: [...]` ifadelerini (yorum satÄ±rlarÄ± hariÃ§) bulur. */
+    /** `sources: [...]` ve `tracks: [...]` ifadelerini (yorum satırları hariç) bulur. */
     private fun scanConfig(code: String, sources: MutableList<Node>, tracks: MutableList<Node>) {
         if (!code.contains("sources") && !code.contains("tracks")) return
         val toks = try { Lexer(code).run() } catch (e: Exception) { return }
@@ -129,7 +129,7 @@ internal object PlayerDecoder {
                 else -> continue
             }
             if (toks[i + 1].type != Tok.PUNCT || toks[i + 1].text != ":") continue
-            // nesne anahtarÄ± olmalÄ±: Ã¶ncesi `{` veya `,`
+            // nesne anahtarı olmalı: öncesi `{` veya `,`
             val prev = if (i > 0) toks[i - 1] else null
             if (prev == null || prev.type != Tok.PUNCT || (prev.text != "{" && prev.text != ",")) continue
             when (key) {
@@ -166,7 +166,7 @@ internal object PlayerDecoder {
         return out
     }
 
-    /** `names` iÃ§inden birini tanÄ±mlayan (henÃ¼z Ã§alÄ±ÅŸtÄ±rÄ±lmamÄ±ÅŸ) parÃ§alarÄ± Ã§alÄ±ÅŸtÄ±rÄ±r. */
+    /** `names` içinden birini tanımlayan (henüz çalıştırılmamış) parçaları çalıştırır. */
     private fun runDefinitions(js: MiniJs, chunks: List<String>, names: Set<String>, executed: MutableSet<Int>): Boolean {
         if (names.isEmpty()) return false
         var ran = false
@@ -272,4 +272,3 @@ internal object PlayerDecoder {
         }
     }
 }
-

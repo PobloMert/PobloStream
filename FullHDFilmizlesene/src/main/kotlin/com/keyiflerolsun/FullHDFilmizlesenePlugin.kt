@@ -9,6 +9,7 @@ class FullHDFilmizlesenePlugin: Plugin() {
     override fun load(context: Context) {
         registerMainAPI(FullHDFilmizlesene())
         registerExtractorAPI(RapidVid())
+        registerExtractorAPI(RapidVidOrg())
         registerExtractorAPI(TRsTX())
         registerExtractorAPI(VidMoxy())
         registerExtractorAPI(Sobreatsesuyp())

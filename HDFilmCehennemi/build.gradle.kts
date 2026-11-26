@@ -1,4 +1,4 @@
-﻿version = 64
+version = 64
 
 cloudstream {
     authors     = listOf("hexated", "keyiflerolsun", "Ahmet")
@@ -16,5 +16,4 @@ cloudstream {
     tvTypes = listOf("Movie", "TvSeries")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%"
 }
-
 
