@@ -145,7 +145,7 @@ class AsyaWatch : MainAPI() {
             ?: return false
         val config = runCatching { mapper.readTree(raw) }.getOrNull() ?: return false
         val gate = config.path("gate").path("n").asText()
-        val token = if (gate.isNotBlank()) proofOfWork(gate) else ""
+        val token = if (gate.isNotBlank()) proofOfWork(html, gate) else ""
 
         config.path("sources").forEach { source ->
             val master = source.path("master").asText().ifBlank { return@forEach }
@@ -159,6 +159,7 @@ class AsyaWatch : MainAPI() {
                     type = ExtractorLinkType.M3U8
                 ) {
                     this.referer = embed
+                    this.headers = mapOf("Referer" to embed)
                     this.quality = getQualityFromName(source.path("quality").asText())
                 }
             )
@@ -167,7 +168,9 @@ class AsyaWatch : MainAPI() {
             val subUrl = withToken(sub.path("url").asText(), token)
             if (subUrl.isNotBlank()) {
                 subtitleCallback.invoke(
-                    newSubtitleFile(sub.path("label").asText("Altyazı"), subUrl)
+                    newSubtitleFile(sub.path("label").asText("Altyazı"), subUrl) {
+                        this.headers = mapOf("Referer" to embed)
+                    }
                 )
             }
         }
@@ -179,17 +182,44 @@ class AsyaWatch : MainAPI() {
         return url + (if (url.contains("?")) "&" else "?") + "p=$token"
     }
 
-    /** np.js: sha256(gate + ":llOCCpAv5V:" + base36(i))[2] & 4095 == 0 */
-    private fun proofOfWork(gate: String): String {
+    /**
+     * Sayfa başına değişen NP_GATE fonksiyonunu okur: tuz, sayı tabanı,
+     * birleştirme sırası, hash kelimesi ve maske. SHA-256 PoW token'ı üretir.
+     */
+    private fun proofOfWork(iframeHtml: String, gate: String): String {
+        val fn = GATE_REGEX.find(iframeHtml)?.groupValues ?: return ""
+        val params = fn[1].split(",").map { it.trim() }
+        val body = fn[2]
+        val saltMatch = SALT_REGEX.find(body) ?: return ""
+        val saltVar = saltMatch.groupValues[1]
+        val salt = saltMatch.groupValues[2].split(",")
+            .mapNotNull { it.trim().toIntOrNull()?.toChar() }.joinToString("")
+        val radix = RADIX_REGEX.find(body)?.groupValues?.get(1)?.toIntOrNull() ?: 36
+        val candidateVar = CAND_REGEX.find(body)?.groupValues?.get(1) ?: return ""
+        val wordIndex = WORD_REGEX.find(body)?.groupValues?.get(1)?.toIntOrNull() ?: 2
+        val mask = MASK_REGEX.find(body)?.groupValues?.get(1)?.toIntOrNull() ?: 4095
+        val expr = Regex("""${Regex.escape(params[1])}\(([^)]*)\)""")
+            .find(body)?.groupValues?.get(1) ?: return ""
+        val parts: List<String?> = expr.split("+").map { token ->
+            val t = token.trim()
+            when (t) {
+                params[0] -> gate
+                saltVar -> salt
+                candidateVar -> null
+                else -> t.trim('\'', '"')
+            }
+        }
         val digest = MessageDigest.getInstance("SHA-256")
         for (i in 0 until 100_000_000) {
-            val candidate = i.toString(36)
-            val hash = digest.digest("$gate:llOCCpAv5V:$candidate".toByteArray(Charsets.UTF_8))
-            val word = ((hash[8].toInt() and 0xff) shl 24) or
-                    ((hash[9].toInt() and 0xff) shl 16) or
-                    ((hash[10].toInt() and 0xff) shl 8) or
-                    (hash[11].toInt() and 0xff)
-            if ((word and 0xFFF) == 0) return candidate
+            val candidate = i.toString(radix)
+            val input = parts.joinToString("") { it ?: candidate }
+            val hash = digest.digest(input.toByteArray(Charsets.UTF_8))
+            val at = wordIndex * 4
+            val word = ((hash[at].toInt() and 0xff) shl 24) or
+                    ((hash[at + 1].toInt() and 0xff) shl 16) or
+                    ((hash[at + 2].toInt() and 0xff) shl 8) or
+                    (hash[at + 3].toInt() and 0xff)
+            if ((word and mask) == 0) return candidate
         }
         return ""
     }
@@ -248,5 +278,11 @@ class AsyaWatch : MainAPI() {
         val mapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         val EMBED_REGEX = Regex("""https?://[a-zA-Z0-9.\-]+/iframe\.php\?v=[a-zA-Z0-9_\-]+""")
+        val GATE_REGEX = Regex("""window\.NP_GATE\s*=\s*function\s*\(([^)]*)\)\s*\{(.*?)\};""")
+        val SALT_REGEX = Regex("""var\s+(\w+)\s*=\s*String\.fromCharCode\(([^)]+)\)""")
+        val RADIX_REGEX = Regex("""toString\((\d+)\)""")
+        val CAND_REGEX = Regex("""var\s+(\w+)\s*=\s*\w+\.toString\(\d+\)""")
+        val WORD_REGEX = Regex("""\)\[(\d+)\]""")
+        val MASK_REGEX = Regex("""&(\d+)""")
     }
 }
