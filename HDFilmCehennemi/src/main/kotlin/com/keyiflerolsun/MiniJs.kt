@@ -980,9 +980,12 @@ internal class Scope(val parent: Scope?, val funcScope: Boolean) {
 /**
  * @param hostname sayfanın host adı (`location.hostname`) — çözücü anahtarı buna bağlı.
  * @param pageUrl  sayfanın tam adresi (`location.href`).
+ * @param pageHtml sayfanın HTML'i — `document.querySelector('[data-v]')` gibi
+ *   DOM korumaları için küçük bir DOM taklidi ([MiniDom]) kurulur.
  */
 internal class MiniJs(
     private val pageUrl: String = "https://localhost/",
+    private val pageHtml: String = "",
     private val stepLimit: Long = 3_000_000L
 ) {
     val global = Scope(null, true)
@@ -1633,6 +1636,7 @@ internal class MiniJs(
         document.props["cookie"] = ""
         document.props["readyState"] = "complete"
         document.props["visibilityState"] = "visible"
+        MiniDom.install(document, pageHtml)
         g["document"] = document
 
         val navigator = object : JsObject() {
