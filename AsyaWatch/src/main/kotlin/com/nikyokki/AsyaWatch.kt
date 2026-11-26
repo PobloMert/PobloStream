@@ -36,27 +36,10 @@ class AsyaWatch : MainAPI() {
         val (kind, genre) = request.data.split(":", limit = 2).let {
             it[0] to it.getOrNull(1).orEmpty()
         }
-        val list = if (kind == "film") {
-            val flight = flightText(app.get("$mainUrl/film-izle").text)
-            val films = jsonArray(flight, "films")?.let { mapper.readTree(it) } ?: return newHomePageResponse(request.name, emptyList())
-            films.filter { genre.isBlank() || it.path("g").toString().contains(genre) }
-                .map { film ->
-                    val href = fixUrl(film.path("u").asText())
-                    val title = film.path("t").asText()
-                    val poster = cleanImg(film.path("p").asText())
-                    val score = Score.from10(film.path("im").asDouble(0.0))
-                    if (href.contains("/dizi/")) {
-                        newTvSeriesSearchResponse(title, href, TvType.TvSeries) {
-                            this.posterUrl = poster
-                            this.score = score
-                        }
-                    } else {
-                        newMovieSearchResponse(title, href, TvType.Movie) {
-                            this.posterUrl = poster
-                            this.score = score
-                        }
-                    }
-                }
+        val list: List<SearchResponse> = if (kind == "film") {
+            parseFilms(app.get("$mainUrl/film-izle").text)
+                .filter { genre.isBlank() || it.genres.contains(genre, ignoreCase = true) }
+                .map { it.toSearchResponse() }
         } else {
             parseSeries(app.get("$mainUrl/kesfet").text)
         }
@@ -68,15 +51,7 @@ class AsyaWatch : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val q = query.trim().lowercase()
         if (q.length < 2) return emptyList()
-        val flight = flightText(app.get("$mainUrl/film-izle").text)
-        val films = jsonArray(flight, "films")?.let { mapper.readTree(it) }?.map { film ->
-            val href = fixUrl(film.path("u").asText())
-            val title = film.path("t").asText()
-            newMovieSearchResponse(title, href, TvType.Movie) {
-                this.posterUrl = cleanImg(film.path("p").asText())
-                this.score = Score.from10(film.path("im").asDouble(0.0))
-            }
-        }.orEmpty()
+        val films = parseFilms(app.get("$mainUrl/film-izle").text).map { it.toSearchResponse() }
         val series = parseSeries(app.get("$mainUrl/kesfet").text)
         return (films + series).filter { it.name.lowercase().contains(q) }.take(40)
     }
@@ -143,14 +118,13 @@ class AsyaWatch : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         val html = app.get(data).text
-        val sources = jsonArray(flightText(html), "sources")?.let { mapper.readTree(it) }
-            ?: run {
-                Log.d("ASYA", "kaynak bulunamadı: $data")
-                return false
-            }
+        val embeds = EMBED_REGEX.findAll(html).map { it.value }.distinct().toList()
+        if (embeds.isEmpty()) {
+            Log.d("ASYA", "kaynak bulunamadı: $data")
+            return false
+        }
         var found = false
-        for (src in sources) {
-            val embed = fixUrl(src.path("src").asText().ifBlank { continue })
+        for (embed in embeds) {
             found = if (embed.contains("pichive")) {
                 resolvePichive(embed, subtitleCallback, callback) || found
             } else {
@@ -233,42 +207,19 @@ class AsyaWatch : MainAPI() {
         }.distinctBy { it.url }
     }
 
-    private fun flightText(html: String): String {
-        val sb = StringBuilder()
-        for (match in FLIGHT_REGEX.findAll(html)) {
-            runCatching { mapper.readValue(match.groupValues[1], String::class.java) }
-                .getOrNull()?.let { sb.append(it) }
-        }
-        return sb.toString()
-    }
-
-    private fun jsonArray(text: String, key: String): String? {
-        val keyPos = text.indexOf("\"$key\":[")
-        if (keyPos < 0) return null
-        val start = text.indexOf('[', keyPos)
-        var depth = 0
-        var inString = false
-        var escaped = false
-        for (i in start until text.length) {
-            val c = text[i]
-            if (inString) {
-                when {
-                    escaped -> escaped = false
-                    c == '\\' -> escaped = true
-                    c == '"' -> inString = false
-                }
-                continue
-            }
-            when (c) {
-                '"' -> inString = true
-                '[' -> depth++
-                ']' -> {
-                    depth--
-                    if (depth == 0) return text.substring(start, i + 1)
-                }
-            }
-        }
-        return null
+    private fun parseFilms(html: String): List<FilmCard> {
+        val doc = Jsoup.parse(html)
+        return doc.select("a.pc[href^=/film/]").mapNotNull { a ->
+            val href = a.attr("href")
+            val title = a.selectFirst("b")?.text()?.ifBlank { null } ?: return@mapNotNull null
+            FilmCard(
+                title = title,
+                url = fixUrl(href),
+                poster = a.selectFirst("img")?.attr("src")?.let { cleanImg(it) },
+                score = a.selectFirst(".imdb")?.text()?.toDoubleOrNull()?.let { Score.from10(it) },
+                genres = a.selectFirst("small")?.text().orEmpty()
+            )
+        }.distinctBy { it.url }
     }
 
     private fun jsonText(node: com.fasterxml.jackson.databind.JsonNode, key: String): String? {
@@ -279,9 +230,22 @@ class AsyaWatch : MainAPI() {
     private fun cleanImg(url: String?): String? =
         url?.replace("images-macellan-online.cdn.ampproject.org/i/s/", "")
 
+    private data class FilmCard(
+        val title: String,
+        val url: String,
+        val poster: String?,
+        val score: Score?,
+        val genres: String
+    ) {
+        fun toSearchResponse(): SearchResponse = newMovieSearchResponse(title, url, TvType.Movie) {
+            this.posterUrl = poster
+            this.score = score
+        }
+    }
+
     private companion object {
         val mapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        val FLIGHT_REGEX = Regex("""self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)""")
+        val EMBED_REGEX = Regex("""https?://[a-zA-Z0-9.\-]+/iframe\.php\?v=[a-zA-Z0-9_\-]+""")
     }
 }
