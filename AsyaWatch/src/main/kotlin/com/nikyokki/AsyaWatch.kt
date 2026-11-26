@@ -10,7 +10,7 @@ import org.jsoup.Jsoup
 import java.security.MessageDigest
 
 /**
- * 26.11.2026: site Next.js App Router'a geçti. Eski /api/bg/* uçları 404,
+ * 26.11.2026: site Next.js App Router'a geçti. Eski api/bg uçları 404,
  * __NEXT_DATA__ kalktı. Veriler SSR "flight" payload'ında, oynatıcı kaynakları
  * pichive iframe'lerinde.
  */
