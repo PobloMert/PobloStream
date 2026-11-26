@@ -280,18 +280,24 @@ class BelgeselX : MainAPI() {
                         sourceName = "Google"
                     }
 
-                    // Follow redirects for php stream URLs to get the final playable video URL
+                    // 26.11.2026: oynatıcı artık medyayı doğrudan vermiyor;
+                    // belgeselx{,2,3}.php -> blogspot -> googlevideo yönlendirmesi.
+                    // Yönlendirmeyi izlemeyen bağlantılar mpv'de "loading failed" oluyor.
                     var finalVideoUrl = videoUrl
-                    if (videoUrl.contains("belgeselx.php") || videoUrl.contains("belgeselx2.php") || videoUrl.contains("belgeselx3.php")) {
-                        try {
-                            val redirectRes = app.get(videoUrl, referer = refererUrl, allowRedirects = true)
-                            if (redirectRes.code == 200 && redirectRes.url.isNotEmpty() && !redirectRes.url.contains("belgeselx")) {
-                                finalVideoUrl = redirectRes.url
-                                Log.d("BLX", "Resolved redirect: $videoUrl -> $finalVideoUrl")
-                            }
+                    if (listOf("belgeselx.php", "belgeselx2.php", "belgeselx3.php").any { videoUrl.contains(it) }) {
+                        val resolved = try {
+                            app.get(videoUrl, referer = refererUrl, allowRedirects = true)
                         } catch (e: Exception) {
-                            Log.e("BLX", "Failed to resolve redirect: ${e.message}")
+                            Log.e("BLX", "Yönlendirme çözülemedi: ${e.message}")
+                            null
                         }
+                        val target = resolved?.url.orEmpty()
+                        if (resolved?.code != 200 || !target.startsWith("http") || target.contains("belgeselx.com")) {
+                            Log.d("BLX", "Ölü kaynak atlandı: $videoUrl (kod=${resolved?.code})")
+                            return@forEach
+                        }
+                        finalVideoUrl = target
+                        Log.d("BLX", "Çözüldü: $videoUrl -> ${target.take(120)}")
                     }
 
                     val linkType = if (finalVideoUrl.contains(".m3u8")) ExtractorLinkType.M3U8 else ExtractorLinkType.VIDEO
