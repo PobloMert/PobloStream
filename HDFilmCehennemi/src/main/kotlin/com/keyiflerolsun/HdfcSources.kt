@@ -28,6 +28,8 @@ internal object HdfcSources {
     data class Embed(val label: String, val url: String)
 
     private fun clean(text: String): String = text
+        .replace(Regex("\\.[\\w-]+\\s*\\{[^}]*\\}"), " ")
+        .replace(Regex("\\{[^}]*\\}"), " ")
         .replace(Regex("\\([^)]*\\)"), " ")
         .split(Regex("\\s+"))
         .filter { it.isNotBlank() }

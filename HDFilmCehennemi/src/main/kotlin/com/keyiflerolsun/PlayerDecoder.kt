@@ -42,10 +42,17 @@ internal object PlayerDecoder {
         ".vtt", ".srt", ".ass", ".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".ico", ".css", ".js", ".html", ".htm", ".php"
     )
 
+    /**
+     * Tuzak adresler: her filmde aynı 1,5 dakikalık tanıtım videosu.
+     * (playmix.uno / videosample / filmakinesimp4 — gerçek yayın değil.)
+     */
+    private val TRAP_HINTS = listOf("videosample", "filmakinesim", "playmix.uno")
+
     fun isPlausibleStreamUrl(url: String?): Boolean {
         if (url.isNullOrBlank() || url.length > 3000) return false
         if (!url.startsWith("http://") && !url.startsWith("https://")) return false
         if (url.any { it.isWhitespace() || it == '"' || it == '\'' || it == '<' || it == '>' || it == '\\' || it.code < 0x20 }) return false
+        if (TRAP_HINTS.any { url.lowercase().contains(it) }) return false
         val uri = try { java.net.URI(url) } catch (e: Exception) { null } ?: return false
         val host = uri.host ?: return false
         if (!host.contains('.')) return false
