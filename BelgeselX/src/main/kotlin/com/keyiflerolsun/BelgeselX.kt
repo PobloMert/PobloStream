@@ -286,7 +286,14 @@ class BelgeselX : MainAPI() {
                     var finalVideoUrl = videoUrl
                     if (listOf("belgeselx.php", "belgeselx2.php", "belgeselx3.php").any { videoUrl.contains(it) }) {
                         val resolved = try {
-                            app.get(videoUrl, referer = refererUrl, allowRedirects = true)
+                            app.get(
+                                videoUrl,
+                                referer = refererUrl,
+                                headers = mapOf(
+                                    "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+                                ),
+                                allowRedirects = true
+                            )
                         } catch (e: Exception) {
                             Log.e("BLX", "Yönlendirme çözülemedi: ${e.message}")
                             null
