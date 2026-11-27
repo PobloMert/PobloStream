@@ -109,7 +109,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/builds
           SHA=$(git rev-parse HEAD)
-          python3 -c 'import json,sys,time; sha=sys.argv[1]; repo="PobloMert/PobloStream"; f="repo.json"; j=json.load(open(f,encoding="utf-8-sig")); j["pluginLists"]=["https://cdn.jsdelivr.net/gh/"+repo+"@"+sha+"/plugins.json?t="+sha[:12]]; j["timestamp"]=int(time.time()); j["lastUpdated"]=j["timestamp"]; json.dump(j,open(f,"w",encoding="utf-8"),ensure_ascii=False,indent=2)' "$SHA"
+          python3 -c 'import json,sys,time; sha=sys.argv[1]; repo="PobloMert/PobloStream"; f="repo.json"; j=json.load(open(f,encoding="utf-8-sig")); spor="https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor_plugins.json"; j["pluginLists"]=["https://cdn.jsdelivr.net/gh/"+repo+"@"+sha+"/plugins.json?t="+sha[:12], spor]; j["timestamp"]=int(time.time()); j["lastUpdated"]=j["timestamp"]; json.dump(j,open(f,"w",encoding="utf-8"),ensure_ascii=False,indent=2)' "$SHA"
           git add repo.json
           git commit -m "sabit manifest ${SHA}" || echo "yeni degisiklik yok"
           git push origin builds

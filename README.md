@@ -54,6 +54,13 @@ Ardından depodan istediğin eklentileri indir. Güncellemeler uygulama içinden
 
 🆕 = feroxx/Kekik-cloudstream deposundan aktarılıp güncellenen eklentiler.
 
+### ⚽ Canlı spor kanalları
+
+Depo, film/dizilerin yanında **29 canlı spor eklentisini** de listeler (`Live`). Bunlar [Wiojelt/WioSpor](https://github.com/Wiojelt/WioSpor) deposundan bu depoya aynalanmıştır; kurulum ve indirme yine PobloStream üzerinden yapılır ve eklentiler CloudStream'de **Canlı TV** sekmesinde görünür.
+
+SelcukSports · Taraftarium24 · PatronHD · KralSporHD · ArdaSpor · BetmatikTV · TRGoals · DomatesTV · MahsunSports · AtomSpor · LeoTV · Streamed · JestYayin · PapazSports · NetVGold · v10 Spor · Mien TV · Kool TV · StbTV · AslanTV · KoalaTV · BeyazElma · NewTVLive · çiftd2m · TimStreams · RecTV · BasketballVideo · BasketballReplays · WioSpor
+
+
 ---
 
 ## 🛡️ Erişim engeli (VPN gerekmez)
