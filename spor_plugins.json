@@ -1,0 +1,586 @@
+[
+  {
+    "name": "WioSpor",
+    "internalName": "WioSpor",
+    "version": 59,
+    "description": "WioSpor · Tek eklenti ile tüm spor sağlayıcıları, canlı skorlar ve kanallar.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/WioSpor.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 837265,
+    "fileHash": "sha256-9f820774e1ff9e9b3dda8d12e5037a29050ab308f9481948805643c16cf503df",
+    "apiVersion": 1
+  },
+  {
+    "name": "v10 Spor",
+    "internalName": "BirdirbirIPTV",
+    "version": 28,
+    "description": "v10 Spor / IPTV - 17 seÃ§ili canlÄ± liste, beIN, S Sport, Tivibu, tabii, Exxen, ulusal ve dÃ¼nya kanallarÄ±",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/BirdirbirIPTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/BirdirbirIPTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 238394,
+    "fileHash": "sha256-a57408a2254d21cabdfa52c8c08b051d7b2745e1cc54397a3f936741addf1a58",
+    "apiVersion": 1
+  },
+  {
+    "name": "ArdaSpor",
+    "internalName": "ArdaSpor",
+    "version": 12,
+    "description": "ğŸŸ¢ Kaynak: ArdaSpor Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/ArdaSpor.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/ArdaSpor.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 182830,
+    "fileHash": "sha256-2944961cee6655da0dacfd17feb7dd52a0739e5fcba1367c03766bae0a1843de",
+    "apiVersion": 1
+  },
+  {
+    "name": "BasketballReplays",
+    "internalName": "BasketballReplays",
+    "version": 3,
+    "description": "BasketballReplays Â· Full game replays (NBA, EuroLeague)",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/BasketballReplays.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/BasketballReplays.png",
+    "tvTypes": [
+      "Movie",
+      "Others"
+    ],
+    "language": "en",
+    "status": 1,
+    "fileSize": 190236,
+    "fileHash": "sha256-7842f847e93a3c44a18d8150a4fd5eb2ba77bd0739795867f23b041411f17715",
+    "apiVersion": 1
+  },
+  {
+    "name": "BasketballVideo",
+    "internalName": "BasketballVideo",
+    "version": 3,
+    "description": "BasketballVideo Â· Game replays & highlights (AfiÅŸ destekli)",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/BasketballVideo.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/BasketballVideo.png",
+    "tvTypes": [
+      "Movie",
+      "Others"
+    ],
+    "language": "en",
+    "status": 1,
+    "fileSize": 170982,
+    "fileHash": "sha256-1114aa4a1ffda6b58c2dda5bbf7db27b6b12d1bec86d6de0881930d8e413d2d6",
+    "apiVersion": 1
+  },
+  {
+    "name": "BetmatikTV",
+    "internalName": "BetmatikTV",
+    "version": 3,
+    "description": "Betmatik TV canlÄ± spor kanallarÄ± Â· otomatik alan gÃ¼ncelleme",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/BetmatikTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/BetmatikTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 219083,
+    "fileHash": "sha256-ff17447c948bcd73f6935236ff878d83d903d9b2958fba35284dc0997c0ae9ca",
+    "apiVersion": 1
+  },
+  {
+    "name": "BeyazElma",
+    "internalName": "BeyazElma",
+    "version": 12,
+    "description": "ğŸŸ¢ Kaynak: BeyazElma Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/BeyazElma.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/BeyazElma.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 219121,
+    "fileHash": "sha256-4948e352375d04fad0510847b0127aa8226176e7ac1aaf048ae7ff7d058adcd6",
+    "apiVersion": 1
+  },
+  {
+    "name": "DomatesTV",
+    "internalName": "DomatesTV",
+    "version": 6,
+    "description": "Domates TV dinamik spor kanallarÄ±",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/DomatesTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/DomatesTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 171289,
+    "fileHash": "sha256-a458f3331ff41fd1191a3ba07a5aaeabde10dc4b6aff953a8687abc2e1a0622c",
+    "apiVersion": 1
+  },
+  {
+    "name": "JestYayin",
+    "internalName": "JestYayin",
+    "version": 3,
+    "description": "JestYayin canlÄ± maÃ§lar ve spor kanallarÄ±",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/JestYayin.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 235405,
+    "fileHash": "sha256-b42b08a9105f61305057fa928f01f7eff94e95fba04fd4dbaba7a37d990aacfa",
+    "apiVersion": 1
+  },
+  {
+    "name": "Kool TV",
+    "internalName": "KoolTV",
+    "version": 1,
+    "description": "",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/KoolTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 26410,
+    "fileHash": "sha256-bf354d6dcbf40c47e473f8987ac62503ec63fbc71fb0dda686fa4dc38fc766f7",
+    "apiVersion": 1
+  },
+  {
+    "name": "KralSporHD",
+    "internalName": "KralSporHD",
+    "version": 5,
+    "description": "ğŸ‘‘ Kaynak: KralSporHD Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/KralSporHD.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/KralSporHD.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 176010,
+    "fileHash": "sha256-62c6cd0bd05570fa39c84f529de619ac61fe2b2d7fab83603311ab4af35ebb29",
+    "apiVersion": 1
+  },
+  {
+    "name": "MahsunSports",
+    "internalName": "MahsunSports",
+    "version": 9,
+    "description": "ğŸŸ¢ Kaynak: MahsunSports Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/MahsunSports.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/MahsunSports.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 178888,
+    "fileHash": "sha256-25e1f1d1f863015e5c530db2be18148158281e4663e845bc46eea7be0306ded6",
+    "apiVersion": 1
+  },
+  {
+    "name": "NetVGold",
+    "internalName": "NetVGold",
+    "version": 3,
+    "description": "NETV Gold uygulamasÄ±nÄ±n doÄŸrulanmÄ±ÅŸ spor kanallarÄ±",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/NetVGold.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/NetVGold.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 230994,
+    "fileHash": "sha256-d1bf7dcba3da7b13d21850505d7a3e297c0b5cf890fba0d3acfba352a0114b73",
+    "apiVersion": 1
+  },
+  {
+    "name": "PapazSports",
+    "internalName": "PapazSports",
+    "version": 1,
+    "description": "PapazSports canlÄ± kanal ve maÃ§ listesi, artan alan adÄ± keÅŸfi ve gÃ¼ncelleme ekranÄ±.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/PapazSports.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/PapazSports.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 230234,
+    "fileHash": "sha256-1c6e2b5b8aca897fbe20b8e39636c1cb6d2cb155a02314a8efb5ab4aa82823d3",
+    "apiVersion": 1
+  },
+  {
+    "name": "PatronHD",
+    "internalName": "PatronHD",
+    "version": 17,
+    "description": "ğŸ”´ Kaynak: PatronHD / Patronspor Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/PatronHD.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/PatronHD.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 219044,
+    "fileHash": "sha256-ee04166393f2320c11ed8722d209ab4b7ba0a2f1a1b32fbc5ed08560824d49b3",
+    "apiVersion": 1
+  },
+  {
+    "name": "SelcukSports",
+    "internalName": "SelcukSports",
+    "version": 12,
+    "description": "ğŸŸ¢ Kaynak: SelÃ§ukSports Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/SelcukSports.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/SelcukSports.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 174401,
+    "fileHash": "sha256-2c7813632c35dc645d652c03923124455b8acde7a8454cc922e65670b6ecf4b8",
+    "apiVersion": 1
+  },
+  {
+    "name": "Streamed",
+    "internalName": "Streamed",
+    "version": 3,
+    "description": "ğŸŸ¢ Kaynak: Streamed â€¢ @Kraptor123 | @kekikanime Â· Futbol, Basketbol, Tenis, Kriket, DÃ¶vÃ¼ÅŸ ve daha fazlasÄ±.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/Streamed.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/Streamed.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 169440,
+    "fileHash": "sha256-779e29401bfa0617bce8094d3ab5dfff85dfea354e79d88a70e24ed9fa4614b0",
+    "apiVersion": 1
+  },
+  {
+    "name": "Taraftarium24",
+    "internalName": "Taraftarium24",
+    "version": 14,
+    "description": "ğŸ”´ Kaynak: Taraftarium24 Â· EmeÄŸi iÃ§in teÅŸekkÃ¼rler â™¥ Â· @wiojelt",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/Taraftarium24.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/Taraftarium24.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 175648,
+    "fileHash": "sha256-e56f19bb0defe1e321e964a5b30fc72759c5351c169fdfc8d476ffca858c4d69",
+    "apiVersion": 1
+  },
+  {
+    "name": "TRGoals",
+    "internalName": "TRGoals",
+    "version": 3,
+    "description": "TRGoals dinamik spor kanallarÄ± ve alan gÃ¼ncelleme ekranÄ±",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/TRGoals.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/TRGoals.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 232719,
+    "fileHash": "sha256-b6fd54dc05d497e55c6476e00e7a594cdb69df610d2ba5c58e5ab378904c7dbd",
+    "apiVersion": 1
+  },
+  {
+    "name": "Mien TV",
+    "internalName": "VionTV",
+    "version": 7,
+    "description": "Mien TV canlı TV kanallarını kategori, arama ve kanal logolarıyla sunar.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/VionTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/VionTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 161887,
+    "fileHash": "sha256-08946613d2f850489fa4a18be253ab46fe98eba4658f10ab5b7b9fef876ddd42",
+    "apiVersion": 1
+  },
+  {
+    "name": "LeoTV",
+    "internalName": "LeoTV",
+    "version": 2,
+    "description": "LeoTV / LeoGrand canlı spor ve TV yayınları (Dinamik AES-CBC akış çözücü)",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/LeoTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 157849,
+    "fileHash": "sha256-dbce2939ae71d3d7e2f3ba69eab4e09a36689050eca6e5a91202280afddb9b3e",
+    "apiVersion": 1
+  },
+  {
+    "name": "AtomSpor",
+    "internalName": "AtomSpor",
+    "version": 2,
+    "description": "AtomSporTV canlı spor kanalları ve maç yayınları",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/AtomSpor.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 158179,
+    "fileHash": "sha256-bd733112e5527ee491ce087b139624711e7e575f504233d91a41f2a6be1a8a26",
+    "apiVersion": 1
+  },
+  {
+    "name": "StbTV",
+    "internalName": "StbTV",
+    "version": 7,
+    "description": "Stalker STB Canlı TV & Spor. Linkler en az 2, en fazla 6 kişiliktir. Kesintisiz canlı yayın akışı ve logo desteği.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/StbTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 284811,
+    "fileHash": "sha256-64e0adef2cc49216088b7f9df6002528f1af14bb75fe2c6a5a8054076bbd63ca",
+    "apiVersion": 1
+  },
+  {
+    "name": "AslanTV",
+    "internalName": "AslanTV",
+    "version": 11,
+    "description": "🟢 Kaynak: Aslan TV · Derleme izni ve emeği için yapımcısına teşekkürler ♥ · @wiojelt · WARP gerekebilir.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/AslanTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/AslanTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 266087,
+    "fileHash": "sha256-3abc75e13cc76b6867f12ef6afa5ea3fc5f6910088724459163d7bd4a806ed0d",
+    "apiVersion": 1
+  },
+  {
+    "name": "KoalaTV",
+    "internalName": "KoalaTV",
+    "version": 5,
+    "description": "KoalaTV · Canlı TV kanalları, spor, ulusal ve dünya yayınları.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/KoalaTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/KoalaTV.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 547125,
+    "fileHash": "sha256-61a9c4feee1f6f94dcf76cd2d6e6a6875bb5e7686dd6440db65e7f705b248736",
+    "apiVersion": 1
+  },
+  {
+    "name": "NewTVLive",
+    "internalName": "NewTVLive",
+    "version": 4,
+    "description": "NewTV Live · Canlı TV, Türk kanalları, spor, sinema & ulusal yayınlar. PIN korumalı yetişkin bölümü.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/NewTVLive.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/NewTVLive.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 180632,
+    "fileHash": "sha256-8c6a381eb8c02bb98feab240f9fa40df467443a656d8537728ee061219112b82",
+    "apiVersion": 1
+  },
+  {
+    "name": "çiftd2m",
+    "internalName": "CiftD2M",
+    "version": 2,
+    "description": "çiftd2m · py.md/json canlı yayınları ve dinamik kategori yönetimi.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/CiftD2M.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/CiftD2M.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 181360,
+    "fileHash": "sha256-b6896901f518629155cb285e3e4d2f5a48364439b433b537e9e13ea607a14ab8",
+    "apiVersion": 1
+  },
+  {
+    "name": "TimStreams",
+    "internalName": "TimStreams",
+    "version": 4,
+    "description": "TimStreams - Spor ve Canlı Yayınlar",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/TimStreams.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/TimStreams.png",
+    "tvTypes": [
+      "Live"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 181013,
+    "fileHash": "sha256-0512185930a054789a25b0daad7cefa8814a756f060595eb01700751baa38dd5",
+    "apiVersion": 1
+  },
+  {
+    "name": "RecTV",
+    "internalName": "RecTV",
+    "version": 5,
+    "description": "RecTV - Canlı TV, Spor, Film ve Dizi sağlayıcısı.",
+    "authors": [
+      "Wiojelt"
+    ],
+    "repositoryUrl": "https://github.com/Wiojelt/WioSpor",
+    "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/RecTV.cs3",
+    "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor/icons/RecTV.png",
+    "tvTypes": [
+      "Live",
+      "Movie",
+      "TvSeries"
+    ],
+    "language": "tr",
+    "status": 1,
+    "fileSize": 145660,
+    "fileHash": "sha256-bfbdab89f458c2443f5a471a31a7c9a87b89bf8c7a13e6780f843273f4153441",
+    "apiVersion": 1
+  }
+]
