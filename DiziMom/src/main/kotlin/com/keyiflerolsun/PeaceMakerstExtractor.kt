@@ -18,7 +18,7 @@ open class PeaceMakerst : ExtractorApi() {
         val postUrl = "${url}?do=getVideo"
         Log.d("Kekik_${this.name}", "postUrl » $postUrl")
 
-        val response = app.post(
+        val response = EngelAsici.http.post(
             postUrl,
             data = mapOf(
                 "hash" to url.substringAfter("video/"),
@@ -33,7 +33,7 @@ open class PeaceMakerst : ExtractorApi() {
         )
         if (response.text.contains("teve2.com.tr\\/embed\\/")) {
             val teve2Id       = response.text.substringAfter("teve2.com.tr\\/embed\\/").substringBefore("\"")
-            val teve2Response = app.get(
+            val teve2Response = EngelAsici.http.get(
                 "https://www.teve2.com.tr/action/media/${teve2Id}",
                 referer = "https://www.teve2.com.tr/embed/${teve2Id}"
             ).parsedSafe<Teve2ApiResponse>() ?: throw ErrorLoadingException("teve2 response is null")

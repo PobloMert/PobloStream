@@ -81,11 +81,11 @@ internal object PlayerResolver {
         val embedOrigin = originOf(embedUrl)
         if (embedOrigin != null && embedOrigin.contains("mobi", ignoreCase = true)) {
             runCatching {
-                app.get(embedOrigin, headers = mapOf("User-Agent" to USER_AGENT), timeout = 10L)
+                EngelAsici.http.get(embedOrigin, headers = mapOf("User-Agent" to USER_AGENT), timeout = 10L)
             }
         }
         val response = try {
-            app.get(
+            EngelAsici.http.get(
                 embedUrl,
                 referer = pageReferer ?: embedOrigin,
                 headers = mapOf(

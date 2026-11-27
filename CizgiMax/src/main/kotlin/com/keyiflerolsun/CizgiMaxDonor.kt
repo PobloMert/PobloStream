@@ -30,7 +30,7 @@ class CizgiMaxDonor : MainAPI() {
             request.data
         }
 
-        val document = app.get(requestUrl).document
+        val document = EngelAsici.http.get(requestUrl).document
         val home     = document.select("div.film-list div.film-item").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(request.name, home)
@@ -55,12 +55,12 @@ class CizgiMaxDonor : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/ara/?q=${query}").document
+        val document = EngelAsici.http.get("${mainUrl}/ara/?q=${query}").document
         return document.select("div.film-list div.film-item").mapNotNull { it.toSearchResult() }
     }
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val titleEl     = document.selectFirst("h1 a.anime-title-link") ?: document.selectFirst("h1")
         val title       = titleEl?.text()?.trim() ?: return null
@@ -120,7 +120,7 @@ class CizgiMaxDonor : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         Log.d("CZGM", "data » $data")
-        val document = app.get(data).document
+        val document = EngelAsici.http.get(data).document
 
         val script = document.select("script").find { it.data().contains("var servers") }?.data() ?: return false
 
@@ -215,7 +215,7 @@ class CizgiMaxDonor : MainAPI() {
     ) {
         try {
             val metaFullUrl = if (server.metaUrl!!.startsWith("http")) server.metaUrl else "${mainUrl}${server.metaUrl}"
-            val metaRes     = app.get(metaFullUrl, referer = refererUrl).parsedSafe<MetaResponse>()
+            val metaRes     = EngelAsici.http.get(metaFullUrl, referer = refererUrl).parsedSafe<MetaResponse>()
 
             metaRes?.subs?.forEach { sub ->
                 val subUrl = sub.url?.takeIf { it.isNotEmpty() } ?: return@forEach
@@ -248,10 +248,10 @@ class CizgiMaxDonor : MainAPI() {
     ) {
         try {
             val resolveUrl = if (server.resolveUrl!!.startsWith("http")) server.resolveUrl else "${mainUrl}${server.resolveUrl}"
-            val resolveRes = app.get(resolveUrl, referer = refererUrl).parsedSafe<ResolveResponse>()
+            val resolveRes = EngelAsici.http.get(resolveUrl, referer = refererUrl).parsedSafe<ResolveResponse>()
             val embedId    = resolveRes?.id
             if (!embedId.isNullOrEmpty()) {
-                val tauRes = app.get("https://tau-video.xyz/api/video/$embedId", referer = "https://tau-video.xyz/").parsedSafe<TauResponse>()
+                val tauRes = EngelAsici.http.get("https://tau-video.xyz/api/video/$embedId", referer = "https://tau-video.xyz/").parsedSafe<TauResponse>()
                 tauRes?.urls?.forEach { tauUrl ->
                     if (tauUrl.url.isNotEmpty()) {
                         callback.invoke(
@@ -281,7 +281,7 @@ class CizgiMaxDonor : MainAPI() {
     ) {
         try {
             val qUrl = if (server.qualitiesUrl!!.startsWith("http")) server.qualitiesUrl else "${mainUrl}${server.qualitiesUrl}"
-            val qRes = app.get(qUrl, referer = refererUrl).parsedSafe<QualitiesResponse>()
+            val qRes = EngelAsici.http.get(qUrl, referer = refererUrl).parsedSafe<QualitiesResponse>()
             qRes?.qualities?.forEach { qItem ->
                 val rawUrl = qItem.url?.takeIf { it.isNotEmpty() } ?: return@forEach
                 val fullUrl = if (rawUrl.startsWith("http")) rawUrl else "${mainUrl}${rawUrl}"
@@ -315,7 +315,7 @@ class CizgiMaxDonor : MainAPI() {
         var bodyStart = ""
 
         try {
-            val headRes = app.get(streamUrl, referer = refererUrl, allowRedirects = false)
+            val headRes = EngelAsici.http.get(streamUrl, referer = refererUrl, allowRedirects = false)
             if (headRes.code == 301 || headRes.code == 302) {
                 val redirectLoc = headRes.headers["location"] ?: headRes.headers["Location"]
                 if (!redirectLoc.isNullOrEmpty()) {
@@ -367,7 +367,7 @@ class CizgiMaxDonor : MainAPI() {
 
         if (iframeSrc.contains("/oynat/")) {
             try {
-                val redirRes = app.get(iframeSrc, referer = refererUrl, allowRedirects = false)
+                val redirRes = EngelAsici.http.get(iframeSrc, referer = refererUrl, allowRedirects = false)
                 val loc = redirRes.headers["location"] ?: redirRes.headers["Location"]
                 if (!loc.isNullOrEmpty()) {
                     iframeSrc = if (loc.startsWith("http")) loc else "${mainUrl}${loc}"
@@ -410,7 +410,7 @@ class CizgiMaxDonor : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ) {
         try {
-            val document = app.get(
+            val document = EngelAsici.http.get(
                 url     = url,
                 headers = mapOf(
                     "User-Agent"       to "Mozilla/5.0 (Linux; Android 15) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.7049.38 Mobile Safari/537.36",
@@ -467,7 +467,7 @@ class CizgiMaxDonor : MainAPI() {
                 "Sec-Fetch-Dest" to "iframe"
             )
             val targetUrl = url.replace("vidmoly.me", "vidmoly.net").replace("vidmoly.to", "vidmoly.net")
-            val iSource   = app.get(targetUrl, headers = headers, referer = "$mainUrl/").text
+            val iSource   = EngelAsici.http.get(targetUrl, headers = headers, referer = "$mainUrl/").text
             val m3uLink   = Regex("""file\s*:\s*["'](https?://[^"']+\.m3u8[^"']*)["']""").find(iSource)?.groupValues?.get(1)
                 ?: Regex("""sources\s*:\s*\[\s*\{\s*file\s*:\s*["']([^"']+)["']""").find(iSource)?.groupValues?.get(1)
 
@@ -496,7 +496,7 @@ class CizgiMaxDonor : MainAPI() {
     ) {
         try {
             val userAgent = mapOf("User-Agent" to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36")
-            val videoReq  = app.get(url, headers = userAgent).text
+            val videoReq  = EngelAsici.http.get(url, headers = userAgent).text
                 .replace("\\&quot;", "\"")
                 .replace("&quot;", "\"")
                 .replace("\\\\", "\\")
@@ -535,7 +535,7 @@ class CizgiMaxDonor : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ) {
         try {
-            val response = app.get(url, referer = "$mainUrl/").text
+            val response = EngelAsici.http.get(url, referer = "$mainUrl/").text
             val unpacked = getAndUnpack(response)
             val m3uLink  = Regex("""file\s*:\s*["'](https?://[^"']+\.m3u8[^"']*)["']""").find(unpacked)?.groupValues?.get(1)
                 ?: Regex("""file\s*:\s*["'](https?://[^"']+\.m3u8[^"']*)["']""").find(response)?.groupValues?.get(1)

@@ -125,7 +125,7 @@ class HDFilmCehennemi : MainAPI() {
         if (domainResolved) return
         for (candidate in domainCandidates) {
             try {
-                val res = app.get(
+                val res = EngelAsici.http.get(
                     candidate,
                     headers = mapOf(
                         "User-Agent" to USER_AGENT,
@@ -214,7 +214,7 @@ class HDFilmCehennemi : MainAPI() {
             "user-agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0",
             "Accept" to "*/*", "X-Requested-With" to "fetch"
         )
-        val doc = app.get(url, headers = headers, referer = mainUrl, interceptor = interceptor)
+        val doc = EngelAsici.http.get(url, headers = headers, referer = mainUrl, interceptor = interceptor)
         val home: List<SearchResponse>?
         if (!doc.toString().contains("Sayfa Bulunamadı")) {
             val aa: HDFC = objectMapper.readValue(doc.toString())
@@ -239,7 +239,7 @@ class HDFilmCehennemi : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         resolveDomain()
         val encoded = java.net.URLEncoder.encode(query, "UTF-8")
-        val response      = app.get(
+        val response      = EngelAsici.http.get(
             "${mainUrl}/search?q=$encoded",
             headers = mapOf(
                 "User-Agent"       to USER_AGENT,
@@ -302,7 +302,7 @@ class HDFilmCehennemi : MainAPI() {
     )
 
     private suspend fun tmdbTitlesByImdb(imdbId: String): List<String> {
-        val body = app.get(
+        val body = EngelAsici.http.get(
             "https://api.themoviedb.org/3/find/$imdbId" +
                 "?api_key=$TMDB_API_KEY&external_source=imdb_id&language=tr-TR"
         ).text
@@ -344,7 +344,7 @@ class HDFilmCehennemi : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         resolveDomain()
         val pageUrl = migrateUrl(url)
-        val document = app.get(
+        val document = EngelAsici.http.get(
             pageUrl,
             headers = mapOf(
                 "User-Agent" to USER_AGENT,
@@ -563,7 +563,7 @@ class HDFilmCehennemi : MainAPI() {
     ): Boolean {
         resolveDomain()
         val requestedUrl = migrateUrl(data)
-        val response = app.get(
+        val response = EngelAsici.http.get(
             requestedUrl,
             headers = mapOf(
                 "User-Agent" to USER_AGENT,
@@ -620,7 +620,7 @@ class HDFilmCehennemi : MainAPI() {
     /** `/video/{id}/` → oynatıcı iframe adresi. */
     private suspend fun fetchEmbed(button: HdfcSources.Button, pageUrl: String): HdfcSources.Embed? {
         val body = try {
-            app.get(
+            EngelAsici.http.get(
                 "${originOf(pageUrl) ?: mainUrl}/video/${button.videoId}/",
                 headers = mapOf(
                     "User-Agent" to USER_AGENT,

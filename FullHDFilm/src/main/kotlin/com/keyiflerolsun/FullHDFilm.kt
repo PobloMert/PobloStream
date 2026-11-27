@@ -54,7 +54,7 @@ class FullHDFilm : MainAPI() {
             )
         val baseUrl = request.data
         val urlpage = if (page == 1) baseUrl else "$baseUrl/page/$page"
-        val document = app.get(urlpage, headers=headers).document
+        val document = EngelAsici.http.get(urlpage, headers=headers).document
         val home     = document.select("div.movie-poster").mapNotNull { it.toMainPageResult() }
 
         return newHomePageResponse(request.name, home)
@@ -63,13 +63,13 @@ class FullHDFilm : MainAPI() {
     private fun Element.toMainPageResult(): SearchResponse? {
         val title     = this.selectFirst("img")?.attr("alt")?.trim() ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
-        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+        val posterUrl = EngelAsici.resim(fixUrlNull(this.selectFirst("img")?.attr("src")))
 
         return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/?s=${query}").document
+        val document = EngelAsici.http.get("${mainUrl}/?s=${query}").document
 
         return document.select("div.movie-poster").mapNotNull { it.toMainPageResult() }
     }
@@ -77,14 +77,16 @@ class FullHDFilm : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
     
         val title       = document.selectFirst("h1")?.text() ?: return null
     
-        val poster      = fixUrlNull(document.selectFirst("div.poster img")?.attr("src"))
-        val description = document.select("#details > div:nth-child(2) > div")?.text()?.trim()
-        val tags        = document.select("h4 a").map { it.text() }
-        val year        = Regex("""(\d+)""").find(document.selectFirst("div.release")?.text()?.trim() ?: "")?.groupValues?.get(1)?.toIntOrNull()
+        val poster      = EngelAsici.resim(fixUrlNull(document.selectFirst("div.poster img")?.attr("src")))
+        // #details'in 2. div'inin ilk div'i yalnızca özet; select() kardeş div.others'ı da (tarih, oyuncular…) katıyordu
+        val description = document.selectFirst("div#details > div:nth-child(2) > div")?.text()?.trim()
+        val tags        = document.select("div.tur a, div.categories a").map { it.text().trim() }.distinct()
+        // div.release kenar çubuğundaki başka filmlere ait; filmin kendi yılı "Yayın Tarihi" satırında
+        val year        = Regex("""(\d{4})""").find(document.selectFirst("div.yayin-tarihi")?.ownText() ?: "")?.groupValues?.get(1)?.toIntOrNull()
         val actors = document.selectFirst("div.oyuncular")?.ownText() ?.split(",") ?.map { Actor(it.trim()) } ?: emptyList()
     
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
@@ -140,7 +142,7 @@ class FullHDFilm : MainAPI() {
                 "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
                 "Referer" to mainUrl
             )
-            val iframeResponse = app.get(iframeUrl, headers=headers)
+            val iframeResponse = EngelAsici.http.get(iframeUrl, headers=headers)
             val iframeSource = iframeResponse.text
             Log.d("FHDF", "Iframe source length: ${iframeSource.length}")
             return extractSubtitleUrl(iframeSource)
@@ -162,7 +164,7 @@ class FullHDFilm : MainAPI() {
             "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
             "Referer" to mainUrl
         )
-        val response = app.get(data, headers=headers)
+        val response = EngelAsici.http.get(data, headers=headers)
         val sourceCode = response.text
         Log.d("FHDF", "Source code length: ${sourceCode.length}")
 
@@ -180,7 +182,7 @@ class FullHDFilm : MainAPI() {
         if (subtitleUrl != null) {
             try {
                 // Altyazı URL’sinin erişilebilirliğini kontrol et
-                val subtitleResponse = app.get(subtitleUrl, headers=headers, allowRedirects=true)
+                val subtitleResponse = EngelAsici.http.get(subtitleUrl, headers=headers, allowRedirects=true)
                 if (subtitleResponse.isSuccessful) {
                     subtitleCallback(SubtitleFile("Türkçe", subtitleUrl))
                     Log.d("FHDF", "Subtitle added: $subtitleUrl")

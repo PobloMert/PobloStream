@@ -31,7 +31,7 @@ class DDizi : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val url = if (page > 1) "${request.data}/$page" else request.data
-        val document = app.get(url, headers = getHeaders(mainUrl)).document
+        val document = EngelAsici.http.get(url, headers = getHeaders(mainUrl)).document
     
         val home = when (request.name) {
             "Yerli Diziler" -> {
@@ -48,7 +48,7 @@ class DDizi : MainAPI() {
         
                         val cleanedHref = fixUrl(rawHref.replace(Regex("-\\d*-?son-bolum-izle/?$"), ""))
         
-                        val posterDoc = app.get(cleanedHref, headers = getHeaders(mainUrl)).document
+                        val posterDoc = EngelAsici.http.get(cleanedHref, headers = getHeaders(mainUrl)).document
                         val posterUrl = posterDoc.selectFirst("div.afis img, img.afis, img.img-back, img.img-back-cat")
                             ?.let { img -> fixUrlNull(img.attr("data-src") ?: img.attr("src")) }
         
@@ -87,7 +87,7 @@ class DDizi : MainAPI() {
         
         val formData = mapOf("arama" to query)
         
-        val document = app.post(
+        val document = EngelAsici.http.post(
             "$mainUrl/arama/", 
             data = formData, 
             headers = getHeaders(mainUrl)
@@ -140,7 +140,7 @@ class DDizi : MainAPI() {
     }
 
     override suspend fun load(url: String): LoadResponse {
-        val document = app.get(url, headers = getHeaders(mainUrl)).document
+        val document = EngelAsici.http.get(url, headers = getHeaders(mainUrl)).document
         val fullTitle = document.selectFirst("h1, h2, div.dizi-boxpost-cat a")?.text()?.trim() ?: ""
 
         // Başlık ayrıştırma için daha basit bir yöntem
@@ -160,7 +160,7 @@ class DDizi : MainAPI() {
 
             while (hasMorePages) {
                 val pageUrl = if (currentPage == 0) url else "$url/sayfa-$currentPage"
-                val pageDoc = if (currentPage == 0) document else app.get(pageUrl, headers = getHeaders(mainUrl)).document
+                val pageDoc = if (currentPage == 0) document else EngelAsici.http.get(pageUrl, headers = getHeaders(mainUrl)).document
 
                 val pageEpisodes = pageDoc.select("div.bolumler a, div.sezonlar a, div.dizi-arsiv a, div.dizi-boxpost-cat a")
                     .mapNotNull { ep ->
@@ -210,7 +210,7 @@ override suspend fun loadLinks(
     subtitleCallback: (SubtitleFile) -> Unit,
     callback: (ExtractorLink) -> Unit
 ): Boolean {
-    val document = app.get(data, headers = getHeaders(mainUrl)).document
+    val document = EngelAsici.http.get(data, headers = getHeaders(mainUrl)).document
 
     // Check for iframe with YouTube in src
     val iframeSrc = document.selectFirst("iframe")?.attr("src")
@@ -235,7 +235,7 @@ override suspend fun loadLinks(
     val ogVideo = document.selectFirst("meta[property=og:video]")?.attr("content")
         ?: return loadExtractor(data, data, subtitleCallback, callback) // Fallback to loadExtractor if no og:video
 
-    val playerDoc = app.get(ogVideo, headers = getHeaders(data)).document
+    val playerDoc = EngelAsici.http.get(ogVideo, headers = getHeaders(data)).document
     val jwScript = playerDoc.select("script").firstOrNull { it.html().contains("jwplayer") && it.html().contains("sources") }
         ?: return loadExtractor(ogVideo, data, subtitleCallback, callback) // Fallback to loadExtractor if no JW script
 

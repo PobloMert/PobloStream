@@ -23,7 +23,7 @@ open class Drive : ExtractorApi() {
 
         val docId        = Regex("""file/d/(.*)/preview""").find(url)?.groupValues?.get(1) ?: throw IllegalArgumentException("docId not found")
         val getVideoLink = "https://drive.google.com/get_video_info?docid=${docId}&drive_originator_app=303"
-        val iSource      = app.get(getVideoLink, referer=extRef).text
+        val iSource      = EngelAsici.http.get(getVideoLink, referer=extRef).text
 
         val bakalim = Regex("""&fmt_stream_map=(.*)&url_encoded_fmt_stream_map""").find(iSource)?.groupValues?.get(1) ?: throw IllegalArgumentException("fmt_stream_map not found")
         val decoded = bakalim.decodeUri()

@@ -22,7 +22,7 @@ open class YildizKisaFilm : ExtractorApi() {
         val postUrl = "${mainUrl}/player/index.php?data=${vidId}&do=getVideo"
         Log.d("Kekik_${this.name}", "postUrl » $postUrl")
 
-        val response = app.post(
+        val response = EngelAsici.http.post(
             postUrl,
             data = mapOf(
                 "hash" to vidId,

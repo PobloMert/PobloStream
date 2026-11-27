@@ -19,7 +19,7 @@ open class VideoSeyred : ExtractorApi() {
         val videoUrl = "${mainUrl}/playlist/${videoId}.json"
         Log.d("Kekik_${this.name}", "videoUrl » $videoUrl")
 
-        val responseRaw                          = app.get(videoUrl)
+        val responseRaw                          = EngelAsici.http.get(videoUrl)
         val responseList:List<VideoSeyredSource> = jacksonObjectMapper().readValue(responseRaw.text) ?: throw ErrorLoadingException("VideoSeyred")
         val response                              = responseList[0]
 

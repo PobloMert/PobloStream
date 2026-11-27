@@ -88,7 +88,7 @@ class Dizilla : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val url = if (request.data.contains("/arsiv") && page > 1) "${request.data}?page=$page" else request.data
-        val document = app.get(url, interceptor = interceptor).document
+        val document = EngelAsici.http.get(url, interceptor = interceptor).document
 
         val home = when {
             request.data.contains("/tum-bolumler") -> {
@@ -146,7 +146,7 @@ class Dizilla : MainAPI() {
 
     override suspend fun search(query: String): List<SearchResponse> {
         val url = "${mainUrl}/arsiv?q=${query}"
-        val document = app.get(url, interceptor = interceptor).document
+        val document = EngelAsici.http.get(url, interceptor = interceptor).document
         return document.select("a.pcard").mapNotNull { it.diziSonuc() }
     }
 
@@ -154,7 +154,7 @@ class Dizilla : MainAPI() {
 
     // --- Dizi detay (load) ---
     override suspend fun load(url: String): LoadResponse? {
-        val html = app.get(url, interceptor = interceptor).text
+        val html = EngelAsici.http.get(url, interceptor = interceptor).text
         val document = Jsoup.parse(html)
 
         val title = document.selectFirst("h1")?.text()?.trim() ?: return null
@@ -203,7 +203,7 @@ class Dizilla : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        val body = app.get(data, interceptor = interceptor).text
+        val body = EngelAsici.http.get(data, interceptor = interceptor).text
 
         // 1) Bölüm sayfasındaki kaçışlı JSON'dan gerçek Pichive iframe URL'sini bul
         //    (Next.js flight verisi: \"src\":\"https://four.pichive.online/iframe.php?v=...\")
@@ -218,7 +218,7 @@ class Dizilla : MainAPI() {
             ?: return false
 
         // 2) NP_CONFIG'i iframe sayfasından çıkar
-        val iframeBody = app.get(iframeUrl, headers = mapOf("Referer" to data)).text
+        val iframeBody = EngelAsici.http.get(iframeUrl, headers = mapOf("Referer" to data)).text
         val npConfigJson = extractJsonBlock(iframeBody, "window.NP_CONFIG") ?: return false
 
         // 3) NP_CONFIG'i parse et
@@ -247,7 +247,7 @@ class Dizilla : MainAPI() {
             val finalUrl = if (powToken != null) "$masterUrl&p=$powToken" else masterUrl
 
             try {
-                val response = app.get(finalUrl, headers = mapOf(
+                val response = EngelAsici.http.get(finalUrl, headers = mapOf(
                     "Referer" to referer,
                     "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
                 )).text

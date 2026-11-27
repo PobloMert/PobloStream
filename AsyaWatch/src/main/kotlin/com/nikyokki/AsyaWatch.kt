@@ -1,5 +1,7 @@
 package com.nikyokki
 
+import com.keyiflerolsun.EngelAsici
+
 import android.util.Log
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -37,11 +39,11 @@ class AsyaWatch : MainAPI() {
             it[0] to it.getOrNull(1).orEmpty()
         }
         val list: List<SearchResponse> = if (kind == "film") {
-            parseFilms(app.get("$mainUrl/film-izle").text)
+            parseFilms(EngelAsici.http.get("$mainUrl/film-izle").text)
                 .filter { genre.isBlank() || it.genres.contains(genre, ignoreCase = true) }
                 .map { it.toSearchResponse() }
         } else {
-            parseSeries(app.get("$mainUrl/kesfet").text)
+            parseSeries(EngelAsici.http.get("$mainUrl/kesfet").text)
         }
         val from = (page - 1) * 20
         val items = if (from >= list.size) emptyList() else list.drop(from).take(20)
@@ -51,15 +53,15 @@ class AsyaWatch : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val q = query.trim().lowercase()
         if (q.length < 2) return emptyList()
-        val films = parseFilms(app.get("$mainUrl/film-izle").text).map { it.toSearchResponse() }
-        val series = parseSeries(app.get("$mainUrl/kesfet").text)
+        val films = parseFilms(EngelAsici.http.get("$mainUrl/film-izle").text).map { it.toSearchResponse() }
+        val series = parseSeries(EngelAsici.http.get("$mainUrl/kesfet").text)
         return (films + series).filter { it.name.lowercase().contains(q) }.take(40)
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse {
-        val html = app.get(url).text
+        val html = EngelAsici.http.get(url).text
         val doc = Jsoup.parse(html)
         val ld = doc.select("script[type=application/ld+json]").mapNotNull { script ->
             runCatching { mapper.readTree(script.data()) }.getOrNull()
@@ -117,7 +119,7 @@ class AsyaWatch : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        val html = app.get(data).text
+        val html = EngelAsici.http.get(data).text
         val embeds = EMBED_REGEX.findAll(html).map { it.value }.distinct().toList()
         if (embeds.isEmpty()) {
             Log.d("ASYA", "kaynak bulunamadı: $data")
@@ -140,7 +142,7 @@ class AsyaWatch : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        val html = app.get(embed, referer = mainUrl).text
+        val html = EngelAsici.http.get(embed, referer = mainUrl).text
         val raw = Regex("""window\.NP_CONFIG\s*=\s*(\{.*?\});""").find(html)?.groupValues?.get(1)
             ?: return false
         val config = runCatching { mapper.readTree(raw) }.getOrNull() ?: return false

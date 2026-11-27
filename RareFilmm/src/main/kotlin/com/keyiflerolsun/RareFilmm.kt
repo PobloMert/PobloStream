@@ -32,7 +32,7 @@ class RareFilmm : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get("${request.data}${page}").document
+        val document = EngelAsici.http.get("${request.data}${page}").document
         val home     = document.select("div.post").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(
@@ -54,7 +54,7 @@ class RareFilmm : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}?s=${query}").document
+        val document = EngelAsici.http.get("${mainUrl}?s=${query}").document
 
         return document.select("div.post").mapNotNull { it.toSearchResult() }
     }
@@ -62,7 +62,7 @@ class RareFilmm : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val title       = document.selectFirst("h1.entry-title")?.text()?.trim() ?: return null
         val poster      = fixUrlNull(document.selectFirst("div.featured-image")?.attr("style")?.substringAfter("url(")?.substringBefore(")"))
@@ -78,7 +78,7 @@ class RareFilmm : MainAPI() {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("RRF", "data » $data")
-        val document = app.get(data).document
+        val document = EngelAsici.http.get(data).document
         val iframe   = fixUrlNull(document.selectFirst("article iframe")?.attr("src")) ?: return false
         Log.d("RRF", "iframe » $iframe")
 

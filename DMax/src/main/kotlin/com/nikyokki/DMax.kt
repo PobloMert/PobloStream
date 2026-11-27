@@ -1,5 +1,7 @@
 package com.nikyokki
 
+import com.keyiflerolsun.EngelAsici
+
 import android.util.Log
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
@@ -45,12 +47,12 @@ class DMax : MainAPI() {
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         if (page > 1) {
             val url = "$mainUrl/ajax/more"
-            val pageDocument = app.post(url, headers = headers, data = mapOf("type" to "discover",
+            val pageDocument = EngelAsici.http.post(url, headers = headers, data = mapOf("type" to "discover",
                 "slug" to request.data.split("/").last(), "page" to page.toString())).document
             val home     = pageDocument.select("div.poster").mapNotNull { it.toMainPageResult() }
             return newHomePageResponse(request.name, home)
         }
-        val document = app.get(request.data).document
+        val document = EngelAsici.http.get(request.data).document
         val home     = document.select("section.grid.dyn-content div.poster").mapNotNull { it.toMainPageResult() }
 
         return newHomePageResponse(request.name, home)
@@ -66,7 +68,7 @@ class DMax : MainAPI() {
 
     override suspend fun search(query: String): List<SearchResponse> {
 
-        val doc = app.post("$mainUrl/ajax/search", headers = headers, data = mapOf("query" to query)).document
+        val doc = EngelAsici.http.post("$mainUrl/ajax/search", headers = headers, data = mapOf("query" to query)).document
         return doc.select("section.posters div.poster").mapNotNull {
             it.toMainPageResult()
         }
@@ -75,7 +77,7 @@ class DMax : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse {
-        val doc = app.get(url).document
+        val doc = EngelAsici.http.get(url).document
         val title = doc.selectFirst("div.slide-title h1")?.text() ?: "Bilinmeyen Başlık"
         val poster = doc.selectFirst("div.slide-background")?.attr("data-mobile-src")
         val description = doc.selectFirst("div.slide-description p")?.text()
@@ -83,7 +85,7 @@ class DMax : MainAPI() {
         val episodeses = mutableListOf<Episode>()
         (doc.select("select#video-filter-changer option")).forEach { it ->
             val szn = it.attr("value").toIntOrNull()
-            val page = app.post("$mainUrl/ajax/more", headers = headers, data =
+            val page = EngelAsici.http.post("$mainUrl/ajax/more", headers = headers, data =
             mapOf("type" to "episodes", "program_id" to programId.toString(), "page" to "0", "season" to szn.toString())).document
             val hre = page.selectFirst("div.item a")?.attr("href")
             val href = hre?.split("-")
@@ -97,7 +99,7 @@ class DMax : MainAPI() {
             }
         }
         if (episodeses.size == 0) {
-            val docu = app.get("$url/kisa-videolar").document
+            val docu = EngelAsici.http.get("$url/kisa-videolar").document
             docu.select("div.items a").forEach { it ->
                 val href = it.attr("href")
                 val img = it.selectFirst("img")?.attr("src")
@@ -118,7 +120,7 @@ class DMax : MainAPI() {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("TLC", "data » $data")
-        val document = app.get(data).document
+        val document = EngelAsici.http.get(data).document
         val videoCode = document.selectFirst("div.videp-player-container div")?.attr("data-video-code")
         Log.d("TLC", "videoCode » $videoCode")
         val vidUrl = "https://dygvideo.dygdigital.com/api/redirect?PublisherId=27&ReferenceId=$videoCode&SecretKey=NtvApiSecret2014*"

@@ -28,7 +28,7 @@ class AnimeciX : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         return if (request.data.contains("/last-episodes")) {
-            val response = app.get(
+            val response = EngelAsici.http.get(
                 "${mainUrl}/secure/last-episodes?page=$page&perPage=10",
                 headers = mapOf(
                     "x-e-h" to "7Y2ozlO+QysR5w9Q6Tupmtvl9jJp7ThFH8SB+Lo7NvZjgjqRSqOgcT2v4ISM9sP10LmnlYI8WQ==.xrlyOBFS5BHjQ2Lk"
@@ -48,7 +48,7 @@ class AnimeciX : MainAPI() {
     
             newHomePageResponse(request.name, home)
         } else {
-            val response = app.get(
+            val response = EngelAsici.http.get(
                 "${request.data}&page=${page}&perPage=16",
                 headers = mapOf(
                     "x-e-h" to "7Y2ozlO+QysR5w9Q6Tupmtvl9jJp7ThFH8SB+Lo7NvZjgjqRSqOgcT2v4ISM9sP10LmnlYI8WQ==.xrlyOBFS5BHjQ2Lk"
@@ -70,7 +70,7 @@ class AnimeciX : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val response = app.get("${mainUrl}/secure/search/${query}?limit=20").parsedSafe<Search>() ?: return listOf()
+        val response = EngelAsici.http.get("${mainUrl}/secure/search/${query}?limit=20").parsedSafe<Search>() ?: return listOf()
 
         return response.results.map { anime ->
             newAnimeSearchResponse(
@@ -86,7 +86,7 @@ class AnimeciX : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val response = app.get(
+        val response = EngelAsici.http.get(
             url,
             headers = mapOf(
                 "x-e-h" to "7Y2ozlO+QysR5w9Q6Tupmtvl9jJp7ThFH8SB+Lo7NvZjgjqRSqOgcT2v4ISM9sP10LmnlYI8WQ==.xrlyOBFS5BHjQ2Lk"
@@ -97,7 +97,7 @@ class AnimeciX : MainAPI() {
 
         if (response.title.titleType == "anime") {
             for (sezon in response.title.seasons) {
-                val sezonResponse = app.get("${mainUrl}/secure/related-videos?episode=1&season=${sezon.number}&videoId=0&titleId=${titleId}").parsedSafe<TitleVideos>() ?: return null
+                val sezonResponse = EngelAsici.http.get("${mainUrl}/secure/related-videos?episode=1&season=${sezon.number}&videoId=0&titleId=${titleId}").parsedSafe<TitleVideos>() ?: return null
                 for (video in sezonResponse.videos) {
                     episodes.add(newEpisode(video.url) {
                         this.name = "${video.seasonNum}. Sezon ${video.episodeNum}. Bölüm"
@@ -141,7 +141,7 @@ override suspend fun loadLinks(
     val pageUrl = "$mainUrl/$data"
 
     // Sayfayı çek
-    val response = app.get(pageUrl, referer = "$mainUrl/")
+    val response = EngelAsici.http.get(pageUrl, referer = "$mainUrl/")
     var iframeLink = response.url
     Log.d("ACX", "iframeLink » $iframeLink")
 
@@ -155,7 +155,7 @@ override suspend fun loadLinks(
 
     // Eğer dizi (best-video) ise yönlendirmeyi takip et
     if (iframeLink.contains("/secure/best-video")) {
-        val redirectResponse = app.get(iframeLink, referer = "$mainUrl/")
+        val redirectResponse = EngelAsici.http.get(iframeLink, referer = "$mainUrl/")
         val redirectedUrl = redirectResponse.url
         Log.d("ACX", "Redirected final URL » $redirectedUrl")
 

@@ -17,7 +17,7 @@ open class Odnoklassniki : ExtractorApi() {
 
         val userAgent = mapOf("User-Agent" to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36")
 
-        val videoReq  = app.get(url, headers=userAgent).text.replace("\\&quot;", "\"").replace("\\\\", "\\")
+        val videoReq  = EngelAsici.http.get(url, headers=userAgent).text.replace("\\&quot;", "\"").replace("\\\\", "\\")
             .replace(Regex("\\\\u([0-9A-Fa-f]{4})")) { matchResult ->
                 Integer.parseInt(matchResult.groupValues[1], 16).toChar().toString()
             }

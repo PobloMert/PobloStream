@@ -1,5 +1,7 @@
 package com.nikyokki
 
+import com.keyiflerolsun.EngelAsici
+
 import android.util.Log
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -49,12 +51,12 @@ class TvDiziler : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         if (request.name == "Son Bölümler") {
-            val mainReq = app.get(request.data)
+            val mainReq = EngelAsici.http.get(request.data)
             val document = mainReq.document.body()
             val home = document.select("div.poster-xs").mapNotNull { it.sonBolumler() }
             return newHomePageResponse(request.name, home)
         }
-        val mainReq = app.get("${request.data}/${page}")
+        val mainReq = EngelAsici.http.get("${request.data}/${page}")
         val document = mainReq.document.body()
         val home = document.select("div.poster-long").mapNotNull { it.diziler() }
         return newHomePageResponse(request.name, home)
@@ -114,7 +116,7 @@ class TvDiziler : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val searchReq = app.post(
+        val searchReq = EngelAsici.http.post(
             "${mainUrl}/search?qr=$query",
             headers = mapOf(
                 "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
@@ -128,9 +130,8 @@ class TvDiziler : MainAPI() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         val searchResult: SearchResult = objectMapper.readValue(searchReq.toString())
 
-        if (searchResult.success != 1) {
-            throw ErrorLoadingException("Invalid Json response")
-        }
+        // Site sonuç bulamayınca success yerine {"error": "..."} döndürüyor: hata değil, boş sonuç
+        if (searchResult.success != 1) return emptyList()
 
         val searchDoc = searchResult.data
 
@@ -153,7 +154,7 @@ class TvDiziler : MainAPI() {
         Log.d("TVD", "Load -> url")
         println("Load -> url")
         if (!url.contains("/dizi/")) {
-            val mainReq = app.get(url, referer = mainUrl)
+            val mainReq = EngelAsici.http.get(url, referer = mainUrl)
             val document = mainReq.document
             val title = document.selectFirst("div.page-title h1")?.text()?.replace(" izle", "") ?: "return null"
             val epEpisode = document.selectFirst("div.page-title h1 span")?.text()?.replace(" izle", "")?.toIntOrNull()
@@ -173,7 +174,7 @@ class TvDiziler : MainAPI() {
             }
 
         }
-        val mainReq = app.get(url, referer = mainUrl)
+        val mainReq = EngelAsici.http.get(url, referer = mainUrl)
         val document = mainReq.document
         val title = document.selectFirst("div.page-title p")?.text()?.replace(" izle", "") ?: "return null"
         val poster =
@@ -249,7 +250,7 @@ class TvDiziler : MainAPI() {
             "Referer" to "$mainUrl/"
         )
 
-        val document = app.get(
+        val document = EngelAsici.http.get(
             data, headers = headers
         ).document
         val iframe =
@@ -276,7 +277,7 @@ class TvDiziler : MainAPI() {
                 }
             )
         } else {
-            val ifDoc = app.get(
+            val ifDoc = EngelAsici.http.get(
                 iframe,
                 headers = mapOf("User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0",
                     "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

@@ -54,7 +54,7 @@ class DiziMom : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get("${request.data}${page}/", interceptor = interceptor).document
+        val document = EngelAsici.http.get("${request.data}${page}/", interceptor = interceptor).document
         val home     = if (request.data.contains("/tum-bolumler/")) {
             document.select("div.episode-box").mapNotNull { it.sonBolumler() } 
         } else {
@@ -69,7 +69,7 @@ class DiziMom : MainAPI() {
         val title     = name.replace(".Sezon ", "x").replace(".Bölüm", "")
 
         val epHref   = fixUrlNull(this.selectFirst("div.episode-name a")?.attr("href")) ?: return null
-        val epDoc    = app.get(epHref).document
+        val epDoc    = EngelAsici.http.get(epHref).document
         val href     = epDoc.selectFirst("div#benzerli a")?.attr("href") ?: return null
 
         val posterUrl = fixUrlNull(this.selectFirst("a img")?.tembelGorsel())
@@ -86,7 +86,7 @@ class DiziMom : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/?s=${query}", interceptor = interceptor).document
+        val document = EngelAsici.http.get("${mainUrl}/?s=${query}", interceptor = interceptor).document
 
         return document.select("div.single-item").mapNotNull { it.diziler() }
     }
@@ -94,7 +94,7 @@ class DiziMom : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url, interceptor = interceptor).document
+        val document = EngelAsici.http.get(url, interceptor = interceptor).document
 
         val title       = document.selectFirst("div.title h1")?.text()?.substringBefore(" izle") ?: return null
         val poster      = fixUrlNull(document.selectFirst("div.category_image img")?.tembelGorsel()) ?: return null
@@ -132,7 +132,7 @@ class DiziMom : MainAPI() {
 
         val ua = mapOf("User-Agent" to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36")
 
-        app.post(
+        EngelAsici.http.post(
             "${mainUrl}/wp-login.php",
             headers = ua,
             referer = "${mainUrl}/",
@@ -144,7 +144,7 @@ class DiziMom : MainAPI() {
             )
         )
 
-        val document = app.get(data, headers=ua, interceptor = interceptor).document
+        val document = EngelAsici.http.get(data, headers=ua, interceptor = interceptor).document
 
         val iframes = mutableListOf<String>()
 
@@ -160,7 +160,7 @@ class DiziMom : MainAPI() {
         }
 
         document.select("div.sources a").forEach {
-            val subDocument = app.get(it.attr("href"), headers=ua, interceptor = interceptor).document
+            val subDocument = EngelAsici.http.get(it.attr("href"), headers=ua, interceptor = interceptor).document
             val subIframe   = subDocument.select("div.video iframe").firstNotNullOfOrNull { frame ->
                 sequenceOf("data-src", "data-lazy-src", "src")
                     .map { attrName -> frame.attr(attrName) }

@@ -14,7 +14,7 @@ open class TurkeyPlayer : ExtractorApi() {
 
     override suspend fun getUrl(url: String, referer: String?, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit) {
         val extRef = referer ?: ""
-        val pageContent = app.get(url, referer = extRef).text
+        val pageContent = EngelAsici.http.get(url, referer = extRef).text
 
         // video = {...} kısmını yakala
         val videoJsonRaw = Regex("""var\s+video\s*=\s*(\{.*?\});""", RegexOption.DOT_MATCHES_ALL)

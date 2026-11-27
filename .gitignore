@@ -12,4 +12,9 @@ local.properties
 .vscode
 build-cs3/
 
-*.dosya_yedek_*
+*.dosya_yedek*
+__pycache__/
+# feroxx deposundan gelen eski Python deneme betikleri (eklentiyle ilgisiz)
+**/bakalim.py
+*_oncesi_*
+*_yedek_2026*

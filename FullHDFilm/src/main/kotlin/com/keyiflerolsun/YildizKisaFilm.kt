@@ -22,7 +22,7 @@ open class YildizKisaFilm : ExtractorApi() {
         val postUrl = "${mainUrl}/player/index.php?data=${vidId}&do=getVideo"
         Log.d("Kekik_${this.name}", "postUrl » $postUrl")
 
-        val response = app.post(
+        val response = EngelAsici.http.post(
             postUrl,
             data = mapOf(
                 "hash" to vidId,
@@ -52,9 +52,15 @@ open class YildizKisaFilm : ExtractorApi() {
     }
 
     data class SystemResponse(
-        @JsonProperty("hls")         val hls: String,
+        @JsonProperty("hls")         val hls: Any? = null, // vidpapi boolean döndürüyor
         @JsonProperty("videoImage")  val videoImage: String? = null,
         @JsonProperty("videoSource") val videoSource: String,
         @JsonProperty("securedLink") val securedLink: String
     )
+}
+
+// hdfilm.us oynatıcısı (FirePlayer): aynı player/index.php?do=getVideo API'si
+class Vidpapi : YildizKisaFilm() {
+    override val name    = "Vidpapi"
+    override val mainUrl = "https://vidpapi.xyz"
 }

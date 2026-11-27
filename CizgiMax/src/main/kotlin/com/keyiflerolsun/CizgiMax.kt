@@ -26,7 +26,7 @@ class CizgiMax : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val url      = if (page > 1) "${request.data}?page=$page" else request.data
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
         val kartlar  = document.select("div.film-item")
         val home     = kartlar.mapNotNull { it.toSearchResult() }
 
@@ -44,7 +44,7 @@ class CizgiMax : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/ara/?q=${query}").document
+        val document = EngelAsici.http.get("${mainUrl}/ara/?q=${query}").document
 
         return document.select("div.film-item").mapNotNull { it.toSearchResult() }
     }
@@ -52,7 +52,7 @@ class CizgiMax : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val title       = document.selectFirst("h1")?.text()?.trim()?.removeSuffix(" izle")?.trim() ?: return null
         val poster      = fixUrlNull(document.selectFirst("meta[property=og:image]")?.attr("content")) ?: return null

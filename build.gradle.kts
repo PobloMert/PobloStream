@@ -49,6 +49,9 @@ subprojects {
     android {
         namespace = "com.keyiflerolsun" // orijinal paket adlarıyla uyum için korunuyor
 
+        // Ortak kod (ör. EngelAsici: VPN'siz erişim engeli aşma) her eklentiye eklenir
+        sourceSets.getByName("main").java.srcDir(rootProject.file("_ortak"))
+
         defaultConfig {
             minSdk = 21
             compileSdkVersion(35)

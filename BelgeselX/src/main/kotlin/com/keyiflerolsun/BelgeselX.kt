@@ -46,7 +46,7 @@ class BelgeselX : MainAPI() {
             "https://belgeselx.com/ajax_konukat.php?url=$categorySlug&page=$page"
         }
 
-        val document = app.get(url, cacheTime = 60).document
+        val document = EngelAsici.http.get(url, cacheTime = 60).document
         val home = document.select("div.px-grid > a.px-card").mapNotNull { it.toSearchResult() }
         val parsedItems = home.ifEmpty { document.select("a.px-card").mapNotNull { it.toSearchResult() } }
 
@@ -73,12 +73,12 @@ class BelgeselX : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val cx = "016376594590146270301:iwmy65ijgrm" // ! Might change in the future
 
-        val tokenResponse = app.get("https://cse.google.com/cse.js?cx=${cx}")
+        val tokenResponse = EngelAsici.http.get("https://cse.google.com/cse.js?cx=${cx}")
         val cseLibVersion = Regex("""cselibVersion": "(.*)"""").find(tokenResponse.text)?.groupValues?.get(1)
         val cseToken      = Regex("""cse_token": "(.*)"""").find(tokenResponse.text)?.groupValues?.get(1)
         val fexp      = Regex("""fexp": "[.*]"""").find(tokenResponse.text)?.groupValues?.get(1)
 
-        val response = app.get("https://cse.google.com/cse/element/v1?rsz=filtered_cse&num=100&hl=tr&source=gcsc&cselibv=${cseLibVersion}&cx=${cx}&q=${query}&safe=off&cse_tok=${cseToken}&sort=&exp=cc%2Capo&fexp=${fexp}&callback=google.search.cse.api9969&rurl=https%3A%2F%2Fbelgeselx.com%2F")
+        val response = EngelAsici.http.get("https://cse.google.com/cse/element/v1?rsz=filtered_cse&num=100&hl=tr&source=gcsc&cselibv=${cseLibVersion}&cx=${cx}&q=${query}&safe=off&cse_tok=${cseToken}&sort=&exp=cc%2Capo&fexp=${fexp}&callback=google.search.cse.api9969&rurl=https%3A%2F%2Fbelgeselx.com%2F")
         Log.d("BLX", "response » $response")
         val titles     = Regex(""""titleNoFormatting": "(.*)"""").findAll(response.text).map { it.groupValues[1] }.toList()
         val urls       = Regex(""""ogImage": "(.*)"""").findAll(response.text).map { it.groupValues[1] }.toList()
@@ -105,7 +105,7 @@ class BelgeselX : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val title = document.selectFirst("h1.px-hero-title")?.text()?.trim()?.toTitleCase() ?: return null
         val description = document.selectFirst("p.px-hero-desc")?.text()?.trim()
@@ -224,7 +224,7 @@ class BelgeselX : MainAPI() {
 
         playerUrls.forEach { iframeUrl ->
             try {
-                val alternatifResp = app.get(iframeUrl, referer = refererUrl).text
+                val alternatifResp = EngelAsici.http.get(iframeUrl, referer = refererUrl).text
                 
                 // 1. Check for iframe sources
                 val iframeSrcMatch = Regex("""<iframe[^>]+src=["']([^"']+)["']""").find(alternatifResp)
@@ -236,7 +236,7 @@ class BelgeselX : MainAPI() {
                     
                     if (embedUrl.contains("photos.google.com") || embedUrl.contains("googleusercontent.com")) {
                         try {
-                            val photosPage = app.get(embedUrl).text
+                            val photosPage = EngelAsici.http.get(embedUrl).text
                             val streamMatch = Regex(""""(https://video-downloads\.googleusercontent\.com/[^"]+)"""").find(photosPage)
                             if (streamMatch != null) {
                                 val streamUrl = streamMatch.groupValues[1].replace("\\u003d", "=").replace("\\u0026", "&")
@@ -286,7 +286,7 @@ class BelgeselX : MainAPI() {
                     var finalVideoUrl = videoUrl
                     if (listOf("belgeselx.php", "belgeselx2.php", "belgeselx3.php").any { videoUrl.contains(it) }) {
                         val resolved = try {
-                            app.get(
+                            EngelAsici.http.get(
                                 videoUrl,
                                 referer = refererUrl,
                                 headers = mapOf(

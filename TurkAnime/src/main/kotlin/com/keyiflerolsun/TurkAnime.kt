@@ -28,7 +28,7 @@ class TurkAnime : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse? {
         val url      = if (page > 1) "${request.data}?sayfa=$page" else request.data
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
         val items    = document.select("article.panel-card").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(request.name, items)
@@ -45,12 +45,12 @@ class TurkAnime : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/ara?q=${URLEncoder.encode(query, "UTF-8")}").document
+        val document = EngelAsici.http.get("${mainUrl}/ara?q=${URLEncoder.encode(query, "UTF-8")}").document
         return document.select("article.panel-card").mapNotNull { it.toSearchResult() }
     }
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val title    = document.selectFirst("h1.panel-title")?.text()?.trim() ?: return null
         val poster   = fixUrlNull(document.selectFirst("img.anime-detay-afis-gorsel")?.attr("src"))
@@ -66,7 +66,7 @@ class TurkAnime : MainAPI() {
 
         val animeId  = Regex("""animeId=(\d+)""").find(document.html())?.groupValues?.get(1)
         val episodes = if (animeId != null) {
-            val episodeDoc = app.get(
+            val episodeDoc = EngelAsici.http.get(
                 "${mainUrl}/ajax/bolumler&animeId=$animeId",
                 headers = mapOf("X-Requested-With" to "XMLHttpRequest"),
                 referer = url
@@ -99,13 +99,13 @@ class TurkAnime : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        val document = app.get(data).document
+        val document = EngelAsici.http.get(data).document
         val sources  = document.select("[data-source]")
             .mapNotNull { it.attr("data-source").takeIf { source -> source.isNotBlank() } }
             .distinct()
 
         for (source in sources) {
-            val embed = runCatching { app.get(source, referer = data).document }.getOrNull() ?: continue
+            val embed = runCatching { EngelAsici.http.get(source, referer = data).document }.getOrNull() ?: continue
             val iframe = fixUrlNull(embed.selectFirst("iframe")?.attr("src")) ?: continue
 
             loadExtractor(iframe, "$mainUrl/", subtitleCallback, callback)

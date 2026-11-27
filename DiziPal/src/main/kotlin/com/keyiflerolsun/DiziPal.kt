@@ -68,7 +68,7 @@ class DiziPal : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get(
+        val document = EngelAsici.http.get(
             request.data,
         ).document
         val home     = if (request.data.contains("/bolumler")) {
@@ -134,7 +134,7 @@ class DiziPal : MainAPI() {
         // Arama URL'sini doğrudan parametre ile oluşturuyoruz
         val searchUrl = "$mainUrl/search?q=$query"
 
-        val responseRaw = app.get(
+        val responseRaw = EngelAsici.http.get(
             searchUrl,
             headers = mapOf(
                 "Accept" to "application/json, text/javascript, */*; q=0.01",
@@ -186,7 +186,7 @@ class DiziPal : MainAPI() {
             return load(seriesUrl)
         }
 
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         // Genel Meta Bilgileri
         val poster = fixUrlNull(document.selectFirst("meta[property=og:image]")?.attr("content"))
@@ -310,11 +310,11 @@ class DiziPal : MainAPI() {
         )
 
         // 1. AŞAMA: GET isteği atıp hem Token'ı hem de ÇEREZLERİ alıyoruz
-        var getResponse = app.get(url = data, headers = browserHeaders)
+        var getResponse = EngelAsici.http.get(url = data, headers = browserHeaders)
 
         if (getResponse.text.contains("_bc\" content=") || getResponse.document.title().contains("Doğrulama", true)) {
             Log.w("DZP", "Bot kontrolü sayfası geldi, tekrar deneniyor..")
-            getResponse = app.get(url = data, headers = browserHeaders)
+            getResponse = EngelAsici.http.get(url = data, headers = browserHeaders)
         }
 
         val document = getResponse.document
@@ -334,7 +334,7 @@ class DiziPal : MainAPI() {
         val montanaSrc = montanaFrame?.attr("src")?.ifBlank { montanaFrame.attr("data-base") }?.trim()
         if (!montanaSrc.isNullOrEmpty()) {
             try {
-                val mntResp = app.get(url = montanaSrc, referer = data, headers = iframeHeaders)
+                val mntResp = EngelAsici.http.get(url = montanaSrc, referer = data, headers = iframeHeaders)
                 val mntDoc = mntResp.document
                 val dataSrc = mntDoc.selectFirst("div#player")?.attr("data-src")?.trim()
                     ?: Regex("""data-src=["']([^"']+\.m3u8[^"']*)["']""").find(mntResp.text)?.groupValues?.get(1)
@@ -384,7 +384,7 @@ class DiziPal : MainAPI() {
                     ?: epObj?.optString("iframe_url")?.takeIf { it.isNotBlank() }
                 if (!encPath.isNullOrEmpty()) {
                     val tokenUrl = if (encPath.startsWith("http")) encPath else "${mainUrl.trimEnd('/')}/${encPath.trimStart('/')}"
-                    val tokenHtml = app.get(url = tokenUrl, referer = data, headers = iframeHeaders).text
+                    val tokenHtml = EngelAsici.http.get(url = tokenUrl, referer = data, headers = iframeHeaders).text
                     val chunksMatch = Regex("""var\s+_\s*=\s*\[(.*?)\]""", RegexOption.DOT_MATCHES_ALL).find(tokenHtml)?.groupValues?.get(1)
                     val playerUrl = if (chunksMatch != null) {
                         Regex(""""([^"]+)"""").findAll(chunksMatch).mapNotNull { m ->
@@ -395,7 +395,7 @@ class DiziPal : MainAPI() {
                     }
 
                     if (playerUrl.startsWith("http")) {
-                        val playerResp = app.get(url = playerUrl, referer = "$mainUrl/", headers = iframeHeaders).text
+                        val playerResp = EngelAsici.http.get(url = playerUrl, referer = "$mainUrl/", headers = iframeHeaders).text
                         val pOrigin = runCatching {
                             val u = java.net.URI(playerUrl)
                             "${u.scheme}://${u.host}"
@@ -460,7 +460,7 @@ class DiziPal : MainAPI() {
             }
         } else {
             // Normal durum: POST /ajax-player-config { cfg: token }
-            val cfgResponse = app.post(
+            val cfgResponse = EngelAsici.http.post(
                 url = "$mainUrl/ajax-player-config",
                 data = mapOf("cfg" to configToken),
                 referer = data,
@@ -545,7 +545,7 @@ class DiziPal : MainAPI() {
             Log.d("DZP", "Imagestoo API URL » $imagestooApiUrl")
 
             
-            val apiResponse = app.post(
+            val apiResponse = EngelAsici.http.post(
                 url = imagestooApiUrl,
                 referer = embedUrl,
                 headers = mapOf(
@@ -624,7 +624,7 @@ class DiziPal : MainAPI() {
             "Accept-Language" to "tr-TR,tr;q=0.9,en;q=0.8"
         )
 
-        var embedSource = app.get(
+        var embedSource = EngelAsici.http.get(
             url     = embedUrl,
             referer = data,
             headers = embedHeaders
@@ -633,7 +633,7 @@ class DiziPal : MainAPI() {
         // * formationfeed.net gibi sağlayıcılar sadece kendi iframe'inden gelen isteklere izin veriyor
         if (embedSource.contains("Attention Required", true) || embedSource.contains("cf.errors", true)) {
             Log.w("DZP", "Embed sayfası Cloudflare'e takıldı, iframe başlıklarıyla tekrar deneniyor..")
-            embedSource = app.get(
+            embedSource = EngelAsici.http.get(
                 url     = embedUrl,
                 headers = embedHeaders + mapOf(
                     "Referer"        to data,

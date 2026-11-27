@@ -81,7 +81,7 @@ class DiziBox : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val url      = request.data.replace("SAYFA", "$page")
-        val document = app.get(
+        val document = EngelAsici.http.get(
             url,
             cookies     = mapOf(
                 "LockUser"      to "true",
@@ -113,7 +113,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get(
+        val document = EngelAsici.http.get(
             "${mainUrl}/?s=${query}",
             cookies     = mapOf(
                 "LockUser"      to "true",
@@ -129,7 +129,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(
+        val document = EngelAsici.http.get(
             url,
             cookies     = mapOf(
                 "LockUser"      to "true",
@@ -150,7 +150,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
         val episodeList = mutableListOf<Episode>()
         document.select("div#seasons-list a").forEach {
             val epUrl = fixUrlNull(it.attr("href")) ?: return@forEach
-            val epDoc = app.get(
+            val epDoc = EngelAsici.http.get(
                 epUrl,
                 cookies     = mapOf(
                     "LockUser"      to "true",
@@ -189,7 +189,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 
         if (iframe.contains("/player/king/king.php")) {
             iframe = iframe.replace("king.php?v=", "king.php?wmode=opaque&v=")
-            val subDoc = app.get(
+            val subDoc = EngelAsici.http.get(
                 iframe,
                 referer     = data,
                 cookies     = mapOf(
@@ -201,7 +201,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
             ).document
             val subFrame = subDoc.selectFirst("div#Player iframe")?.attr("src") ?: return false
 
-            val iDoc          = app.get(subFrame, referer="${mainUrl}/").text
+            val iDoc          = EngelAsici.http.get(subFrame, referer="${mainUrl}/").text
             val cryptData     = Regex("""CryptoJS\.AES\.decrypt\("(.*)","""").find(iDoc)?.groupValues?.get(1) ?: return false
             val cryptPass     = Regex("""","(.*)"\);""").find(iDoc)?.groupValues?.get(1) ?: return false
             val decryptedData = CryptoJS.decrypt(cryptPass, cryptData)
@@ -222,7 +222,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 
         } else if (iframe.contains("/player/moly/moly.php")) {
             iframe = iframe.replace("moly.php?h=", "moly.php?wmode=opaque&h=")
-            var subDoc = app.get(
+            var subDoc = EngelAsici.http.get(
                 iframe,
                 referer     = data,
                 cookies     = mapOf(
@@ -246,7 +246,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 
         } else if (iframe.contains("/player/haydi.php")) {
             iframe = iframe.replace("haydi.php?v=", "haydi.php?wmode=opaque&v=")
-            var subDoc = app.get(
+            var subDoc = EngelAsici.http.get(
                 iframe,
                 referer     = data,
                 cookies     = mapOf(
@@ -274,7 +274,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("DZBX", "data » $data")
-        val document = app.get(
+        val document = EngelAsici.http.get(
             data,
             cookies     = mapOf(
                 "LockUser"      to "true",
@@ -290,7 +290,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
 
         document.select("div.video-toolbar option[value]").forEach {
             val altLink = it.attr("value")
-            val subDoc  = app.get(
+            val subDoc  = EngelAsici.http.get(
                 altLink,
                 cookies     = mapOf(
                     "LockUser"      to "true",

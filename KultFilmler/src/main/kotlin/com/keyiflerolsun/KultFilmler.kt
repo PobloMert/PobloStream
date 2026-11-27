@@ -75,7 +75,7 @@ class KultFilmler : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get(request.data).document
+        val document = EngelAsici.http.get(request.data).document
         val movieBoxes = document.select("div.col-md-12 div.movie-box")
         val home = movieBoxes.mapNotNull { 
         it.toSearchResult() 
@@ -99,7 +99,7 @@ class KultFilmler : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}?s=${query}").document
+        val document = EngelAsici.http.get("${mainUrl}?s=${query}").document
 
         return document.select("div.movie-box").mapNotNull { it.toSearchResult() }
     }
@@ -107,7 +107,7 @@ class KultFilmler : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = EngelAsici.http.get(url).document
 
         val title           = document.selectFirst("div.film-bilgileri img")?.attr("alt")?.trim() ?: document.selectFirst("[property='og:title']")?.attr("content")?.trim() ?: return null
         val poster          = fixUrlNull(document.selectFirst("[property='og:image']")?.attr("content"))
@@ -198,7 +198,7 @@ private fun extractSubtitleUrl(sourceCode: String): String? {
                 "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
                 "Referer" to mainUrl
             )
-            val iframeResponse = app.get(iframeUrl, headers=headers)
+            val iframeResponse = EngelAsici.http.get(iframeUrl, headers=headers)
             val iframeSource = iframeResponse.text
 		Log.d("KLT", "iframeSource » $iframeSource")
             return extractSubtitleUrl(iframeSource)
@@ -209,7 +209,7 @@ private fun extractSubtitleUrl(sourceCode: String): String? {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("KLT", "data » $data")
-        val document = app.get(data).document
+        val document = EngelAsici.http.get(data).document
         val iframes  = mutableSetOf<String>()
 
         val mainFrame = getIframe(document.html())
@@ -218,7 +218,7 @@ private fun extractSubtitleUrl(sourceCode: String): String? {
         document.select("div.container#player").forEach {
             val alternatif = it.selectFirst("iframe")?.attr("src")
             if (alternatif != null) {
-                val alternatifDocument = app.get(alternatif).document
+                val alternatifDocument = EngelAsici.http.get(alternatif).document
                 val alternatifFrame    = getIframe(alternatifDocument.html())
                 iframes.add(alternatifFrame)
             }
@@ -231,7 +231,7 @@ private fun extractSubtitleUrl(sourceCode: String): String? {
                     "User-Agent"     to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
                     "Sec-Fetch-Dest" to "iframe"
                 )
-                val iSource = app.get(iframe, headers=headers, referer="${mainUrl}/").text
+                val iSource = EngelAsici.http.get(iframe, headers=headers, referer="${mainUrl}/").text
                 val m3uLink = Regex("""file:"([^"]+)""").find(iSource)?.groupValues?.get(1) ?: throw ErrorLoadingException("m3u link not found")
 
                 Log.d("Kekik_VidMoly", "m3uLink » $m3uLink")

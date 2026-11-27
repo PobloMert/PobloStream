@@ -20,7 +20,7 @@ open class RapidVid : ExtractorApi() {
 
     override suspend fun getUrl(url: String, referer: String?, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit) {
         val extRef   = referer ?: ""
-        val response = app.get(url, referer = extRef)
+        val response = EngelAsici.http.get(url, referer = extRef)
         val html     = response.text
 
         // ! 26.11.2026: rapidvid.org yeni "atom" oynatıcısına geçti. Yayın adresi
