@@ -12,7 +12,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1
+    status  = 0
     tvTypes = listOf("Live")
     iconUrl = "https://www.google.com/s2/favicons?domain=trt.net.tr&sz=%size%"
 }

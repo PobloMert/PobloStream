@@ -12,7 +12,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0 // will be 3 if unspecified
     tvTypes = listOf("TvSeries", "Movie")
     iconUrl = "https://dizipal1599.com/assets/favicon/favicon-32x32.png?v=3"
 }
