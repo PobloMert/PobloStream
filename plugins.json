@@ -1,10 +1,10 @@
 [
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=animecix.tv&sz=%size%",
-        "fileHash": "sha256-636a2532cf5c2f63612f0e124785a92b0a33758583f80d0f62cf797fbe0b00ad",
+        "fileHash": "sha256-dae0ca63b888ce0e207cd73e751885e0c56e617a287dd0b0758dc059c9401c49",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 83983,
+        "fileSize": 84661,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -23,10 +23,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=asyawatch.com&sz=%size%",
-        "fileHash": "sha256-ef48505f97255aa79b9b20c180bf26fa311b2850c58cbb9a7c22a30d3d0744aa",
+        "fileHash": "sha256-810cad8682709b94ec8be7bcb7499047f2030ce4f0b9aa6bbee47b3356188a62",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 93963,
+        "fileSize": 94497,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -45,10 +45,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=belgeselx.com&sz=%size%",
-        "fileHash": "sha256-043dbf233869daef3e30fd097178a1e02637ff10f64053f643c4fd7522cf0303",
+        "fileHash": "sha256-a7e38d9f441efd68555fe7076fdecba34b6a30dfae6cde1353ec4bc3a193f794",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 84012,
+        "fileSize": 84691,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -66,10 +66,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=cizgimax.online&sz=%size%",
-        "fileHash": "sha256-77eb374ab8df8685f66f34ea104b9a819c9cf6e4f54512cd2a7f4294f3e10ef3",
+        "fileHash": "sha256-8b08ea3b217d5ab3de0cf8af470837eddeeb08f8804a2c7ea67225f05499e198",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 114562,
+        "fileSize": 115190,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -86,10 +86,10 @@
     },
     {
         "iconUrl": "https://www.ddizi.tel/favicon.ico",
-        "fileHash": "sha256-2382c5c9236fbe367721804127e4eaec9507b65b2acb804f5108faca83fd21f7",
+        "fileHash": "sha256-888f025bac67a35ebdbb404b5dba80dfb999beb6cc8ad80afbe068ac00463977",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 78598,
+        "fileSize": 79269,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -107,10 +107,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=%size%",
-        "fileHash": "sha256-5efee40869955af25434cf8d4a14de6bf2069dfbd9d2158ac1793b14e59d1721",
+        "fileHash": "sha256-12e9e8f1286580f280a5daea83ddddf42c68b231aea7eb8fd3bf244930d53a61",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 80170,
+        "fileSize": 80968,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -119,7 +119,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 27,
+        "version": 28,
         "internalName": "DiziBox",
         "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/DiziBox.cs3",
@@ -127,10 +127,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=https://dizikorea.vip&sz=%size%",
-        "fileHash": "sha256-70fec7f6a8e4b16607d43f7ac5575a081ed5895a867224f783df469bd61b488c",
+        "fileHash": "sha256-a6be50b828abc6e71b2648b834e6f6953fada84b052500c084fbc8b77a5192dc",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 73760,
+        "fileSize": 74492,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -149,10 +149,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizilla.la&sz=%size%",
-        "fileHash": "sha256-df91b07c2b62563687e18636bf3c16fae975a3f00026f1c357ffc8d543203cdb",
+        "fileHash": "sha256-1ef6cdefa4afb5a4317ea9c63200c71f61bbffbc368e018b7b476c6b3e5cdbe8",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 86260,
+        "fileSize": 86940,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -170,10 +170,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizidad.com&sz=%size%",
-        "fileHash": "sha256-905158d6c0de7455675fa72ae83c98ce388c6590ee018ed36653fe09e6ab88dd",
+        "fileHash": "sha256-5b83dc15bb8efffc479723b94fa65e502150657377b2580b0f8697bcb9dcdfbc",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 87342,
+        "fileSize": 88027,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -191,10 +191,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=dizipal1.rest&sz=%size%",
-        "fileHash": "sha256-fe35fea7a45866a950dd319d2c3b37b9ece5f0a257fc41e9247c29359272086d",
+        "fileHash": "sha256-6a0fb84ac56bb630df3ef9482d64ed8f13121c871bc5689de5ba32e3ff509e2a",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 100905,
+        "fileSize": 101552,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -214,10 +214,10 @@
     },
     {
         "iconUrl": "https://dizipal1599.com/assets/favicon/favicon-32x32.png?v=3",
-        "fileHash": "sha256-094397797e44c103a67eabedfa1b887166264c4bb8ba26a755e97693a60f6b39",
+        "fileHash": "sha256-0b03944e6fbd2d3a82dae0b0a1d22345e5249759afd96c1125b51c82dd7f889f",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 94552,
+        "fileSize": 95131,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -238,10 +238,10 @@
     },
     {
         "iconUrl": "https://cdn.diziyou.love/wp-content/uploads/2020/04/diziyou-favicon.png",
-        "fileHash": "sha256-c670d3174c59d96c3d5b43f9bc7528a2aaa693bd5370d4b3c965e1f1ed72bdf0",
+        "fileHash": "sha256-3d365a5f1b52200962a5dbc7496a087273f1753b596c9be5f61bc1fbf4bc5da1",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 73799,
+        "fileSize": 74530,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -260,10 +260,10 @@
     },
     {
         "iconUrl": "https://www.dmax.com.tr/favicon.ico",
-        "fileHash": "sha256-174875bb4755c260da8004971c667eca7a5cb358edf0347ced57ae1f90f07e30",
+        "fileHash": "sha256-1d8202d79a48d265ce231b95654adefda3fdd829ca2797fb837a606e6ee9d211",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 72314,
+        "fileSize": 73054,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -281,10 +281,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilm.us&sz=%size%",
-        "fileHash": "sha256-c867fca8fa16f38cbb43a6b61520f609243bd52a344d40a1438b37a2347a940f",
+        "fileHash": "sha256-fc8b3594f53c950cd63b2bc2ddad80d6d6f1757895a71472557f3d9a238400be",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 73455,
+        "fileSize": 74178,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -302,10 +302,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.de&sz=%size%",
-        "fileHash": "sha256-8407e37f76da33b08040744a95ea1406a568810b5a7ee176836e94cf66f477f6",
+        "fileHash": "sha256-c81c3f9e401f37dd6fe059fbd77aa14b9e55a1cfaab96d0e520edf52cffd2efa",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 97460,
+        "fileSize": 98053,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -322,10 +322,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%",
-        "fileHash": "sha256-57ea48781b50b8f683e7c8e8fd2d50ccf6dfc93542d78f55b2170de18bee3316",
+        "fileHash": "sha256-04595c4d0fbe587a71b4c1a8fbf8957476cf4d69c3b9426eac85d4d47086ba7a",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 209906,
+        "fileSize": 210460,
         "status": 0,
         "language": "tr",
         "authors": [
@@ -345,10 +345,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.app&sz=%size%",
-        "fileHash": "sha256-21a83677bf03904dc2b0635a877739af540eacf3b0c61bd89c229af6f1bf2685",
+        "fileHash": "sha256-55befdff0f6a1b06c0d99f71cf2a297223e52b322b4c6ce01fd9a015505ee80c",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 75764,
+        "fileSize": 76445,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -366,10 +366,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=kultfilmler.net&sz=%size%",
-        "fileHash": "sha256-73c5296265f3254baed8a054b16240716e5b5bc7e491e7c21219bfdf56d999dd",
+        "fileHash": "sha256-ea8ff1f5fb8486a535af5e9719736ee2e0339ebac4ae26a42a30ff935af3647d",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 77933,
+        "fileSize": 78611,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -387,10 +387,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=rarefilmm.com&sz=%size%",
-        "fileHash": "sha256-d9b5b94cf1a05ec4e48c0a821470421bc7bf6acd83ba3a8712c03fcbc107b268",
+        "fileHash": "sha256-b7e94dc9d68a86a05e77b391f8829fe0d6f0490815f70cded487d9a82db20d1d",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 69181,
+        "fileSize": 69816,
         "status": 1,
         "language": "en",
         "authors": [
@@ -407,10 +407,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.sinema.cx&sz=%size%",
-        "fileHash": "sha256-73853917f3fbc430e2d8b84c65468d6a4048a550e2e07535285c3696a0d9cc0e",
+        "fileHash": "sha256-9c3b6eedbe218d7dca3454a7f2d53b662e025b2eaf406e3ab843f3afc2940a81",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 79039,
+        "fileSize": 79697,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -429,10 +429,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=trt.net.tr&sz=%size%",
-        "fileHash": "sha256-2028544c63c76e343b6c2ae47701533eb767cc8219ece8255b451fc7c66b7299",
+        "fileHash": "sha256-72b3bb2e5cf7dd375aa0d9993429cd72a8922110829bf5418effbcf7f6e70cab",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 87312,
+        "fileSize": 88173,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -441,18 +441,18 @@
         "tvTypes": [
             "Live"
         ],
-        "version": 3,
+        "version": 4,
         "internalName": "SporTV",
-        "description": "Spor kanallar\u0131n\u0131n kendi sitelerinden \u00fccretsiz yay\u0131nlad\u0131\u011f\u0131 canl\u0131 yay\u0131nlar: TRT Spor, TRT Spor Y\u0131ld\u0131z, A Spor, HT Spor, TJK TV, TAY TV. Kanal listesi depodaki JSON'dan okunur.",
+        "description": "Spor kanallar\u0131n\u0131n kendi sitelerinden \u00fccretsiz yay\u0131nlad\u0131\u011f\u0131 canl\u0131 yay\u0131nlar: TRT Spor, TRT Spor Y\u0131ld\u0131z, A Spor, HT Spor, TRT 1, TV8, TJK TV, TAY TV. Kanal listesi depodaki JSON'dan okunur.",
         "url": "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/SporTV.cs3",
         "name": "SporTV"
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.tlctv.com.tr&sz=%size%",
-        "fileHash": "sha256-c55bed9b37968c0646a723985e619c6f31d62d55e69ad95850a170985a820f1e",
+        "fileHash": "sha256-2b9591abd97493e283b24bf232e7c276fa90464de4048646da436351767d4b74",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 72297,
+        "fileSize": 73085,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -471,10 +471,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.to&sz=%size%",
-        "fileHash": "sha256-de3be14773a1b966ce024b1e9b59cdb210c23b22ea0bddde02e328ceb317ff60",
+        "fileHash": "sha256-332367551102e35f36ae17c8e8b5b49fb7cc18717258e71551c2f05f1c9fc700",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 71682,
+        "fileSize": 72272,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -492,10 +492,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=tvdiziler.tv&sz=%size%",
-        "fileHash": "sha256-d18dc38654c296347f993e95ce019556797a300cc1c74393c9b328054aecb8e2",
+        "fileHash": "sha256-0c2e0b6fbae24de72411a2ef1147ac4798177b02396eb24a2bc91abcb97d2912",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/PobloMert/PobloStream",
-        "fileSize": 86349,
+        "fileSize": 86998,
         "status": 1,
         "language": "tr",
         "authors": [
