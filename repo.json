@@ -4,10 +4,10 @@
   "iconUrl": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/assets/logo.png",
   "manifestVersion": 2,
   "pluginLists": [
-    "https://cdn.jsdelivr.net/gh/PobloMert/PobloStream@23a3293cd6e3e327b754f281a0182e4af9a9f5f9/plugins.json?t=23a3293cd6e3",
+    "https://cdn.jsdelivr.net/gh/PobloMert/PobloStream@5aeb0f670e095f6924d3c6fe9987d2389199335c/plugins.json?t=5aeb0f670e09",
     "https://raw.githubusercontent.com/PobloMert/PobloStream/builds/spor_plugins.json"
   ],
-  "lastUpdated": 1795864161,
-  "timestamp": 1795864161,
+  "lastUpdated": 1795709586,
+  "timestamp": 1795709586,
   "version": 2
 }
