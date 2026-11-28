@@ -7,6 +7,7 @@ import android.content.Context
 @CloudstreamPlugin
 class DiziPalOrijinalPlugin: Plugin() {
     override fun load(context: Context) {
+        WebViewVekili.kur(context)
         registerMainAPI(DiziPalOrijinal())
         registerExtractorAPI(DiziPalOrijinalPlayer())
     }

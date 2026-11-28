@@ -16,7 +16,6 @@ import com.lagradost.cloudstream3.TvType
 import com.lagradost.cloudstream3.app
 import com.lagradost.cloudstream3.fixUrlNull
 import com.lagradost.cloudstream3.mainPageOf
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.newEpisode
 import com.lagradost.cloudstream3.newHomePageResponse
 import com.lagradost.cloudstream3.newMovieLoadResponse
@@ -46,23 +45,10 @@ class DiziPalOrijinal : MainAPI() {
     override var sequentialMainPageDelay       = 150L
     override var sequentialMainPageScrollDelay = 150L
 
-    // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
-
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
-
-            if (doc.html().contains("Just a moment")) {
-                return cloudflareKiller.intercept(chain)
-            }
-
-            return response
-        }
-    }
+    // Cloudflare yalnızca tarayıcı olmayan istemcilere "Just a moment" gösteriyor; gerçek tarayıcıya
+    // sayfayı doğrudan veriyor (cf_clearance oluşmuyor, CloudflareKiller bu yüzden zaman aşımına düşüyordu).
+    // Böyle bir yanıtta sayfa görünmez bir WebView ile alınır (TarayiciGetir).
+    private val interceptor by lazy { TarayiciGetir.Yakalayici() }
 
     override val mainPage = mainPageOf(
         "${mainUrl}/yabanci-dizi-izle"        to "Yeni Diziler",

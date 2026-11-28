@@ -3,7 +3,6 @@ package com.keyiflerolsun
 import android.util.Log
 import com.lagradost.cloudstream3.SubtitleFile
 import com.lagradost.cloudstream3.app
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.newSubtitleFile
 import com.lagradost.cloudstream3.utils.ExtractorApi
 import com.lagradost.cloudstream3.utils.ExtractorLink
@@ -16,8 +15,6 @@ class DiziPalOrijinalPlayer : ExtractorApi() {
     override var name = "DiziPalOrijinalPlayer"
     override var mainUrl = "dplayer82.site"
     override val requiresReferer = true
-
-    private val cloudflareKiller by lazy { CloudflareKiller() }
 
     override suspend fun getUrl(
         url: String,
@@ -35,7 +32,7 @@ class DiziPalOrijinalPlayer : ExtractorApi() {
             url,
             referer = referer,
             headers = defaultHeaders,
-            interceptor = cloudflareKiller
+            interceptor = TarayiciGetir.Yakalayici()
         ).text
 
         val domainRegex = """https?://[^/]+""".toRegex()
@@ -175,7 +172,7 @@ class DiziPalOrijinalPlayer : ExtractorApi() {
                 apiUrl,
                 referer = url,
                 headers = defaultHeaders,
-                interceptor = cloudflareKiller
+                interceptor = TarayiciGetir.Yakalayici()
             ).text
 
             try {

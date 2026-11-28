@@ -65,25 +65,49 @@ object EngelAsici {
     }
 
     /** İlk TLS kaydını (ClientHello) SNI'nin ortasından iki kayda böler; gerisini aynen geçirir. */
-    private class BolenCikis(out: OutputStream) : FilterOutputStream(out) {
+    internal class BolenCikis(out: OutputStream) : FilterOutputStream(out) {
         private var ilkYazim = true
 
-        override fun write(b: Int) { ilkYazim = false; out.write(b) }
+        // Android'in TLS katmanı (Conscrypt) ClientHello'yu birden çok write() ile yazabilir
+        // (ör. önce 5 baytlık başlık, sonra gövde). İlk TLS kaydı tamamlanana kadar biriktirilir.
+        private val tampon = java.io.ByteArrayOutputStream()
+
+        override fun write(b: Int) = write(byteArrayOf(b.toByte()), 0, 1)
 
         override fun write(b: ByteArray, off: Int, len: Int) {
-            if (ilkYazim) {
-                ilkYazim = false
-                val bolunmus = bol(b, off, len)
-                if (bolunmus != null) { out.write(bolunmus); out.flush(); return }
-            }
-            out.write(b, off, len)
+            if (!ilkYazim) { out.write(b, off, len); return }
+            tampon.write(b, off, len)
+            val t = tampon.toByteArray()
+            if (t[0] != 0x16.toByte()) { gecir(t, "tls-degil"); return }   // TLS handshake değil: dokunma
+            if (t.size < 5) return                                           // başlık henüz tamamlanmadı
+            val kayitUz = ((t[3].toInt() and 0xff) shl 8) or (t[4].toInt() and 0xff)
+            if (t.size < 5 + kayitUz) return                                 // kayıt henüz tamamlanmadı
+            ilkYazim = false; tampon.reset()
+            val bolunmus = bol(t, 0, t.size)
+            if (bolunmus != null) { out.write(bolunmus); out.flush() } else out.write(t)
+        }
+
+        // Tamamlanmamış ilk kayıt tamponda bekler; flush yalnızca alttaki akışı boşaltır
+        override fun flush() = out.flush()
+
+        override fun close() {
+            if (ilkYazim && tampon.size() > 0) gecir(tampon.toByteArray(), "kapanis")
+            super.close()
+        }
+
+        private fun gecir(t: ByteArray, neden: String) {
+            ilkYazim = false; tampon.reset()
+            android.util.Log.d("EngelAsici", "bölme yok ($neden), ${t.size} bayt aynen gönderildi")
+            out.write(t); out.flush()
         }
 
         private fun bol(b: ByteArray, off: Int, len: Int): ByteArray? {
             if (len < 6 || b[off] != 0x16.toByte()) return null          // TLS handshake kaydı değil
             val kayitUz = ((b[off + 3].toInt() and 0xff) shl 8) or (b[off + 4].toInt() and 0xff)
             if (len < 5 + kayitUz || kayitUz < 2) return null            // kayıt tek yazımda değil
-            val kes = sniOrtasi(b, off + 5, kayitUz) ?: 1                  // payload içi bölme noktası
+            val sni = sniOrtasi(b, off + 5, kayitUz)
+            val kes = sni ?: 1                                           // payload içi bölme noktası
+            android.util.Log.d("EngelAsici", "ClientHello ${kayitUz} bayt, ${if (sni != null) "SNI ortasından ($kes)" else "SNI bulunamadı, 1. bayttan"} bölündü")
             val sonuc = ByteArray(len + 5)
             var p = 0
             fun baslik(uz: Int) {
