@@ -25,7 +25,7 @@ jobs:
       contents: write
     steps:
       - name: "'src' Depo Kontrolü"
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
         with:
           path: "src"
 
@@ -54,10 +54,15 @@ jobs:
         run: rm -f $GITHUB_WORKSPACE/builds/*.cs3 || true
 
       - name: JDK Ayarla
-        uses: actions/setup-java@v4.6.0
+        uses: actions/setup-java@v6.2.0
         with:
-          distribution: adopt
+          distribution: temurin
           java-version: 21
+          # Gradle önbelleği: derleme aracı (JitPack) ve bağımlılıklar her seferinde yeniden indirilmez
+          cache: gradle
+          cache-dependency-path: |
+            src/**/*.gradle.kts
+            src/gradle/wrapper/gradle-wrapper.properties
 
       - name: Android SDK Ayarla
         run: |
@@ -79,15 +84,17 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          # CI koşuları aralıklı olarak (ağ/daemon kaynaklı) patlıyor: 3 deneme
+          # CI koşuları aralıklı olarak (ağ/JitPack kaynaklı) patlıyor: 2 normal deneme,
+          # olmazsa 3. deneme önbellekten çevrimdışı (JitPack geçici olarak yanıt vermediğinde)
           for deneme in 1 2 3; do
             echo "derleme denemesi ${deneme}/3"
-            ./gradlew make makePluginsJson && break
             if [ "$deneme" -eq 3 ]; then
+              ./gradlew make makePluginsJson --offline && break
               echo "derleme 3 denemede de başarısız"
               exit 1
             fi
-            sleep 20
+            ./gradlew make makePluginsJson && break
+            sleep 45
           done
           cp */build/*.cs3 $GITHUB_WORKSPACE/builds
           cp build/plugins.json $GITHUB_WORKSPACE/builds

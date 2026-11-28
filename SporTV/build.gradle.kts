@@ -1,9 +1,9 @@
-version = 3
+version = 4
 
 cloudstream {
     authors     = listOf("Ahmet")
     language    = "tr"
-    description = "Spor kanallarının kendi sitelerinden ücretsiz yayınladığı canlı yayınlar: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TJK TV, TAY TV. Kanal listesi depodaki JSON'dan okunur."
+    description = "Spor kanallarının kendi sitelerinden ücretsiz yayınladığı canlı yayınlar: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TRT 1, TV8, TJK TV, TAY TV. Kanal listesi depodaki JSON'dan okunur."
 
     /**
      * Status int as the following:

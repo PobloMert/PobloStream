@@ -50,19 +50,12 @@ Son değişiklikler: [DEGISIKLIKLER.md](DEGISIKLIKLER.md)
 | KultFilmler | Film ve dizi | kultfilmler.net |
 | RareFilmm | Nadir filmler | rarefilmm.com |
 | SinemaCX 🆕 | Film | sinemacc.com |
-| SporTV 🆕 | Spor kanallarının resmî canlı yayınları: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TJK TV, TAY TV | kanalların kendi siteleri |
+| SporTV 🆕 | Spor kanallarının resmî canlı yayınları: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TRT 1, TV8, TJK TV, TAY TV | kanalların kendi siteleri |
 | TLCtr 🆕 | TLC programları | tlctv.com.tr |
 | TurkAnime | Anime | turkanime.to |
 | TvDiziler | Yerli dizi | tvdiziler.tv |
 
-🆕 = feroxx/Kekik-cloudstream deposundan aktarılıp güncellenen eklentiler.
-
-### ⚽ Canlı spor kanalları
-
-Depo, film/dizilerin yanında **29 canlı spor eklentisini** de listeler (`Live`). Bunlar [Wiojelt/WioSpor](https://github.com/Wiojelt/WioSpor) deposundan bu depoya aynalanmıştır; kurulum ve indirme yine PobloStream üzerinden yapılır ve eklentiler CloudStream'de **Canlı TV** sekmesinde görünür.
-
-SelcukSports · Taraftarium24 · PatronHD · KralSporHD · ArdaSpor · BetmatikTV · TRGoals · DomatesTV · MahsunSports · AtomSpor · LeoTV · Streamed · JestYayin · PapazSports · NetVGold · v10 Spor · Mien TV · Kool TV · StbTV · AslanTV · KoalaTV · BeyazElma · NewTVLive · çiftd2m · TimStreams · RecTV · BasketballVideo · BasketballReplays · WioSpor
-
+🆕 = yeni eklenen ya da feroxx/Kekik-cloudstream deposundan aktarılıp güncellenen eklentiler.
 
 ---
 
@@ -100,7 +93,7 @@ Eklentiler açılışta sitelerin güncel adresini [`domains.json`](domains.json
 [Eklenti Testi](.github/workflows/EklentiTesti.yml) her pazartesi her eklentiyi gerçek sitede dener: ana sayfadan liste çeker ve ilk içeriğin detay sayfasını açar. Site tasarımı değişip eklenti boş gelmeye başlarsa (adres aynı kalsa bile) yakalanır. İlk içeriğin adıyla arama da denenir; sonuç vermeyen aramalar raporda ayrı listelenir (eklentiyi "çalışmıyor" saydırmaz).
 
 - **Yalnızca rapor:** GitHub sunucuları yurt dışında ve birçok site (TRT yayını dahil) yurt dışından gelen bağlantıya boş sayfa veriyor; bu yüzden orada "BOZUK" görünen eklenti Türkiye'de çalışıyor olabilir. Eklenti durumu GitHub'da değiştirilmez.
-- **Durumu değiştirmek (Türkiye'den):** `./gradlew testDebugUnitTest --continue` ardından `python EKLENTI_TESTI.py --durum` → bozulan eklenti `status = 0` (CloudStream'de **"çalışmıyor"**), düzelen yeniden `1` olur.
+- **Durumu değiştirmek (Türkiye'den):** `powershell -ExecutionPolicy Bypass -File HAFTALIK_TEST.ps1` (tüm testleri çalıştırır, durumları günceller, raporu `_rapor/` klasörüne yazar; commit etmez) ya da elle `./gradlew testDebugUnitTest --continue` ardından `python EKLENTI_TESTI.py --durum` → bozulan eklenti `status = 0` (CloudStream'de **"çalışmıyor"**), düzelen yeniden `1` olur.
 - Sonuç tablosu her çalışmanın **Summary** sayfasında görünür.
 - Cloudflare doğrulaması isteyen siteler tarayıcısız denenemez; `DOGRULANAMADI` yazılır, bozuk sayılmaz.
 - Bilgisayarda: `./gradlew :DiziBox:testDebugUnitTest` ardından `python EKLENTI_TESTI.py` (klasör yolunda Türkçe karakter olmamalı).

@@ -6,10 +6,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
+# ! 2026-11-28: Zamanlama kapatıldı. Eklentiler adresi artık domains.json'dan (AlanAdi.al) alıyor;
+# ! KONTROL.py `override var mainUrl = "..."` aradığı için hiçbir adres bulamaz. Yerini
+# ! "Site Adresi Denetimi" (AlanAdi.yml) aldı. Gerekirse Actions sekmesinden elle çalıştırılabilir.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 11 */9 * * *
 
 jobs:
   DomainKontrol:
@@ -28,10 +29,10 @@ jobs:
 
     steps:
       - name : Depo Kontrolü
-        uses : actions/checkout@v4
+        uses : actions/checkout@v7.0.1
 
       - name : Python 3.11.8 Yükle
-        uses : actions/setup-python@v5
+        uses : actions/setup-python@v7.1.0
         with :
           python-version: 3.11.8
 

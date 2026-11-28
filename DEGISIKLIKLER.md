@@ -6,6 +6,7 @@ Yeni bir sürüm çıkarınca buraya kısa bir satır ekleyin: `- **Eklenti** vN
 ## 2026-11-28 (2)
 
 **Yeni**
+- **SporTV** v4: TRT 1 (milli maçlar) ve TV8 (Avrupa kupası maçları) eklendi; "Maç Yayınlayan Kanallar" grubu.
 - **SporTV** v3: kanal kartında **şu an yayındaki program** görünüyor (TRT Spor, TRT Spor Yıldız, A Spor; kanalların resmi yayın akışından, 5 dakikada bir yenilenir). Kanal ve grup sırası JSON'daki `sira` ve `gruplar` alanlarıyla ayarlanıyor.
 - **SporTV** v2: yalnızca kanalların kendi sitelerinden ücretsiz yayınladığı canlı yayınlar. Kanallar: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TJK TV, TAY TV. Yayın adresi her açılışta kanalın kendi sayfasından ya da oynatıcısından alınır. Kanal listesi depodan okunur.
 - **Tüm eklentiler**: site adresi artık depodaki [`domains.json`](domains.json) dosyasından okunuyor. Adres değişince yeni sürüm gerekmiyor.
@@ -13,6 +14,7 @@ Yeni bir sürüm çıkarınca buraya kısa bir satır ekleyin: `- **Eklenti** vN
 - **Tüm eklentiler**: eklentinin ayarlarına (CloudStream → Eklentiler → ⚙️) **site adresi** alanı eklendi. Site taşındıysa yeni adresi elle yazabilirsiniz.
 
 **Düzeltme**
+- **DiziBox** v28: TV'de detay sayfasında açıklama yerine "Konu Bulunamadı" yazıyordu (site Android'e farklı, mobil bir şablon veriyor); düzeltildi. Sayfalar artık eklentiye ~1,76 MB yerine ~50 KB olarak aktarılıyor: site her sayfaya ~4.900 dizilik bir arama listesi gömüyor ve eklenti onu kullanmıyor. TV'de ana sayfa ve detaylar belirgin şekilde hızlanır.
 - **KultFilmler** v18: site yeni tasarıma geçmişti, liste boş geliyordu. Ana sayfa, sayfalama, arama, detay ve oynatıcı (Vidpapi) yeni tasarıma uyarlandı.
 - **DiziBox, HDFilmCehennemi, KultFilmler, DiziMom, DiziKorea, Dizilla, JetFilmizle**: Cloudflare doğrulaması çıkınca sayfa artık görünmez tarayıcıyla alınıyor. Önceki yöntem TV'de zaman aşımına düşebiliyordu.
 - **DiziBox** v27: site yeni kart tasarımına geçmişti, ana sayfa boş geliyordu; düzeltildi (TV'de ana sayfa, detay ve oynatma denendi). Cloudflare uygulamanın resim yükleyicisine afiş vermediği için afişler artık görünmez tarayıcıyla alınıyor.

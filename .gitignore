@@ -18,3 +18,6 @@ __pycache__/
 **/bakalim.py
 *_oncesi_*
 *_yedek_2026*
+
+# Yerel haftalık test raporları (HAFTALIK_TEST.ps1)
+_rapor/

@@ -25,8 +25,10 @@ KOK = pathlib.Path(__file__).resolve().parent
 DURUM_RE = re.compile(r"^(\s*status\s*=\s*)(\d)", re.M)
 
 
-def sonuclar():
-    for f in sorted(KOK.glob("*/build/eklenti_testi.json")):
+def sonuclar(kaynak=None):
+    """Test sonuçları; [kaynak] verilirse oradaki kopyanın build klasörlerinden okunur
+    (klasör yolunda Türkçe karakter olunca testler ASCII bir kopyada çalıştırılıyor)."""
+    for f in sorted(pathlib.Path(kaynak or KOK).glob("*/build/eklenti_testi.json")):
         try:
             yield json.loads(f.read_text(encoding="utf-8"))
         except ValueError:
@@ -37,10 +39,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--durum", action="store_true", help="build.gradle.kts status değerini güncelle")
     ap.add_argument("--rapor", help="markdown rapor dosyası")
+    ap.add_argument("--sonuclar", help="test sonuçlarının bulunduğu kopya klasör (varsayılan: bu depo)")
     a = ap.parse_args()
 
     satirlar, degisen, arama_sorun, kanal_sorun = [], [], [], []
-    for s in sonuclar():
+    for s in sonuclar(a.sonuclar):
         ad, durum = s.get("eklenti"), s.get("durum")
         g = KOK / ad / "build.gradle.kts"
         metin = g.read_text(encoding="utf-8") if g.exists() else ""

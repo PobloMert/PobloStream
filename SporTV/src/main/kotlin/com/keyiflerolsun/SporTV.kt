@@ -159,7 +159,8 @@ class SporTV : MainAPI() {
         val guncel = kanallar().firstOrNull { it.id == k.id } ?: k
         return newLiveStreamLoadResponse(guncel.ad, url, guncel.toJson()) {
             this.posterUrl = guncel.gorsel()
-            this.plot = listOfNotNull(simdi(guncel)?.let { "Şu an yayında: $it" }, guncel.aciklama).joinToString("\n\n")
+            // CloudStream açıklamadaki satır sonlarını göstermiyor: cümleyi noktayla ayır
+            this.plot = listOfNotNull(simdi(guncel)?.let { "Şu an yayında: ${it.trimEnd('.')}." }, guncel.aciklama).joinToString(" ")
             this.tags = listOfNotNull(guncel.grup, "Canlı", "Resmî yayın")
         }
     }

@@ -15,6 +15,12 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 
 class DiziBox : MainAPI() {
+    init {
+        // Sitenin her sayfaya gömdüğü ~4.900 dizilik arama listesi (sayfanın ~1,6 MB'ı); eklenti
+        // kullanmıyor: tarayıcı yolunda sayfa eklentiye aktarılmadan önce atılır (TV'de hız)
+        TarayiciGetir.kirp("dizibox.live", "li.search-target")
+    }
+
     override var mainUrl              = AlanAdi.al("DiziBox", "https://www.dizibox.live")
     override var name                 = "DiziBox"
     override val hasMainPage          = true
@@ -121,8 +127,10 @@ private fun Element.toMainPageResult(): SearchResponse? {
         ).document
 
         val title       = document.selectFirst("div.tv-overview h1 a")?.text()?.trim() ?: return null
-        val poster      = fixUrlNull(document.selectFirst("div.tv-overview figure img")?.attr("src"))
-        val description = document.selectFirst("div.tv-story p")?.text()?.trim()
+        val poster      = fixUrlNull((document.selectFirst("div.tv-overview figure img") ?: document.selectFirst("#tv-story figure img"))?.attr("src"))
+        // Masaüstü şablonu: div.tv-story p — mobil şablon (Android/TV'nin aldığı): div#tv-story > p
+        val description = (document.selectFirst("div.tv-story p") ?: document.selectFirst("div#tv-story > p"))
+            ?.text()?.trim()?.takeIf { it.isNotEmpty() }
         val year        = document.selectFirst("a[href*='/yil/']")?.text()?.trim()?.toIntOrNull()
         val tags        = document.select("a[href*='/tur/']").map { it.text() }
         val actors      = document.select("a[href*='/oyuncu/']").map { Actor(it.text()) }

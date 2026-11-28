@@ -57,6 +57,21 @@ object TarayiciGetir {
     /** Bu iş parçacığındaki son tarayıcı isteği HTTP hata koduyla mı döndü (site engeli)? */
     private val sonEngelKodu = ThreadLocal<Int?>()
     private val ENGEL_KODLARI = setOf(401, 403, 429, 503)
+    /** Site (host sonu) → tarayıcıda atılacak öğelerin CSS seçicisi. Bkz. [kirp]. */
+    private val kirpmalar = ConcurrentHashMap<String, String>()
+
+    /**
+     * Eklentinin kullanmadığı büyük sayfa bölümlerini tarayıcı tarafında atar: sayfa eklentiye
+     * (evaluateJavascript ile) aktarılmadan önce küçülür, TV'de belirgin hız kazancı.
+     * Örn. DiziBox her sayfaya ~1,6 MB'lık arama listesi gömüyor: kirp("dizibox.live", "li.search-target").
+     * Yalnızca tarayıcı yolundan (Cloudflare) gelen GET sayfalarına uygulanır.
+     */
+    fun kirp(hostSonu: String, secici: String) { kirpmalar[hostSonu.lowercase()] = secici }
+
+    private fun kirpmaSecicisi(url: String): String? {
+        val host = Regex("""^https?://([^/:]+)""").find(url)?.groupValues?.get(1)?.lowercase() ?: return null
+        return kirpmalar.entries.firstOrNull { host == it.key || host.endsWith("." + it.key) }?.value
+    }
 
     /** Site, doğrulamayı geçen tarayıcıyı da reddettiğinde: CloudStream bu mesajı ekranda gösterir. */
     class SiteEngeli(mesaj: String) : java.io.IOException(mesaj)
@@ -155,9 +170,14 @@ object TarayiciGetir {
             }
             val gov = if (govde != null) JSONObject.quote(govde) else "undefined"
             val no = "k" + sayac.incrementAndGet()
+            val kirpma = if (yontem == "GET" && !veri) kirpmaSecicisi(url) else null
             // ! Tek ifade olmalı (calistir "return (...)" içine koyar): noktalı virgül değil virgül
             calistir("""((window.__tg=window.__tg||{})['$no']=undefined, fetch(${JSONObject.quote(url)},{method:${JSONObject.quote(yontem)},headers:$h,body:$gov,credentials:'include'})
-                .then(r=>r.status>=400?'__HATA__HTTP '+r.status:${if (veri) VERI_JS else "r.text()"}).then(t=>{window.__tg['$no']=t}).catch(e=>{window.__tg['$no']='__HATA__'+e}), '1')""")
+                .then(r=>r.status>=400?'__HATA__HTTP '+r.status:${when {
+                    veri -> VERI_JS
+                    kirpma != null -> "r.text().then(t=>{try{const d=new DOMParser().parseFromString(t,'text/html');d.querySelectorAll(${JSONObject.quote(kirpma)}).forEach(e=>e.remove());return '<!DOCTYPE html>'+d.documentElement.outerHTML}catch(e){return t}})"
+                    else -> "r.text()"
+                }}).then(t=>{window.__tg['$no']=t}).catch(e=>{window.__tg['$no']='__HATA__'+e}), '1')""")
             val bitis = System.currentTimeMillis() + 20_000
             while (System.currentTimeMillis() < bitis) {
                 val s = calistir("(function(){var t=window.__tg&&window.__tg['$no'];if(t===undefined)return null;delete window.__tg['$no'];return t;})()")
