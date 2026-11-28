@@ -16,7 +16,7 @@ Yeni bir sürüm çıkarınca buraya kısa bir satır ekleyin: `- **Eklenti** vN
 - **KultFilmler** v18: site yeni tasarıma geçmişti, liste boş geliyordu. Ana sayfa, sayfalama, arama, detay ve oynatıcı (Vidpapi) yeni tasarıma uyarlandı.
 - **DiziBox, HDFilmCehennemi, KultFilmler, DiziMom, DiziKorea, Dizilla, JetFilmizle**: Cloudflare doğrulaması çıkınca sayfa artık görünmez tarayıcıyla alınıyor. Önceki yöntem TV'de zaman aşımına düşebiliyordu.
 - **DiziBox** v27: site yeni kart tasarımına geçmişti, ana sayfa boş geliyordu; düzeltildi (TV'de ana sayfa, detay ve oynatma denendi). Cloudflare uygulamanın resim yükleyicisine afiş vermediği için afişler artık görünmez tarayıcıyla alınıyor.
-- **HDFilmCehennemi**: ana sayfa çalışıyor; olası alan adları artık her kategoride yeniden denenmiyor. Not: site şu an detay sayfalarında Cloudflare doğrulaması istiyor ve uygulama içi tarayıcıyı "Bu uygulama desteklenmiyor" diye engelliyor; site bu korumayı kaldırana kadar detay sayfaları açılmayabilir. Bu süre için eklenti CloudStream'de "çalışmıyor" olarak işaretlendi; koruma kalkınca haftalık test işareti kendiliğinden geri alır.
+- **HDFilmCehennemi**: ana sayfa çalışıyor; olası alan adları artık her kategoride yeniden denenmiyor. Not: site şu an detay sayfalarında Cloudflare doğrulaması istiyor ve uygulama içi tarayıcıyı "Bu uygulama desteklenmiyor" diye engelliyor; site bu korumayı kaldırana kadar detay sayfaları açılmayabilir. Bu süre için eklenti CloudStream'de "çalışmıyor" olarak işaretlendi; koruma kalkınca Türkiye'den `python EKLENTI_TESTI.py --durum` ile (ya da elle) geri alınır.
 
 **Hız**
 - **DiziBox, HDFilmCehennemi, KultFilmler, DiziMom, DiziKorea, Dizilla**: ana sayfa kategorileri sırayla değil aynı anda yükleniyor.
@@ -28,7 +28,7 @@ Yeni bir sürüm çıkarınca buraya kısa bir satır ekleyin: `- **Eklenti** vN
 - Haftalık test artık aramayı da deniyor; sonuç vermeyen aramalar raporda ayrıca listeleniyor.
 - Haftalık test canlı yayın eklentilerinde her kanalı tek tek açıyor; açılmayan kanal raporda ismiyle görünür.
 - Birden çok eklentide kopyası bulunan video çözücüler (Odnoklassniki, VideoSeyred, YildizKisaFilm/Vidpapi) tek ortak dosyada toplandı. RareFilmm'deki Odnoklassniki kopyasının hatalı Referer başlığı bu sayede düzeldi.
-- Her pazartesi otomatik site adresi denetimi ve eklenti testi yapılıyor. Bozulan eklenti "çalışmıyor" olarak işaretleniyor.
+- Her pazartesi otomatik site adresi denetimi ve eklenti testi yapılıyor (GitHub'da yalnızca rapor; yurt dışı engelleri yüzünden eklenti durumu orada değiştirilmez, Türkiye'den `EKLENTI_TESTI.py --durum` ile değiştirilir).
 
 ## 2026-11-28
 

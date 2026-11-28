@@ -1,5 +1,8 @@
-# Haftalık eklenti testi: her eklenti gerçek sitede ana sayfa + detay sayfası açar.
-# Bozulan eklentiyi "çalışmıyor" (status = 0), düzelen eklentiyi yeniden "çalışıyor" (1) yapan bir PR açar.
+# Haftalık eklenti testi: her eklenti gerçek sitede ana sayfa + detay sayfası açar; sonuç tablosu
+# çalışmanın Summary sayfasına yazılır.
+# ! YALNIZCA RAPOR: GitHub sunucuları yurt dışında; birçok site (ve TRT yayını) yurt dışından gelen
+# ! bağlantıya boş sayfa/hata veriyor. Bu yüzden burada eklenti durumu (status) DEĞİŞTİRİLMEZ.
+# ! Durum değişikliği Türkiye'den elle yapılır:  ./gradlew testDebugUnitTest --continue && python EKLENTI_TESTI.py --durum
 name: Eklenti Testi
 
 on:
@@ -8,8 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: eklenti-testi
@@ -43,24 +45,5 @@ jobs:
       - name: Sonuçları topla
         id: sonuc
         run: |
-          python3 EKLENTI_TESTI.py --durum --rapor "$RUNNER_TEMP/rapor.md"
+          python3 EKLENTI_TESTI.py --rapor "$RUNNER_TEMP/rapor.md"
           cat "$RUNNER_TEMP/rapor.md" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Durumu değişen eklentiler için PR aç
-        if: steps.sonuc.outputs.degisti == '1'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          dal=otomatik/eklenti-durumu
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$dal"
-          git add -- '*/build.gradle.kts'
-          git commit -m "Eklenti durumlari guncellendi (otomatik test)"
-          git push --force origin "$dal"
-          if gh pr view "$dal" --json state -q .state 2>/dev/null | grep -q OPEN; then
-            gh pr edit "$dal" --body-file "$RUNNER_TEMP/rapor.md"
-          else
-            gh pr create --base master --head "$dal" \
-              --title "Eklenti durumları güncellendi" --body-file "$RUNNER_TEMP/rapor.md"
-          fi

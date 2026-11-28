@@ -85,11 +85,21 @@ def cloudflare_mi(kod, govde, basliklar):
     return kod in (403, 503, 429) and ("cloudflare" in b.get("server", "").lower() or "challenge-platform" in govde or "Just a moment" in govde)
 
 
+DNS_HATASI = re.compile(r"getaddrinfo|Name or service not known|nodename nor servname|No address associated|Temporary failure in name resolution|Errno 11001|Errno -2|Errno -5", re.I)
+
+
+def hata_durumu(metin):
+    """Alan adı hiç çözülmüyorsa site gerçekten kapanmıştır (OLU). Diğer bağlantı hataları ve HTTP
+    hata kodları, sitenin yurt dışından (GitHub sunucuları ABD'de) gelen bağlantıyı engellemesinden
+    de kaynaklanabilir: ERISILEMIYOR (bilgi amaçlı, issue açılmaz)."""
+    return "OLU" if DNS_HATASI.search(metin) else "ERISILEMIYOR"
+
+
 def denetle(adres):
-    """{'durum': AYNI|DEGISTI|OLU, 'yeni': ..., 'not': ...}"""
+    """{'durum': AYNI|DEGISTI|OLU|ERISILEMIYOR, 'yeni': ..., 'not': ...}"""
     sonuc = ac(adres)
     if isinstance(sonuc, str):
-        return {"durum": "OLU", "not": sonuc[:120]}
+        return {"durum": hata_durumu(sonuc), "not": sonuc[:120]}
     son, kod, govde, basliklar = sonuc
 
     # HTTP yönlendirmesi başka bir siteye vardıysa
@@ -104,19 +114,19 @@ def denetle(adres):
 
     if aday:
         if YOK_SAY.search(host(aday)):
-            return {"durum": "OLU" if kod >= 400 else "AYNI", "not": f"yönlendirme yok sayıldı → {host(aday)}"}
+            return {"durum": "ERISILEMIYOR" if kod >= 400 else "AYNI", "not": f"yönlendirme yok sayıldı → {host(aday)}"}
         # Yeni adres gerçekten açılıyor mu?
         dogrula = ac(kok_adres(aday) + "/")
         if isinstance(dogrula, str):
-            return {"durum": "OLU", "not": f"{host(aday)} adresine yönlendiriyor ama o da açılmıyor ({dogrula[:60]})"}
+            return {"durum": hata_durumu(dogrula), "not": f"{host(aday)} adresine yönlendiriyor ama o da açılmıyor ({dogrula[:60]})"}
         _, k2, g2, b2 = dogrula
         if k2 < 400 or cloudflare_mi(k2, g2, b2):
             return {"durum": "DEGISTI", "yeni": kok_adres(aday), "not": f"HTTP {k2}"}
-        return {"durum": "OLU", "not": f"{host(aday)} → HTTP {k2}"}
+        return {"durum": "ERISILEMIYOR", "not": f"{host(aday)} → HTTP {k2}"}
 
     if kod < 400 or cloudflare_mi(kod, govde, basliklar):
         return {"durum": "AYNI", "not": f"HTTP {kod}" + (" (Cloudflare)" if kod >= 400 else "")}
-    return {"durum": "OLU", "not": f"HTTP {kod}"}
+    return {"durum": "ERISILEMIYOR", "not": f"HTTP {kod}"}
 
 
 def adres_of(deger):
@@ -131,7 +141,7 @@ def main():
     a = ap.parse_args()
 
     veri = json.loads(DOSYA.read_text(encoding="utf-8"))
-    degisen, olu = [], []
+    degisen, olu, erisilemiyor = [], [], []
     for ad, deger in veri.items():
         if a.site and ad.lower() != a.site.lower():
             continue
@@ -147,6 +157,8 @@ def main():
                 veri[ad] = {"adres": s["yeni"], "eski": eski}
         elif s["durum"] == "OLU":
             olu.append((ad, adres, s.get("not", "")))
+        elif s["durum"] == "ERISILEMIYOR":
+            erisilemiyor.append((ad, adres, s.get("not", "")))
 
     if a.yaz and degisen:
         DOSYA.write_text(json.dumps(veri, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
@@ -160,14 +172,18 @@ def main():
         if olu:
             satirlar += ["## Ulaşılamayan siteler", "", "| Eklenti | Adres | Ayrıntı |", "|---|---|---|"]
             satirlar += [f"| {ad} | `{e}` | {n} |" for ad, e, n in olu]
-            satirlar += ["", "Bu siteler yönlendirme yapmadan kapanmış ya da yeni adrese taşınmış olabilir; yeni adresi elle `domains.json`'a yazın.", ""]
+            satirlar += ["", "Bu alan adları artık çözülmüyor (site kapanmış ya da taşınmış); yeni adresi elle `domains.json`'a yazın.", ""]
+        if erisilemiyor:
+            satirlar += ["## Denetim sunucusundan açılmayan siteler (bilgi)", "", "| Eklenti | Adres | Ayrıntı |", "|---|---|---|"]
+            satirlar += [f"| {ad} | `{e}` | {n} |" for ad, e, n in erisilemiyor]
+            satirlar += ["", "Denetim GitHub'ın yurt dışındaki sunucusunda çalışır; bu siteler yurt dışından gelen bağlantıyı engelliyor olabilir. Türkiye'den `python ALAN_ADI_GUNCELLE.py` ile kontrol edin.", ""]
         pathlib.Path(a.rapor).write_text("\n".join(satirlar) or "Tüm siteler aynı adreste.\n", encoding="utf-8")
 
     cikti = os.environ.get("GITHUB_OUTPUT")
     if cikti:
         with open(cikti, "a", encoding="utf-8") as f:
             f.write(f"degisti={1 if degisen else 0}\nolu={1 if olu else 0}\n")
-    print(f"\n{len(degisen)} değişen, {len(olu)} ulaşılamayan")
+    print(f"\n{len(degisen)} değişen, {len(olu)} kapanmış, {len(erisilemiyor)} denetim sunucusundan açılmayan")
 
 
 if __name__ == "__main__":

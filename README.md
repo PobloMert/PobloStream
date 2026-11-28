@@ -93,13 +93,14 @@ Eklentiler açılışta sitelerin güncel adresini [`domains.json`](domains.json
 - `python ENGEL_KONTROL.py` de adresleri bu dosyadan alır.
 - **Kullanıcı da değiştirebilir:** CloudStream → Eklentiler → eklentinin ⚙️ simgesi → yeni adres. Yazılan adres listedekinin önüne geçer ve hemen geçerli olur; boş bırakılırsa otomatik adrese dönülür.
 
-**Otomatik denetim:** [Site Adresi Denetimi](.github/workflows/AlanAdi.yml) her pazartesi çalışır (Actions sekmesinden elle de başlatılabilir). Eski adres yenisine yönlendiriyorsa `domains.json`'u düzelten bir PR açar; birleştirmen yeter. Hiç açılmayan siteler için bir issue açar. Aynı denetim yerelde: `python ALAN_ADI_GUNCELLE.py` (Türkiye'den çalıştırınca engelli siteler "OLU" görünebilir).
+**Otomatik denetim:** [Site Adresi Denetimi](.github/workflows/AlanAdi.yml) her pazartesi çalışır (Actions sekmesinden elle de başlatılabilir). Eski adres yenisine yönlendiriyorsa `domains.json`'u düzelten bir PR açar; birleştirmen yeter. Alan adı artık hiç çözülmeyen (kapanmış) siteler için bir issue açar; yalnızca denetim sunucusundan açılmayanlar (yurt dışı engeli olabilir) raporda bilgi olarak listelenir. Aynı denetim yerelde: `python ALAN_ADI_GUNCELLE.py` (Türkiye'den çalıştırınca engelli siteler "OLU" görünebilir).
 
 ## 🧪 Haftalık eklenti testi
 
 [Eklenti Testi](.github/workflows/EklentiTesti.yml) her pazartesi her eklentiyi gerçek sitede dener: ana sayfadan liste çeker ve ilk içeriğin detay sayfasını açar. Site tasarımı değişip eklenti boş gelmeye başlarsa (adres aynı kalsa bile) yakalanır. İlk içeriğin adıyla arama da denenir; sonuç vermeyen aramalar raporda ayrı listelenir (eklentiyi "çalışmıyor" saydırmaz).
 
-- Bozulan eklenti için `status = 0` yapan bir PR açılır; birleştirince CloudStream onu **"çalışmıyor"** gösterir. Eklenti düzelince test bir sonraki hafta `1`'e geri alır.
+- **Yalnızca rapor:** GitHub sunucuları yurt dışında ve birçok site (TRT yayını dahil) yurt dışından gelen bağlantıya boş sayfa veriyor; bu yüzden orada "BOZUK" görünen eklenti Türkiye'de çalışıyor olabilir. Eklenti durumu GitHub'da değiştirilmez.
+- **Durumu değiştirmek (Türkiye'den):** `./gradlew testDebugUnitTest --continue` ardından `python EKLENTI_TESTI.py --durum` → bozulan eklenti `status = 0` (CloudStream'de **"çalışmıyor"**), düzelen yeniden `1` olur.
 - Sonuç tablosu her çalışmanın **Summary** sayfasında görünür.
 - Cloudflare doğrulaması isteyen siteler tarayıcısız denenemez; `DOGRULANAMADI` yazılır, bozuk sayılmaz.
 - Bilgisayarda: `./gradlew :DiziBox:testDebugUnitTest` ardından `python EKLENTI_TESTI.py` (klasör yolunda Türkçe karakter olmamalı).

@@ -67,8 +67,13 @@ def main():
 
     if a.rapor:
         r = []
+        if os.environ.get("GITHUB_ACTIONS"):
+            r += ["> ⚠️ Bu test GitHub'ın yurt dışındaki sunucusunda çalıştı. Birçok site (ve TRT yayını) yurt dışından "
+                  "gelen bağlantıya boş sayfa/hata veriyor; **BOZUK görünen eklentiler Türkiye'de çalışıyor olabilir.** "
+                  "Eklenti durumları burada değiştirilmez; Türkiye'den `python EKLENTI_TESTI.py --durum` ile yapılır.", ""]
         if degisen:
-            r += ["## Durumu değişen eklentiler", "", "| Eklenti | Önce | Sonra |", "|---|---|---|"]
+            baslik = "## Durumu değişen eklentiler" if a.durum else "## Durum önerisi (uygulanmadı)"
+            r += [baslik, "", "| Eklenti | Önce | Sonra |", "|---|---|---|"]
             r += [f"| {ad} | {e} | {y} {'(çalışmıyor)' if y == 0 else '(çalışıyor)'} |" for ad, e, y in degisen]
             r += ["", "`status = 0` olan eklenti CloudStream'de \"çalışmıyor\" olarak görünür. Düzeltince test bir sonraki hafta 1'e geri alır.", ""]
         if kanal_sorun:
