@@ -40,10 +40,16 @@ def eklenti_adresleri(filtre=None):
             continue
         dosyalar = sorted((d / "src").rglob("*.kt"), key=lambda p: (p.stem.lower() != d.name.lower(), str(p)))
         for kt in dosyalar:
-            m = re.search(r'override\s+va[rl]\s+mainUrl\s*=\s*"(https?://[^"/]+)', kt.read_text(encoding="utf-8", errors="replace"))
+            m = re.search(r'override\s+va[rl]\s+mainUrl\s*=\s*(?:AlanAdi\.al\("[^"]*",\s*)?"(https?://[^"/]+)', kt.read_text(encoding="utf-8", errors="replace"))
             if m:
                 sonuc[d.name] = m.group(1)
                 break
+    # domains.json (uygulamanın okuduğu güncel adresler) koddaki varsayılanın önüne geçer
+    alanlar = KOK / "domains.json"
+    if alanlar.exists():
+        for ad, adres in json.loads(alanlar.read_text(encoding="utf-8")).items():
+            if ad in sonuc:
+                sonuc[ad] = (adres if isinstance(adres, str) else adres["adres"]).rstrip("/")
     return sonuc
 
 

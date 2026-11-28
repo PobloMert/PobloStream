@@ -1,4 +1,4 @@
-version = 67
+version = 68
 
 cloudstream {
     authors     = listOf("hexated", "keyiflerolsun", "Ahmet")
@@ -12,7 +12,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0 // 2026-11-28: site detay sayfalarında uygulama tarayıcısını engelliyor; haftalık test düzelince 1 yapar
     tvTypes = listOf("Movie", "TvSeries")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.hdfilmcehennemi.nl&sz=%size%"
 }

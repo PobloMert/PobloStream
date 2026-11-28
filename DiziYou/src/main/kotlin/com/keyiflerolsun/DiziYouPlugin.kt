@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class DiziYouPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "DiziYou") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(DiziYou())
     }
 }

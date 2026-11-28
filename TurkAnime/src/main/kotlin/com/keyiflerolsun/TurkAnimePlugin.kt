@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class TurkAnimePlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "TurkAnime") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(TurkAnime())
     }
 }

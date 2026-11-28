@@ -26,6 +26,8 @@ Ardından depodan istediğin eklentileri indir. Güncellemeler uygulama içinden
 
 ## 🧩 Eklentiler
 
+Son değişiklikler: [DEGISIKLIKLER.md](DEGISIKLIKLER.md)
+
 | Eklenti | İçerik | Site |
 |---|---|---|
 | AnimeciX | Anime | animecix.tv |
@@ -48,6 +50,7 @@ Ardından depodan istediğin eklentileri indir. Güncellemeler uygulama içinden
 | KultFilmler | Film ve dizi | kultfilmler.net |
 | RareFilmm | Nadir filmler | rarefilmm.com |
 | SinemaCX 🆕 | Film | sinemacc.com |
+| SporTV 🆕 | Spor kanallarının resmî canlı yayınları: TRT Spor, TRT Spor Yıldız, A Spor, HT Spor, TJK TV, TAY TV | kanalların kendi siteleri |
 | TLCtr 🆕 | TLC programları | tlctv.com.tr |
 | TurkAnime | Anime | turkanime.to |
 | TvDiziler | Yerli dizi | tvdiziler.tv |
@@ -75,6 +78,31 @@ Türkiye'deki erişim engeli iki katmanlıdır: DNS sorgusu cevapsız kalır ve 
 `_ortak/` klasörü kök `build.gradle.kts` tarafından her eklentiye otomatik eklenir. Kullanıcının ayrıca bir şey yapması gerekmez.
 
 ---
+
+## 🌐 Site adresi değişince
+
+Eklentiler açılışta sitelerin güncel adresini [`domains.json`](domains.json) dosyasından okur. Bir site adres değiştirince (ör. `dizipal1599.com` → `dizipal1600.com`) **yalnızca bu dosyadaki satırı düzenleyip `master`'a göndermek yeter**; yeni sürüm derlemeye ya da kullanıcıların güncelleme indirmesine gerek yoktur. Yeni adres, uygulama bir sonraki açılışta devreye girer.
+
+```json
+"DiziPalOrijinal": { "adres": "https://dizipal1600.com", "eski": ["https://dizipal1599.com"] }
+```
+
+- Anahtar, eklentinin klasör adıdır. Eski adres yoksa düz yazmak da olur: `"FullHDFilm": "https://hdfilm.us"`.
+- **Kayıtlı favoriler bozulmaz:** eski adresle kaydedilmiş film/dizi açılınca istek otomatik olarak yeni adrese çevrilir (`eski` listesi + koddaki adres + cihazın daha önce gördüğü adresler).
+- Dosya okunamazsa cihazdaki son liste, o da yoksa koddaki adres kullanılır.
+- `python ENGEL_KONTROL.py` de adresleri bu dosyadan alır.
+- **Kullanıcı da değiştirebilir:** CloudStream → Eklentiler → eklentinin ⚙️ simgesi → yeni adres. Yazılan adres listedekinin önüne geçer ve hemen geçerli olur; boş bırakılırsa otomatik adrese dönülür.
+
+**Otomatik denetim:** [Site Adresi Denetimi](.github/workflows/AlanAdi.yml) her pazartesi çalışır (Actions sekmesinden elle de başlatılabilir). Eski adres yenisine yönlendiriyorsa `domains.json`'u düzelten bir PR açar; birleştirmen yeter. Hiç açılmayan siteler için bir issue açar. Aynı denetim yerelde: `python ALAN_ADI_GUNCELLE.py` (Türkiye'den çalıştırınca engelli siteler "OLU" görünebilir).
+
+## 🧪 Haftalık eklenti testi
+
+[Eklenti Testi](.github/workflows/EklentiTesti.yml) her pazartesi her eklentiyi gerçek sitede dener: ana sayfadan liste çeker ve ilk içeriğin detay sayfasını açar. Site tasarımı değişip eklenti boş gelmeye başlarsa (adres aynı kalsa bile) yakalanır. İlk içeriğin adıyla arama da denenir; sonuç vermeyen aramalar raporda ayrı listelenir (eklentiyi "çalışmıyor" saydırmaz).
+
+- Bozulan eklenti için `status = 0` yapan bir PR açılır; birleştirince CloudStream onu **"çalışmıyor"** gösterir. Eklenti düzelince test bir sonraki hafta `1`'e geri alır.
+- Sonuç tablosu her çalışmanın **Summary** sayfasında görünür.
+- Cloudflare doğrulaması isteyen siteler tarayıcısız denenemez; `DOGRULANAMADI` yazılır, bozuk sayılmaz.
+- Bilgisayarda: `./gradlew :DiziBox:testDebugUnitTest` ardından `python EKLENTI_TESTI.py` (klasör yolunda Türkçe karakter olmamalı).
 
 ## 🔑 Kısa kod bakımı
 

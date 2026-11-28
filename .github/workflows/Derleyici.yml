@@ -16,6 +16,7 @@ on:
       - "**/*.jpg"
       - "**/*.png"
       - "**/*.py"
+      - "domains.json"
 
 jobs:
   CloudStreamDerleyici:

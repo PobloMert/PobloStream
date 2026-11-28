@@ -7,6 +7,9 @@ import android.content.Context
 @CloudstreamPlugin
 class DizillaPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "Dizilla") } // eklenti ayarı: site adresini elle değiştirme
+        WebViewVekili.kur(context) // TarayiciGetir (Cloudflare) için
         registerMainAPI(Dizilla())
         registerExtractorAPI(ContentX())
         registerExtractorAPI(Hotlinger())

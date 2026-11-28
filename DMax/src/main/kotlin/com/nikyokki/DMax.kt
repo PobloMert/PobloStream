@@ -1,5 +1,6 @@
 package com.nikyokki
 
+import com.keyiflerolsun.AlanAdi
 import com.keyiflerolsun.EngelAsici
 
 import android.util.Log
@@ -8,7 +9,7 @@ import com.lagradost.cloudstream3.utils.*
 import org.jsoup.nodes.Element
 
 class DMax : MainAPI() {
-    override var mainUrl              = "https://www.dmax.com.tr"
+    override var mainUrl              = AlanAdi.al("DMax", "https://www.dmax.com.tr")
     override var name                 = "DMax"
     override val hasMainPage          = true
     override var lang                 = "tr"

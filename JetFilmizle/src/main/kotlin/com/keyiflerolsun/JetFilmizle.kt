@@ -16,13 +16,12 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.utils.newExtractorLink
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.jsoup.Jsoup
 
 class JetFilmizle : MainAPI() {
-    override var mainUrl              = "https://jetfilmizle.app"
+    override var mainUrl              = AlanAdi.al("JetFilmizle", "https://jetfilmizle.app")
     override var name                 = "JetFilmizle"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -30,26 +29,9 @@ class JetFilmizle : MainAPI() {
     override val supportedTypes       = setOf(TvType.Movie)
 
     // ! CloudFlare bypass
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor      by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val html     = response.peekBody(512 * 1024).string()
 
-            val isChallenge = response.code == 403 || response.code == 503 ||
-                html.contains("Just a moment") || html.contains("challenges.cloudflare") ||
-                html.contains("cf-chl") || html.contains("Attention Required")
-
-            if (isChallenge) {
-                return cloudflareKiller.intercept(chain)
-            }
-
-            return response
-        }
-    }
 
     override val mainPage = mainPageOf(
         "${mainUrl}"                                         to "Son Filmler",

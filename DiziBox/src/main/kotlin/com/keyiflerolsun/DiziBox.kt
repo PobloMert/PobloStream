@@ -9,14 +9,13 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.utils.StringUtils.decodeUri
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.jsoup.Jsoup
 
 class DiziBox : MainAPI() {
-    override var mainUrl              = "https://www.dizibox.live"
+    override var mainUrl              = AlanAdi.al("DiziBox", "https://www.dizibox.live")
     override var name                 = "DiziBox"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -24,31 +23,14 @@ class DiziBox : MainAPI() {
     override val supportedTypes       = setOf(TvType.TvSeries)
 
     // ! CloudFlare bypass
-    override var sequentialMainPage = true        // * https://recloudstream.github.io/dokka/library/com.lagradost.cloudstream3/-main-a-p-i/index.html#-2049735995%2FProperties%2F101969414
+    override var sequentialMainPage = false // kategoriler aynı anda (TarayiciGetir fetch\'leri paralel)
     override var sequentialMainPageDelay       = 50L  // ? 0.05 saniye
     override var sequentialMainPageScrollDelay = 50L  // ? 0.05 saniye
 
     // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor      by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val html     = response.peekBody(512 * 1024).string()
 
-            val isChallenge = response.code == 403 || response.code == 503 ||
-                html.contains("Just a moment") || html.contains("challenges.cloudflare") ||
-                html.contains("cf-chl") || html.contains("Attention Required")
-
-            if (isChallenge) {
-                return cloudflareKiller.intercept(chain)
-            }
-
-            return response
-        }
-    }
 
     override val mainPage = mainPageOf(
         "${mainUrl}/ulke/turkiye"              to "Yerli",
@@ -90,11 +72,7 @@ class DiziBox : MainAPI() {
             ),
             interceptor = interceptor, cacheTime = 60
         ).document
-        if (request.name == "Dizi Arşivi") {
-            val home = document.select("article.detailed-article").mapNotNull { it.toMainPageResult() }
-            return newHomePageResponse(request.name, home)
-        }
-        val home = document.select("article.article-series-poster").mapNotNull {
+        val home = document.select("article.poster-article, article.article-series-poster, article.detailed-article").mapNotNull {
         it.toMainPageResult()
     }
         return newHomePageResponse(request.name, home)
@@ -109,7 +87,10 @@ private fun Element.toMainPageResult(): SearchResponse? {
         }
     )
 
-    return newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
+    return newTvSeriesSearchResponse(title, href, TvType.TvSeries) {
+        // Cloudflare uygulamanın resim yükleyicisine 403 veriyor: afiş görünmez tarayıcıyla alınır
+        this.posterUrl = posterUrl?.let { YerelAktarici.tarayiciIle(it) }
+    }
 }
 
     override suspend fun search(query: String): List<SearchResponse> {
@@ -123,7 +104,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
             interceptor = interceptor
         ).document
 
-        return document.select("article.detailed-article").mapNotNull { it.toMainPageResult() }
+        return document.select("article.poster-article, article.article-series-poster, article.detailed-article").mapNotNull { it.toMainPageResult() }
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
@@ -175,7 +156,7 @@ private fun Element.toMainPageResult(): SearchResponse? {
         }
 
         return newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodeList) {
-            this.posterUrl = poster
+            this.posterUrl = poster?.let { YerelAktarici.tarayiciIle(it) }
             this.plot      = description
             this.year      = year
             this.tags      = tags

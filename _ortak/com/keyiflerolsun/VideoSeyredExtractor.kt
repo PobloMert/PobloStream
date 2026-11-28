@@ -1,6 +1,7 @@
 // ! Bu araç @keyiflerolsun tarafından | @KekikAkademi için yazılmıştır.
 
 package com.keyiflerolsun
+// ! Ortak video çözücüsü (_ortak/): birden çok eklenti kullanır; kök build.gradle.kts her eklentiye ekler.
 
 import android.util.Log
 import com.lagradost.cloudstream3.*

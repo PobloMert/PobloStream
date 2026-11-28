@@ -7,40 +7,26 @@ import org.jsoup.nodes.Element
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.jsoup.Jsoup
 
 class DiziMom : MainAPI() {
-    override var mainUrl              = "https://www.dizidad.com"
+    override var mainUrl              = AlanAdi.al("DiziMom", "https://www.dizidad.com")
     override var name                 = "DiziMom"
     override val hasMainPage          = true
     override var lang                 = "tr"
     override val hasQuickSearch       = false
     override val supportedTypes       = setOf(TvType.TvSeries)
 
-    override var sequentialMainPage = true        // * https://recloudstream.github.io/dokka/-cloudstream/com.lagradost.cloudstream3/-main-a-p-i/index.html#-2049735995%2FProperties%2F101969414
+    override var sequentialMainPage = false // kategoriler aynı anda (TarayiciGetir fetch\'leri paralel)
     override var sequentialMainPageDelay       = 50L  // ? 0.05 saniye
     override var sequentialMainPageScrollDelay = 50L  // ? 0.05 saniye
 
     // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor      by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.html().contains("Just a moment")) {
-                return cloudflareKiller.intercept(chain)
-            }
-
-            return response
-        }
-    }
     
     override val mainPage = mainPageOf(
         "${mainUrl}/tum-bolumler/page/"        to "Son Bölümler",

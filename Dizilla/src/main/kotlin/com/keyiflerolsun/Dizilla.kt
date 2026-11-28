@@ -27,7 +27,6 @@ import com.lagradost.cloudstream3.utils.Qualities
 import com.lagradost.cloudstream3.utils.loadExtractor
 import com.lagradost.cloudstream3.utils.newExtractorLink
 import com.lagradost.cloudstream3.syncproviders.SyncIdName
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -41,33 +40,21 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 class Dizilla : MainAPI() {
-    override var mainUrl = "https://dizilla.la"
+    override var mainUrl = AlanAdi.al("Dizilla", "https://dizilla.la")
     override var name = "Dizilla"
     override val hasMainPage = true
     override var lang = "tr"
     override val hasQuickSearch = true
     override val supportedTypes = setOf(TvType.TvSeries)
 
-    override var sequentialMainPage = true
+    override var sequentialMainPage = false // kategoriler aynı anda (TarayiciGetir fetch\'leri paralel)
     override var sequentialMainPageDelay = 150L
     override var sequentialMainPageScrollDelay = 150L
 
     // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller) : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request()
-            val response = chain.proceed(request)
-            val doc = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.html().contains("verifying") || doc.html().contains("Just a moment")) {
-                return cloudflareKiller.intercept(chain)
-            }
-            return response
-        }
-    }
 
     override val supportedSyncNames = setOf(SyncIdName.Simkl)
 

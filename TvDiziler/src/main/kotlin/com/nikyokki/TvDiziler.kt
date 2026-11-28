@@ -1,5 +1,6 @@
 package com.nikyokki
 
+import com.keyiflerolsun.AlanAdi
 import com.keyiflerolsun.EngelAsici
 
 import android.util.Log
@@ -17,7 +18,7 @@ import com.lagradost.cloudstream3.extractors.JWPlayer
 import org.jsoup.Jsoup
 
 class TvDiziler : MainAPI() {
-    override var mainUrl              = "https://tvdiziler.tv"
+    override var mainUrl              = AlanAdi.al("TvDiziler", "https://tvdiziler.tv")
     override var name                 = "TvDiziler"
     override val hasMainPage          = true
     override var lang                 = "tr"

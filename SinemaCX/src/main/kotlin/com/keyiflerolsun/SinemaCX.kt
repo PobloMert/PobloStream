@@ -10,7 +10,7 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.fasterxml.jackson.annotation.JsonProperty
 
 class SinemaCX : MainAPI() {
-    override var mainUrl              = "https://sinemacc.com"
+    override var mainUrl              = AlanAdi.al("SinemaCX", "https://sinemacc.com")
     override var name                 = "SinemaCX"
     override val hasMainPage          = true
     override var lang                 = "tr"

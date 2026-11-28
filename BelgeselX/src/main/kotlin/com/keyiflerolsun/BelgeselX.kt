@@ -9,7 +9,7 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 
 class BelgeselX : MainAPI() {
-    override var mainUrl              = "https://belgeselx.com"
+    override var mainUrl              = AlanAdi.al("BelgeselX", "https://belgeselx.com")
     override var name                 = "BelgeselX"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -43,7 +43,7 @@ class BelgeselX : MainAPI() {
             request.data
         } else {
             val categorySlug = request.data.removeSuffix("/").substringAfterLast("/")
-            "https://belgeselx.com/ajax_konukat.php?url=$categorySlug&page=$page"
+            "$mainUrl/ajax_konukat.php?url=$categorySlug&page=$page"
         }
 
         val document = EngelAsici.http.get(url, cacheTime = 60).document
@@ -93,7 +93,7 @@ class BelgeselX : MainAPI() {
 
             if (url.contains("diziresimleri")) {
                 val fileName = url.substringAfterLast("/").replace(Regex("\\.(jpe?g|png|webp)$"), "")
-                val modifiedUrl = "https://belgeselx.com/belgeseldizi/$fileName"
+                val modifiedUrl = "$mainUrl/belgeseldizi/$fileName"
                 searchResponses.add(newTvSeriesSearchResponse(title, modifiedUrl, TvType.Documentary) {
                     this.posterUrl = posterUrl
                 })
@@ -187,7 +187,7 @@ class BelgeselX : MainAPI() {
             "5" -> "new4"
             else -> "default"
         }
-        return "https://belgeselx.com/video/data/$f.php?id=$id&sira=$sira"
+        return "$mainUrl/video/data/$f.php?id=$id&sira=$sira"
     }
 
     override suspend fun loadLinks(
@@ -213,11 +213,11 @@ class BelgeselX : MainAPI() {
         if (ic3.isNotEmpty() && ic3 != "0") playerUrls.add(getSrc(ic3, episodeId, 3))
 
         if (playerUrls.isEmpty()) {
-            playerUrls.add("https://belgeselx.com/video/data/new4.php?id=$episodeId")
-            playerUrls.add("https://belgeselx.com/video/data/new5.php?id=$episodeId")
-            playerUrls.add("https://belgeselx.com/video/data/new3.php?id=$episodeId")
-            playerUrls.add("https://belgeselx.com/video/data/new2.php?id=$episodeId")
-            playerUrls.add("https://belgeselx.com/video/data/new1.php?id=$episodeId")
+            playerUrls.add("$mainUrl/video/data/new4.php?id=$episodeId")
+            playerUrls.add("$mainUrl/video/data/new5.php?id=$episodeId")
+            playerUrls.add("$mainUrl/video/data/new3.php?id=$episodeId")
+            playerUrls.add("$mainUrl/video/data/new2.php?id=$episodeId")
+            playerUrls.add("$mainUrl/video/data/new1.php?id=$episodeId")
         }
 
         var linksFound = false
@@ -299,7 +299,7 @@ class BelgeselX : MainAPI() {
                             null
                         }
                         val target = resolved?.url.orEmpty()
-                        if (resolved?.code != 200 || !target.startsWith("http") || target.contains("belgeselx.com")) {
+                        if (resolved?.code != 200 || !target.startsWith("http") || target.contains(mainUrl.substringAfter("://"))) {
                             Log.d("BLX", "Ölü kaynak atlandı: $videoUrl (kod=${resolved?.code})")
                             return@forEach
                         }

@@ -1,5 +1,6 @@
 package com.nikyokki
 
+import com.keyiflerolsun.AlanAdi
 import com.keyiflerolsun.EngelAsici
 
 import android.util.Log
@@ -18,7 +19,7 @@ import java.security.MessageDigest
  * pichive iframe'lerinde.
  */
 class AsyaWatch : MainAPI() {
-    override var mainUrl = "https://asyawatch.com"
+    override var mainUrl = AlanAdi.al("AsyaWatch", "https://asyawatch.com")
     override var name = "AsyaWatch"
     override val hasMainPage = true
     override var lang = "tr"

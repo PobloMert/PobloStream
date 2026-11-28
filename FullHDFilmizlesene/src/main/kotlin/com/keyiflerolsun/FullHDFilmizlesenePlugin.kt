@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class FullHDFilmizlesenePlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "FullHDFilmizlesene") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(FullHDFilmizlesene())
         registerExtractorAPI(RapidVid())
         registerExtractorAPI(RapidVidOrg())

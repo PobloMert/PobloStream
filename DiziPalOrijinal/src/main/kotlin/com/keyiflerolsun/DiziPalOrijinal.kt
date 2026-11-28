@@ -33,15 +33,15 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 class DiziPalOrijinal : MainAPI() {
-    override var mainUrl              = "https://dizipal1599.com"
+    override var mainUrl              = AlanAdi.al("DiziPalOrijinal", "https://dizipal1599.com")
     override var name                 = "DiziPal Orijinal"
     override val hasMainPage          = true
     override var lang                 = "tr"
     override val hasQuickSearch       = true
     override val supportedTypes       = setOf(TvType.TvSeries, TvType.Movie)
 
-    // ! CloudFlare bypass
-    override var sequentialMainPage            = true
+    // Site tarayıcıda bir kez açılınca diğer kategoriler fetch ile aynı anda alınabiliyor (TarayiciGetir)
+    override var sequentialMainPage            = false
     override var sequentialMainPageDelay       = 150L
     override var sequentialMainPageScrollDelay = 150L
 

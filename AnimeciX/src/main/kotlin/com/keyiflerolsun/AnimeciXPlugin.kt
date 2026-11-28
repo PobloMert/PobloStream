@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class AnimeciXPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "AnimeciX") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(AnimeciX())
         registerExtractorAPI(TauVideo())
     }

@@ -58,6 +58,14 @@ object YerelAktarici {
         return "http://127.0.0.1:${port()}/a/${b64(url)}/${b64(h)}/v.${uzanti.ifBlank { "bin" }}"
     }
 
+    /**
+     * İçeriği uygulamanın görünmez tarayıcısıyla alan aktarıcı adresi. Cloudflare'in uygulamanın resim
+     * yükleyicisine 403 verdiği sitelerde afiş için: `posterUrl = YerelAktarici.tarayiciIle(afis)`.
+     * Plugin.load() içinde WebViewVekili.kur(context) çağrılmış olmalı.
+     */
+    fun tarayiciIle(url: String): String =
+        "http://127.0.0.1:${port()}/t/${b64(url)}/v.${url.substringBefore("?").substringAfterLast(".", "jpg").take(4)}"
+
     private val yoklamaIstemcisi by lazy {
         com.lagradost.cloudstream3.app.baseClient.newBuilder()
             .callTimeout(6, java.util.concurrent.TimeUnit.SECONDS).followRedirects(false).build()
@@ -102,6 +110,13 @@ object YerelAktarici {
         val parcalar = istekSatiri.split(" ")
         val yontem = parcalar.getOrNull(0) ?: "GET"
         val yol = parcalar.getOrNull(1)?.split("/") ?: return   // ["", "a", url, basliklar, dosya]
+        if (yol.size >= 3 && yol[1] == "t") {
+            // Tarayıcı yolu: içerik görünmez tarayıcının fetch()'iyle alınır (Cloudflare'li sitelerin afişleri)
+            val hedef = runCatching { b64coz(yol[2]) }.getOrNull() ?: return yaz(cikis, 400, "text/plain", "adres".toByteArray())
+            val sonuc = runCatching { TarayiciGetir.resim(hedef) }.getOrNull()
+                ?: return yaz(cikis, 502, "text/plain", "tarayici".toByteArray())
+            return yaz(cikis, 200, sonuc.first, sonuc.second)
+        }
         if (yol.size < 4 || yol[1] != "a") return yaz(cikis, 404, "text/plain", "yok".toByteArray())
 
         val hedef = runCatching { b64coz(yol[2]) }.getOrNull() ?: return yaz(cikis, 400, "text/plain", "adres".toByteArray())

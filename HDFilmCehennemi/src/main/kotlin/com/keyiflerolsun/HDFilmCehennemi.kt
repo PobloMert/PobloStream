@@ -23,7 +23,6 @@ import com.lagradost.cloudstream3.app
 import com.lagradost.cloudstream3.fixUrlNull
 import com.lagradost.cloudstream3.mainPageOf
 import com.lagradost.cloudstream3.updateUrl
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.newEpisode
 import com.lagradost.cloudstream3.newHomePageResponse
 import com.lagradost.cloudstream3.newMovieLoadResponse
@@ -50,7 +49,7 @@ class HDFilmCehennemi : MainAPI() {
     // ! varsayılan sayfası, hdfilmcehennemi7.com satışta. Eklentinin ayrıştırıcısıyla
     // ! uyumlu canlı site .nl (images/list/poster). Yedekler sırayla denenir; cPanel,
     // ! satış sayfası ve WordPress klonu sabitlenmez.
-    override var mainUrl              = "https://www.hdfilmcehennemi.nl"
+    override var mainUrl              = AlanAdi.al("HDFilmCehennemi", "https://www.hdfilmcehennemi.nl")
     private val domainCandidates      = listOf(
         "https://www.hdfilmcehennemi.nl",
         "https://hdfilmcehennemi.nl",
@@ -72,35 +71,14 @@ class HDFilmCehennemi : MainAPI() {
     // ! IMDb ID ile doğrudan içerik açma (Anizium ile aynı davranış).
     override val supportedSyncNames   = setOf(SyncIdName.Imdb)
 
-    override var sequentialMainPage = true        // * https://recloudstream.github.io/dokka/-cloudstream/com.lagradost.cloudstream3/-main-a-p-i/index.html#-2049735995%2FProperties%2F101969414
+    override var sequentialMainPage = false // kategoriler aynı anda (TarayiciGetir fetch\'leri paralel)
     override var sequentialMainPageDelay       = 150L  // ? 0.15 saniye
     override var sequentialMainPageScrollDelay = 150L  // ? 0.15 saniye
 
     // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor      by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val response = chain.proceed(chain.request())
-            val contentType = response.header("Content-Type").orEmpty().lowercase()
-            val looksLikeHtml = contentType.contains("text/html") || contentType.contains("application/xhtml+xml")
-            if (!looksLikeHtml && response.code !in 403..503) return response
 
-            val html = response.peekBody(256 * 1024).string()
-            val lower = html.lowercase()
-            val challengePage = lower.contains("just a moment") ||
-                lower.contains("cf-browser-verification") ||
-                lower.contains("checking your browser") ||
-                (response.code in 403..503 && lower.contains("cloudflare"))
-
-            if (!challengePage) return response
-
-            // CloudflareKiller yeniden istekte bulunmadan önce ilk gövdeyi kapat.
-            response.close()
-            return cloudflareKiller.intercept(chain)
-        }
-    }
 
     // ! Yollar göreli: domain sonradan çözülse de istek doğru host'a gider.
     override val mainPage = mainPageOf(
@@ -153,6 +131,9 @@ class HDFilmCehennemi : MainAPI() {
             }
         }
         Log.w("HDCH", "hicbir domain ayakta degil, varsayilan kaldi: $mainUrl")
+        // Her kategori/aramada 9 adayı yeniden denememek için varsayılanla devam et
+        // (ana sayfa Cloudflare doğrulaması istese de /load/ uç noktaları doğrudan açılıyor)
+        domainResolved = true
     }
 
     /** Eski domaindeki kayıtlı içerik/bölüm adresini çözülen host'a taşır. */

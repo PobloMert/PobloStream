@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class CizgiMaxPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "CizgiMax") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(CizgiMax())
         registerExtractorAPI(SibNet())
         registerExtractorAPI(CizgiDuo())

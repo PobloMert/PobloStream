@@ -1,0 +1,103 @@
+package com.keyiflerolsun
+
+// ! Bu dosya spor_tv_kanallar.json'un gömülü kopyasıdır (uzak liste okunamazsa kullanılır).
+// ! JSON'u değiştirince bunu da güncelleyin:  python SporTV/kanallari_gom.py
+object SporTVKanallar {
+    const val JSON = """
+{
+  "surum": 3,
+  "guncelleme": "2026-11-28",
+  "aciklama": "Yalnızca kanalların kendi sitelerinden ücretsiz ve herkese açık yayınladığı canlı yayınlar.",
+  "uzak_kanallar": "https://raw.githubusercontent.com/PobloMert/PobloStream/master/SporTV/spor_tv_kanallar.json",
+  "kanallar": [
+    {
+      "id": "trtspor",
+      "ad": "TRT Spor",
+      "grup": "Spor Kanalları",
+      "site": "https://www.trt.net.tr",
+      "kaynak": "sabit",
+      "url": "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
+      "referer": "https://www.tabii.com/",
+      "aciklama": "TRT'nin spor kanalı. Yayın: TRT (tabii.com).",
+      "aktif": true,
+      "sira": 10,
+      "akis_url": "https://www.trtspor.com.tr/yayin-akisi/trt-spor",
+      "akis_desen": "card-time[^>]*>(\\d{2}:\\d{2})</div>.*?card-title[^>]*>([^<]+)</h4>"
+    },
+    {
+      "id": "trtsporyildiz",
+      "ad": "TRT Spor Yıldız",
+      "grup": "Spor Kanalları",
+      "site": "https://www.trt.net.tr",
+      "kaynak": "sabit",
+      "url": "https://tv-trtspor2.medya.trt.com.tr/master.m3u8",
+      "referer": "https://www.tabii.com/",
+      "aciklama": "TRT'nin ikinci spor kanalı. Yayın: TRT (tabii.com).",
+      "aktif": true,
+      "sira": 20,
+      "akis_url": "https://www.trtspor.com.tr/yayin-akisi/trt-spor-yildiz",
+      "akis_desen": "card-time[^>]*>(\\d{2}:\\d{2})</div>.*?card-title[^>]*>([^<]+)</h4>"
+    },
+    {
+      "id": "aspor",
+      "ad": "A Spor",
+      "grup": "Spor Kanalları",
+      "site": "https://www.aspor.com.tr",
+      "kaynak": "turkuvaz",
+      "url": "https://videojs.tmgrup.com.tr/getvideo/9bbe055a-4cf6-4bc3-a675-d40e89b55b91/00000000-0000-0000-0000-000000000000",
+      "yedek": "https://trkvz-live.ercdn.net/asporhd/asporhd.m3u8",
+      "referer": "https://www.aspor.com.tr/",
+      "aciklama": "Turkuvaz Medya'nın spor kanalı. Yayın: aspor.com.tr canlı yayın.",
+      "aktif": true,
+      "sira": 30,
+      "akis_url": "https://www.aspor.com.tr/yayin-akisi",
+      "akis_desen": "data-time-start=\"([^\"]+)\"[^>]*>\\s*<a[^>]*aria-label=\"([^\"]+)\""
+    },
+    {
+      "id": "htspor",
+      "ad": "HT Spor",
+      "grup": "Spor Kanalları",
+      "site": "https://www.htspor.com",
+      "kaynak": "sayfa",
+      "url": "https://www.htspor.com/canli-yayin",
+      "desen": "https://[a-z0-9.-]+/ht-spor/ht-spor\\.m3u8[^\"'\\s<\\\\]*",
+      "yedek": "https://ciner.daioncdn.net/ht-spor/ht-spor.m3u8?app=web",
+      "referer": "https://www.htspor.com/",
+      "aciklama": "Habertürk'ün spor kanalı. Yayın: htspor.com canlı yayın.",
+      "aktif": true,
+      "sira": 40
+    },
+    {
+      "id": "tjktv",
+      "ad": "TJK TV",
+      "grup": "At Yarışı",
+      "site": "https://www.tjk.org",
+      "kaynak": "sabit",
+      "url": "https://tjktv-live.tjk.org/tjktv/tjktv.m3u8",
+      "referer": "https://www.tjk.org/",
+      "aciklama": "Türkiye Jokey Kulübü'nün yarış kanalı. Yayın: tjk.org.",
+      "aktif": true,
+      "sira": 50
+    },
+    {
+      "id": "taytv",
+      "ad": "TAY TV",
+      "grup": "At Yarışı",
+      "site": "https://www.tjk.org",
+      "kaynak": "sayfa",
+      "url": "https://www.tjk.org/TR/YarisSever/Static/Page/Canli",
+      "desen": "https://tjktv-live\\.tjk\\.org/taytv/[^\"'\\s<]+\\.m3u8",
+      "yedek": "https://tjktv-live.tjk.org/taytv/taytv.m3u8",
+      "referer": "https://www.tjk.org/",
+      "aciklama": "TJK'nın ikinci yarış kanalı (yurt dışı yarışlar). Yayın: tjk.org canlı.",
+      "aktif": true,
+      "sira": 60
+    }
+  ],
+  "gruplar": [
+    "Spor Kanalları",
+    "At Yarışı"
+  ]
+}
+"""
+}

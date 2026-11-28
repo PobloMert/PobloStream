@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element
 import java.net.URLEncoder
 
 class TurkAnime : MainAPI() {
-    override var mainUrl              = "https://turkanime.to"
+    override var mainUrl              = AlanAdi.al("TurkAnime", "https://turkanime.to")
     override var name                 = "TurkAnime"
     override val hasMainPage          = true
     override var lang                 = "tr"

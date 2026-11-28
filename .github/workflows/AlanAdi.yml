@@ -1,0 +1,60 @@
+# Haftalık site adresi denetimi: adresi değişen siteler için domains.json'u düzelten bir PR,
+# ulaşılamayan siteler için bir issue açar. Uygulama domains.json'u doğrudan okuduğu için
+# PR birleştirilince yeni adres yeni sürüm gerekmeden kullanıcılara ulaşır.
+name: Site Adresi Denetimi
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"   # her pazartesi 08:00 (TR)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: alan-adi
+  cancel-in-progress: false
+
+jobs:
+  denetle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Adresleri denetle
+        id: denetim
+        run: python3 ALAN_ADI_GUNCELLE.py --yaz --rapor "$RUNNER_TEMP/rapor.md"
+
+      - name: Değişen adresler için PR aç
+        if: steps.denetim.outputs.degisti == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dal=otomatik/alan-adi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$dal"
+          git add domains.json
+          git commit -m "domains.json: site adresleri guncellendi (otomatik denetim)"
+          git push --force origin "$dal"
+          if gh pr view "$dal" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$dal" --body-file "$RUNNER_TEMP/rapor.md"
+          else
+            gh pr create --base master --head "$dal" \
+              --title "Site adresleri güncellendi" --body-file "$RUNNER_TEMP/rapor.md"
+          fi
+
+      - name: Ulaşılamayan siteler için issue aç
+        if: steps.denetim.outputs.olu == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          baslik="Ulaşılamayan siteler (otomatik denetim)"
+          no=$(gh issue list --state open --search "in:title \"$baslik\"" --json number -q '.[0].number')
+          if [ -n "$no" ]; then
+            gh issue comment "$no" --body-file "$RUNNER_TEMP/rapor.md"
+          else
+            gh issue create --title "$baslik" --body-file "$RUNNER_TEMP/rapor.md"
+          fi

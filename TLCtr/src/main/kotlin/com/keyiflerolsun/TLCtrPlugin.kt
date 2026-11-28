@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class TlctrPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "TLCtr") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(Tlctr())
     }
 }

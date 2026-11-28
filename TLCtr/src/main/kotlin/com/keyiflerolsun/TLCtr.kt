@@ -8,7 +8,7 @@ import com.lagradost.cloudstream3.utils.*
 import org.jsoup.nodes.Element
 
 class Tlctr : MainAPI() {
-    override var mainUrl              = "https://www.tlctv.com.tr"
+    override var mainUrl              = AlanAdi.al("TLCtr", "https://www.tlctv.com.tr")
     override var name                 = "TLCtr"
     override val hasMainPage          = true
     override var lang                 = "tr"

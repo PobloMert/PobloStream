@@ -8,7 +8,6 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
-import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.utils.StringUtils.decodeUri
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -17,7 +16,7 @@ import org.jsoup.Jsoup
 import java.util.regex.Pattern
 
 class KultFilmler : MainAPI() {
-    override var mainUrl              = "https://kultfilmler.net"
+    override var mainUrl              = AlanAdi.al("KultFilmler", "https://kultfilmler.net")
     override var name                 = "KultFilmler"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -25,27 +24,14 @@ class KultFilmler : MainAPI() {
     override val supportedTypes       = setOf(TvType.Movie, TvType.TvSeries)
 	
 	    // ! CloudFlare bypass
-    override var sequentialMainPage = true        // * https://recloudstream.github.io/dokka/library/com.lagradost.cloudstream3/-main-a-p-i/index.html#-2049735995%2FProperties%2F101969414
+    override var sequentialMainPage = false // kategoriler aynı anda (TarayiciGetir fetch\'leri paralel)
     override var sequentialMainPageDelay       = 150L  // ? 0.15 saniye
     override var sequentialMainPageScrollDelay = 150L  // ? 0.15 saniye
 
     // ! CloudFlare v2
-    private val cloudflareKiller by lazy { CloudflareKiller() }
-    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+    private val interceptor      by lazy { TarayiciGetir.Yakalayici() } // Cloudflare: sayfa görünmez tarayıcıyla alınır
 
-    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.text().contains("Just a moment...")) {
-                return cloudflareKiller.intercept(chain)
-            }
-
-            return response
-        }
-    }
 
     override val mainPage = mainPageOf(
         "${mainUrl}/category/aile-filmleri-izle"		    to "Aile",
@@ -75,21 +61,24 @@ class KultFilmler : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = EngelAsici.http.get(request.data).document
-        val movieBoxes = document.select("div.col-md-12 div.movie-box")
-        val home = movieBoxes.mapNotNull { 
-        it.toSearchResult() 
+        val url = if (page > 1) "${request.data.trimEnd('/')}/page/$page/" else request.data
+        val document = EngelAsici.http.get(url).document
+        val home = document.select(KART).mapNotNull { it.toSearchResult() }
+
+        return newHomePageResponse(request.name, home, hasNext = document.selectFirst("a.next") != null)
     }
 
-        return newHomePageResponse(request.name, home)
-    }
+    // Yeni tasarım (2026-11): a.mcard > img.pimg + h3; eski tasarım: div.movie-box > div.img img
+    private val KART = "a.mcard, div.col-md-12 div.movie-box, div.movie-box"
 
     private fun Element.toSearchResult(): SearchResponse? {
-        val title = this.selectFirst("div.img img")?.attr("alt")?.takeIf { it.isNotEmpty() } ?: return null
-        Log.d("toSearchResult", "Title: $title")
+        val yeni = this.hasClass("mcard")
+        val resim = if (yeni) this.selectFirst("img.pimg, img") else this.selectFirst("div.img img")
+        val title = (if (yeni) this.selectFirst("div.mtx h3")?.text() else null)?.trim()?.takeIf { it.isNotEmpty() }
+            ?: resim?.attr("alt")?.trim()?.takeIf { it.isNotEmpty() } ?: return null
 
-        val href = this.selectFirst("a")?.attr("href")?.let { fixUrlNull(it) } ?: return null
-        val posterUrl = this.selectFirst("div.img img")?.attr("src")?.let { fixUrlNull(it) }
+        val href = (if (yeni) this.attr("href") else this.selectFirst("a")?.attr("href"))?.let { fixUrlNull(it) } ?: return null
+        val posterUrl = resim?.let { it.attr("data-src").ifBlank { it.attr("src") } }?.let { fixUrlNull(it) }
 
         return if (href.contains("/dizi/")) {
             newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
@@ -101,7 +90,7 @@ class KultFilmler : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val document = EngelAsici.http.get("${mainUrl}?s=${query}").document
 
-        return document.select("div.movie-box").mapNotNull { it.toSearchResult() }
+        return document.select(KART).mapNotNull { it.toSearchResult() }.distinctBy { it.url }
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
@@ -109,11 +98,15 @@ class KultFilmler : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = EngelAsici.http.get(url).document
 
-        val title           = document.selectFirst("div.film-bilgileri img")?.attr("alt")?.trim() ?: document.selectFirst("[property='og:title']")?.attr("content")?.trim() ?: return null
+        val title           = document.selectFirst("h1.vtitle")?.text()?.trim()?.takeIf { it.isNotEmpty() }
+            ?: document.selectFirst("div.film-bilgileri img")?.attr("alt")?.trim()
+            ?: document.selectFirst("[property='og:title']")?.attr("content")?.substringBefore(" İzle")?.trim() ?: return null
         val poster          = fixUrlNull(document.selectFirst("[property='og:image']")?.attr("content"))
         val description     = document.selectFirst("div.description")?.text()?.trim()
+            ?: document.selectFirst("meta[name=description]")?.attr("content")?.trim()
         var tags            = document.select("ul.post-categories a").map { it.text() }
         val year            = Regex("""(\d+)""").find(document.selectFirst("li.release")?.text()?.trim() ?: "")?.groupValues?.get(1)?.toIntOrNull()
+            ?: document.selectFirst("a[href*=/yapim/]")?.text()?.trim()?.toIntOrNull()
         val duration        = Regex("""(\d+)""").find(document.selectFirst("li.time")?.text()?.trim() ?: "")?.groupValues?.get(1)?.toIntOrNull()
         val actors          = document.select("div.actors a").map {
             Actor(it.text())
@@ -213,7 +206,11 @@ private fun extractSubtitleUrl(sourceCode: String): String? {
         val iframes  = mutableSetOf<String>()
 
         val mainFrame = getIframe(document.html())
-        iframes.add(mainFrame)
+        if (mainFrame.isNotEmpty()) iframes.add(mainFrame)
+        // Yeni tasarım (2026-11): oynatıcı doğrudan div#player içindeki iframe
+        document.select("div#player iframe[src], div.kf-embed iframe[src]").forEach { f ->
+            fixUrlNull(f.attr("src"))?.let { iframes.add(it) }
+        }
 
         document.select("div.container#player").forEach {
             val alternatif = it.selectFirst("iframe")?.attr("src")

@@ -217,6 +217,7 @@ object EngelAsici {
         app.baseClient.newBuilder()
             .dns(DohDns)
             .socketFactory(BolenSoketFabrikasi)
+            .addInterceptor(AlanAdi.Yonlendirici) // eski site adresini güncele çevirir (kayıtlı favoriler)
             .addInterceptor(yedekInterceptor)
             .build()
     }
@@ -237,9 +238,32 @@ object EngelAsici {
     }
 
     /**
-     * Uygulamanın resim yükleyicisi engelli siteye ulaşamaz; posterleri engelsiz bir resim
-     * vekilinden (wsrv.nl) geçirir.
+     * Uygulamanın resim yükleyicisi engelli siteye ulaşamaz. Afişin sunucusu cihazdan doğrudan
+     * açılıyorsa afiş olduğu gibi kullanılır (daha hızlı, dış servise bağımlılık yok); açılmıyorsa
+     * engelsiz bir resim vekilinden (wsrv.nl) geçirilir. (Not: Cloudflare'li siteler wsrv.nl'e ve
+     * uygulamanın resim yükleyicisine resim vermeyebilir; bunu yalnızca gerçek tarayıcı aşar.) Sonuç sunucu başına bir kez denenip hatırlanır.
      */
-    fun resim(url: String?): String? =
-        url?.let { "https://wsrv.nl/?url=" + java.net.URLEncoder.encode(it, "UTF-8") }
+    fun resim(url: String?): String? {
+        if (url.isNullOrBlank() || !url.startsWith("http")) return url
+        val h = runCatching { java.net.URI(url).host }.getOrNull()?.lowercase() ?: return url
+        val acik = resimSunuculari.getOrPut(h) { dogrudanAcilir(h) }
+        return if (acik) url else "https://wsrv.nl/?url=" + java.net.URLEncoder.encode(url, "UTF-8")
+    }
+
+    private val resimSunuculari = ConcurrentHashMap<String, Boolean>()
+
+    /** Engel sayfasının IP'leri (BTK/ISS yönlendirmesi): bunlara çözülen ad engelli sayılır. */
+    private val engelIpleri = setOf("195.175.254.2") // TTNet engel sayfası; diğer ISS'lerde el sıkışma zaten düşer
+
+    /** Sistem DNS'i + normal TLS el sıkışması (uygulamanın resim yükleyicisinin yaptığı gibi) 3 sn içinde başarılı mı? */
+    private fun dogrudanAcilir(host: String): Boolean = runCatching {
+        val ip = InetAddress.getAllByName(host).firstOrNull { it.hostAddress !in engelIpleri } ?: return false
+        Socket().use { s ->
+            s.connect(InetSocketAddress(ip, 443), 3_000)
+            s.soTimeout = 3_000
+            (javax.net.ssl.SSLSocketFactory.getDefault() as javax.net.ssl.SSLSocketFactory)
+                .createSocket(s, host, 443, false).use { (it as javax.net.ssl.SSLSocket).startHandshake() }
+        }
+        true
+    }.getOrDefault(false)
 }

@@ -51,6 +51,9 @@ subprojects {
 
         // Ortak kod (ör. EngelAsici: VPN'siz erişim engeli aşma) her eklentiye eklenir
         sourceSets.getByName("main").java.srcDir(rootProject.file("_ortak"))
+        // Eklenti testi (gerçek sitede ana sayfa + detay): ./gradlew <Eklenti>:testDebugUnitTest
+        sourceSets.getByName("test").java.srcDir(rootProject.file("_test"))
+        testOptions.unitTests.isReturnDefaultValues = true // android.util.Log vb. bilgisayarda sessizce çalışsın
 
         defaultConfig {
             minSdk = 21
@@ -96,9 +99,33 @@ subprojects {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")     // Kotlin için asenkron işlemler
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
         implementation("com.github.vidstige:jadb:v1.2.1")
+
+        // Eklenti testi: CloudStream sınıfları (derleme stub'ı ile aynı jar) + gerçek org.json + JUnit
+        val testImplementation by configurations
+        testImplementation(files(File(gradle.gradleUserHomeDir, "caches/cloudstream/cloudstream/cloudstream.jar")))
+        testImplementation("org.json:json:20240303")
+        testImplementation("junit:junit:4.13.2")
+        // newExtractorLink'in kullandığı şifreleme kütüphanesi (uygulamada hazır gelir, testte eklenmeli)
+        testImplementation("dev.whyoleg.cryptography:cryptography-core:0.5.0")
+        testImplementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.5.0")
+    }
+
+    // Test edilecek ana sınıf: src içinde "class X : MainAPI()" (eklenti adına en çok benzeyen)
+    tasks.withType<Test>().configureEach {
+        val apiler = fileTree("src/main").matching { include("**/*.kt") }.files.mapNotNull { f ->
+            val metin = f.readText()
+            val paket = Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(metin)?.groupValues?.get(1)
+            Regex("""class\s+(\w+)\s*:\s*MainAPI\(\)""").find(metin)?.groupValues?.get(1)?.let { "$paket.$it" }
+        }.sortedBy { if (it.substringAfterLast('.').equals(project.name, true)) 0 else if (it.endsWith("Donor")) 2 else 1 }
+        apiler.firstOrNull()?.let { systemProperty("pobl.api", it) }
+        systemProperty("pobl.ad", project.name)
+        systemProperty("pobl.cikti", layout.buildDirectory.file("eklenti_testi.json").get().asFile.absolutePath)
+        systemProperty("pobl.alanlar", rootProject.file("domains.json").absolutePath)
+        outputs.upToDateWhen { false } // site her an değişebilir; önbellekten sonuç verme
+        testLogging { showStandardStreams = true }
     }
 }
 
-task<Delete>("clean") {
+tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

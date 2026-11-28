@@ -7,6 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class DiziPalPlugin: Plugin() {
     override fun load(context: Context) {
+        AlanAdi.kur(context)
+        openSettings = { AlanAdi.ayarEkrani(it, "DiziPal") } // eklenti ayarı: site adresini elle değiştirme
         registerMainAPI(DiziPal())
     }
 }
